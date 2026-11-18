@@ -13,9 +13,27 @@
 <link rel="icon" href="icon-192.png">
 <style>html,body{margin:0;height:100%;background:#0d0d0f;overflow:hidden}
 iframe{position:fixed;top:env(safe-area-inset-top);left:0;width:100%;height:calc(100% - env(safe-area-inset-top));border:0;background:#0d0d0f}
-#ld{position:fixed;inset:0;display:grid;place-items:center;color:#fdbe00;font:800 28px system-ui;letter-spacing:.1em}</style>
+#ld{position:fixed;inset:0;display:grid;place-items:center;color:#fdbe00;font:800 28px system-ui;letter-spacing:.1em}#inst{position:fixed;left:10px;right:10px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:9;display:none;background:#fdbe00;color:#111;border-radius:16px;padding:14px 44px 14px 16px;font:700 17px system-ui;box-shadow:0 6px 24px rgba(0,0,0,.6)}
+#inst button.go{display:block;width:100%;margin-top:10px;background:#111;color:#fdbe00;border:0;border-radius:12px;padding:14px;font:800 18px system-ui}
+#inst .x{position:absolute;top:6px;right:8px;background:none;border:0;font:700 26px system-ui;color:#111}
+#inst small{display:block;font-weight:500;font-size:15px;margin-top:4px}
+</style>
 </head><body>
 <div id="ld">BZD</div>
 <iframe src="https://script.google.com/macros/s/AKfycbwwtzfAoAv9J_c8KUAwqucGCyAVNbF8JQCJLFjwXvnz5yRv9sJ84pAKz88DXamySmyp/exec" allow="clipboard-write" onload="document.getElementById('ld').remove()"></iframe>
+<div id="inst"><button class="x" onclick="this.parentNode.style.display='none'">×</button><div id="instTxt"></div></div>
+<script>
+(function(){
+var st=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+if(st)return;
+var box=document.getElementById('inst'),txt=document.getElementById('instTxt'),dp=null;
+var ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;
+txt.innerHTML='Instale o app BZD no celular<button class="go" id="goBtn">Instalar app BZD</button>';box.style.display='block';
+document.getElementById('goBtn').onclick=function(){dp.prompt();dp.userChoice.then(function(){box.style.display='none';});};});
+window.addEventListener('appinstalled',function(){box.style.display='none';});
+if(ios){txt.innerHTML='Instale o app BZD<small>Toque em <b>Compartilhar</b> (quadrado com seta ↑) e depois em <b>Adicionar à Tela de Início</b>.</small>';box.style.display='block';}
+})();
+</script>
 <script>if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');</script>
 </body></html>
