@@ -84,7 +84,7 @@ details.ci{border-top:1px solid var(--line)}details.ci summary{list-style:none;c
     </section>
     <section id="t-show" class="hide shd"></section>
     <section id="t-contatos" class="hide">
-      <button class="btn" style="margin:0 0 10px" onclick="formCt()">➕ Novo contato</button>
+      <button class="btn hide" id="bNovoCt" style="margin:0 0 10px" onclick="formCt()">➕ Novo contato</button>
       <div id="ctForm" class="card hide"></div>
       <input id="busca" placeholder="Buscar nome, cidade, empresa, função…" oninput="clearTimeout(window._b);window._b=setTimeout(rMapa,200)">
       <div class="fl"><select id="fUf" onchange="rMapa()"></select><select id="fTipo" onchange="rMapa()"><option value="">Todos os tipos</option><option value="tec">Técnicos e fornecedores</option><option value="ag">Contatos de shows</option><option value="eq">Equipe</option></select></div>
@@ -187,7 +187,8 @@ function rMapa(){if(!CONT)return;const q=nrm($('busca').value),fu=$('fUf').value
   const G={};l.forEach(c=>{const u=ufDe(c)||'ZZ',ci=cidDe(c)||'Cidade não informada';(G[u]=G[u]||{})[ci]=(G[u][ci]||[]).concat(c)});
   const ufs=Object.keys(G).sort((a,b)=>a==='ZZ'?1:b==='ZZ'?-1:Object.values(G[b]).flat().length-Object.values(G[a]).flat().length);
   const abreTudo=!!q&&l.length<=15;
-  const pc=c=>`<div class="pc"><button class="mini" style="float:right;margin:0 0 4px 8px;padding:4px 9px" onclick="formCt(${Number(c.id)})">✏️</button>${EU&&EU.papel==='admin'&&c.telefone?`<button class="mini" title="Salvar no meu celular" style="float:right;margin:0 0 4px 6px;padding:4px 9px" onclick="vcf(${Number(c.id)})">📲</button>`:''}<div class="nm">${esc(String(c.nome).replace(/\s*\(sem nome salvo\)/i,''))}</div><div class="sub">${[c.funcao,c.empresa].filter(Boolean).map(esc).join(' · ')}</div>${c.telefone?`<div class="sub">${esc(c.telefone)}</div>`:''}${c.notas?`<div class="sub" style="margin-top:4px">${esc(c.notas)}</div>`:''}${botoes(c.telefone)}</div>`;
+  const ADM=EU&&EU.papel==='admin';$('bNovoCt').classList.toggle('hide',!ADM);
+  const pc=c=>`<div class="pc">${ADM?`<button class="mini" style="float:right;margin:0 0 4px 8px;padding:4px 9px" onclick="formCt(${Number(c.id)})">✏️</button>`:''}${ADM&&c.telefone?`<button class="mini" title="Salvar no meu celular" style="float:right;margin:0 0 4px 6px;padding:4px 9px" onclick="vcf(${Number(c.id)})">📲</button>`:''}<div class="nm">${esc(String(c.nome).replace(/\s*\(sem nome salvo\)/i,''))}</div><div class="sub">${[c.funcao,c.empresa].filter(Boolean).map(esc).join(' · ')}</div>${c.telefone?`<div class="sub">${esc(c.telefone)}</div>`:''}${c.notas?`<div class="sub" style="margin-top:4px">${esc(c.notas)}</div>`:''}${botoes(c.telefone)}</div>`;
   const filtros=!!(q||fu||ft||AREA);
   $('lc').innerHTML=`<div class="sub" style="margin:0 2px 10px;display:flex;align-items:center;gap:8px">${l.length} contato${l.length===1?'':'s'}${filtros?(l.length===1?' encontrado':' encontrados'):' · toque no estado para abrir'}${filtros?'<button class="mini" style="margin:0 0 0 auto" onclick="limparMapa()">Limpar filtros</button>':''}</div>`+ufs.map(u=>{const cs=G[u],n=Object.values(cs).flat().length,ab=abreTudo||!!fu||ABERTOS.has(u);
     return `<details class="uf" data-k="${u}" ${ab?'open':''}><summary>${u==='ZZ'?'Sem estado':esc(u)} <small class="sub" style="font:500 13px Inter">${u==='ZZ'?'':esc(UFN[u]||'')}</small><span class="n">${n}</span></summary>`+
