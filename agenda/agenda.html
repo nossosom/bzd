@@ -5,41 +5,52 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>BZD</title>
 <link rel="manifest" href="../manifest.webmanifest">
-<meta name="theme-color" content="#14110f">
+<meta name="theme-color" content="#0d0d0f">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="BZD">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="icon" href="icon-192.png">
 <style>
-:root{--bg:#14110f;--card:#211c18;--line:#3a312a;--tx:#f3ece4;--mut:#a89a8c;--ac:#f2a93b;--ok:#5cc58a;--warn:#e8664d}
+:root{--bg:#0d0d0f;--card:#17171b;--card2:#1f1f25;--line:#2a2a31;--tx:#f2f0ea;--mut:#9a978f;--ac:#fdbe00;--ok:#4cc38a;--warn:#e5575a;--blue:#6ea8fe}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding-bottom:calc(70px + env(safe-area-inset-bottom))}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding-bottom:calc(70px + env(safe-area-inset-bottom))}
 header{position:sticky;top:0;z-index:5;background:var(--bg);padding:calc(10px + env(safe-area-inset-top)) 16px 10px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
-header b{font-size:20px;letter-spacing:1px;color:var(--ac)}header span{color:var(--mut);font-size:13px;margin-left:auto}
+header .lg{width:42px;height:42px;border-radius:10px;cursor:pointer}header b{font-family:"Barlow Condensed";font-weight:800;font-size:26px;letter-spacing:.05em;color:var(--tx);text-transform:uppercase}.off{display:none;font-size:11px;color:#111;background:var(--ac);border-radius:99px;padding:2px 8px;font-weight:700}body.offline .off{display:inline-block}header span{color:var(--mut);font-size:13px;margin-left:auto}
 main{padding:12px 14px;max-width:720px;margin:auto}
-nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:#0e0c0a;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:6}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:#0a0a0c;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:6}
 nav button{flex:1;background:none;border:0;color:var(--mut);padding:10px 0 8px;font-size:12px}nav button i{display:block;font-style:normal;font-size:20px}
 nav button.on{color:var(--ac)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:0 0 10px}
-.mes{color:var(--ac);font-weight:700;margin:16px 2px 8px;text-transform:uppercase;font-size:13px;letter-spacing:1px}
-.row{display:flex;gap:10px;align-items:baseline}.dt{font-weight:700;min-width:58px}.tt{font-weight:600}
+.mes{color:var(--ac);font-family:'Barlow Condensed';font-weight:800;margin:18px 2px 8px;text-transform:uppercase;font-size:18px;letter-spacing:.06em}
+.row{display:flex;gap:10px;align-items:baseline}.dt{font-family:'Barlow Condensed';font-weight:800;font-size:19px;min-width:58px;white-space:nowrap;color:var(--ac);text-transform:uppercase}.tt{font-weight:600}
 .sub{color:var(--mut);font-size:14px}.chip{font-size:11px;padding:2px 8px;border-radius:99px;border:1px solid var(--line);color:var(--mut);margin-left:auto;white-space:nowrap}
 .chip.CONFIRMADO,.chip.ON{color:var(--ok);border-color:var(--ok)}.chip.NEGOCIANDO,.chip.RESERVADO{color:var(--ac);border-color:var(--ac)}
 .info{white-space:pre-wrap;font-size:14px;margin-top:10px;border-top:1px dashed var(--line);padding-top:10px;display:none}.card.aberto .info{display:block}
 .hoje{border-color:var(--ac)}
-textarea,input,select{width:100%;background:#0e0c0a;color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:11px;font:inherit}
+textarea,input,select{width:100%;background:#0a0a0c;color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:11px;font:inherit}
 textarea{min-height:130px;resize:vertical}
 label{display:block;color:var(--mut);font-size:13px;margin:12px 0 4px}
-.btn{display:block;width:100%;margin-top:12px;background:var(--ac);color:#1a1208;border:0;border-radius:12px;padding:14px;font-weight:700;font-size:16px}
+.btn{display:block;width:100%;margin-top:12px;background:var(--ac);color:#111;border:0;border-radius:12px;padding:14px;font-weight:700;font-size:16px}
 .btn.sec{background:none;color:var(--tx);border:1px solid var(--line)}
 .mini{background:none;border:1px solid var(--line);color:var(--tx);border-radius:8px;padding:6px 10px;font-size:13px;margin-top:10px}
-.msg{padding:10px 12px;border-radius:10px;margin-top:10px;font-size:14px}.msg.ok{background:#173322;color:#9fe3bb}.msg.er{background:#3a1913;color:#f3a796}.msg.q{background:#33280f;color:#f5d28f}
-.login{max-width:340px;margin:18vh auto;text-align:center}.login h1{color:var(--ac);font-size:44px;margin:0 0 6px;letter-spacing:3px}
+.msg{padding:10px 12px;border-radius:10px;margin-top:10px;font-size:14px}.msg.ok{background:#12291e;color:#9fe3bb}.msg.er{background:#33161a;color:#f3a7a9}.msg.q{background:#2e2608;color:#ffe08a}
+.login{max-width:340px;margin:18vh auto;text-align:center}.login h1{color:var(--ac);font-family:'Barlow Condensed';font-weight:800;font-size:52px;margin:0 0 6px;letter-spacing:3px}
 .login input{text-align:center;font-size:28px;letter-spacing:10px}
 a{color:var(--ac)}.wa{float:right;text-decoration:none;font-size:13px}
-.spin{display:inline-block;width:16px;height:16px;border:2px solid #1a1208;border-right-color:transparent;border-radius:50%;animation:s .7s linear infinite;vertical-align:-3px}@keyframes s{to{transform:rotate(360deg)}}
+.spin{display:inline-block;width:16px;height:16px;border:2px solid #111;border-right-color:transparent;border-radius:50%;animation:s .7s linear infinite;vertical-align:-3px}@keyframes s{to{transform:rotate(360deg)}}
 .hide{display:none!important}
+.card.sh{cursor:pointer}.card.sh .ar{color:var(--mut);margin-left:6px}
+.chips{display:flex;gap:6px;overflow-x:auto;margin:10px 0 4px;padding-bottom:4px}.chips button{flex:none;background:var(--card);color:var(--tx);border:1px solid var(--line);border-radius:99px;padding:7px 12px;font:600 13px Inter,system-ui}.chips button.on{background:var(--ac);color:#111;border-color:var(--ac)}
+details.uf{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:0 0 10px;overflow:hidden}details.uf summary{list-style:none;cursor:pointer;padding:12px 14px;display:flex;align-items:center;gap:10px;font-family:'Barlow Condensed';font-weight:800;font-size:22px;letter-spacing:.04em}details.uf summary::-webkit-details-marker{display:none}details.uf summary .n{margin-left:auto;font:700 12px Inter;background:var(--ac);color:#111;border-radius:99px;padding:2px 9px}details.uf[open] summary{border-bottom:1px solid var(--line)}
+.cid{color:var(--ac);font:700 12px Inter;text-transform:uppercase;letter-spacing:.06em;margin:12px 14px 6px}
+.pc{border-top:1px solid var(--line);padding:10px 14px}.pc:first-of-type{border-top:0}.pc .nm{font-weight:700}.pc .sub{font-size:13px}
+.acts{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}.acts a{flex:1;min-width:90px;text-align:center;text-decoration:none;border-radius:10px;padding:9px 8px;font:700 14px Inter,system-ui;border:1px solid var(--line);color:var(--tx);background:var(--card2)}.acts a.wz{background:#33ccff22;border-color:#33ccff66}.acts a.wa2{background:#25d36622;border-color:#25d36666}.acts a.mp{background:#fdbe0022;border-color:#fdbe0066}
+.shd h2{font-family:'Barlow Condensed';font-weight:800;font-size:30px;line-height:1.05;margin:4px 0 6px;text-transform:uppercase}.shd .bk{background:none;border:0;color:var(--ac);font:700 15px Inter;padding:4px 0;margin-bottom:6px;cursor:pointer}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:15px}.kv span{color:var(--mut);font-size:13px;padding-top:1px}
+.sec{color:var(--ac);font-family:'Barlow Condensed';font-weight:800;font-size:18px;letter-spacing:.06em;text-transform:uppercase;margin:16px 2px 8px}
+.txi{white-space:pre-wrap;font-size:14px}
 </style>
 </head>
 <body>
@@ -49,7 +60,7 @@ a{color:var(--ac)}.wa{float:right;text-decoration:none;font-size:13px}
   <button class="btn" onclick="entrar()">Entrar</button><div id="lmsg"></div>
 </div>
 <div id="app" class="hide">
-  <header><b>BZD</b><span id="quem"></span></header>
+  <header><img class="lg" src="icon-192.png" alt="BZD" onclick="location.href='./'"><b id="hTit">Agenda</b><span class="off">OFFLINE</span><span id="quem"></span></header>
   <main>
     <section id="t-agenda"></section>
     <section id="t-lancar" class="hide">
@@ -70,8 +81,10 @@ a{color:var(--ac)}.wa{float:right;text-decoration:none;font-size:13px}
       </div>
       <div id="amsg"></div>
     </section>
+    <section id="t-show" class="hide shd"></section>
     <section id="t-contatos" class="hide">
-      <input id="busca" placeholder="Buscar nome, cidade, empresa, função…" oninput="clearTimeout(window._b);window._b=setTimeout(contatos,350)">
+      <input id="busca" placeholder="Buscar nome, cidade, empresa, função…" oninput="clearTimeout(window._b);window._b=setTimeout(rMapa,200)">
+      <div class="chips" id="chips"></div>
       <div id="lc" style="margin-top:12px"></div>
     </section>
     <section id="t-mais" class="hide">
@@ -91,7 +104,7 @@ a{color:var(--ac)}.wa{float:right;text-decoration:none;font-size:13px}
     <button data-t="agenda" class="on"><i>📅</i>Agenda</button>
     <button data-t="lancar"><i>➕</i>Lançar</button>
     <button onclick="location.href='./'"><i>🏠</i>Início</button>
-    <button data-t="contatos"><i>👥</i>Contatos</button>
+    <button data-t="contatos"><i>🗺️</i>Mapa</button>
     <button data-t="mais" id="navMais" class="hide"><i>☰</i>Mais</button>
   </nav>
 </div>
@@ -104,26 +117,26 @@ function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);if(v===null
 async function api(acao,dados={}){const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({acao,codigo:COD,...dados})});const j=await r.json().catch(()=>({erro:'Sem resposta do servidor'}));if(j.erro)throw new Error(j.erro);return j}
 function aviso(el,t,c){$(el).innerHTML=t?`<div class="msg ${c}">${esc(t)}</div>`:''}
 
-async function entrar(c){COD=c||$('cod').value.trim();try{EU=await api('login');ls('bzd_cod',COD);if(!c&&!location.search&&!location.hash){location.href='./';return}iniciar()}catch(e){ls('bzd_cod',null);$('login').classList.remove('hide');$('app').classList.add('hide');if(!c)aviso('lmsg',e.message,'er')}}
+async function entrar(c){COD=c||$('cod').value.trim();try{EU=await api('login');ls('bzd_cod',COD);ls('bzd_eu',JSON.stringify(EU));if(!c&&!location.search&&!location.hash){location.href='./';return}iniciar()}catch(e){if(c&&e instanceof TypeError){try{EU=JSON.parse(ls('bzd_eu')||'null')}catch(x){}EU=EU&&EU.nome!==undefined?EU:{nome:'',papel:''};iniciar();return}ls('bzd_cod',null);$('login').classList.remove('hide');$('app').classList.add('hide');if(!c)aviso('lmsg',e.message,'er')}}
 function sair(){ls('bzd_cod',null);location.reload()}
 function iniciar(){$('login').classList.add('hide');$('app').classList.remove('hide');$('quem').textContent=EU.nome;if(EU.papel==='admin'){$('eq').classList.remove('hide');$('navMais').classList.remove('hide');equipe()}
   carregar();const p=new URLSearchParams(location.search);let t=[p.get('title'),p.get('text'),p.get('url')].filter(Boolean).join('\n');
   if(p.get('shared')){(async()=>{let x='';try{const c=await caches.open('bzd-share');const r=await c.match('share.txt');if(r)x=await r.text();await c.delete('share.txt')}catch(e){}if(x.length>20000)x=x.slice(-20000);history.replaceState(null,'',location.pathname);aba('lancar');$('txt').value=x;if(x.trim())analisar();else alert('Não consegui ler o arquivo compartilhado.')})();return}
-  if(t){history.replaceState(null,'',location.pathname);aba('lancar');$('txt').value=t;analisar()}else if(location.hash==='#mais'&&EU.papel==='admin')aba('mais');else if(location.hash==='#lancar')aba('lancar');}
-function aba(t){document.querySelectorAll('nav button[data-t]').forEach(b=>b.classList.toggle('on',b.dataset.t===t));['agenda','lancar','contatos','mais'].forEach(x=>$('t-'+x).classList.toggle('hide',x!==t));if(t==='contatos'&&!$('lc').innerHTML)contatos();scrollTo(0,0)}
+  if(t){history.replaceState(null,'',location.pathname);aba('lancar');$('txt').value=t;analisar()}else if(location.hash==='#mais'&&EU.papel==='admin')aba('mais');else if(location.hash==='#mapa')aba('contatos');else if(location.hash==='#lancar')aba('lancar');}
+function aba(t){document.querySelectorAll('nav button[data-t]').forEach(b=>b.classList.toggle('on',b.dataset.t===t));['agenda','lancar','contatos','mais','show'].forEach(x=>$('t-'+x).classList.toggle('hide',x!==t));$('hTit').textContent={agenda:'Agenda',lancar:'Lançar',contatos:'Mapa',mais:'Mais',show:'Show'}[t];if(t==='contatos')contatos();scrollTo(0,0)}
 document.querySelectorAll('nav button[data-t]').forEach(b=>b.onclick=()=>aba(b.dataset.t));
 
 const MES=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'],DS=['dom','seg','ter','qua','qui','sex','sáb'];
 async function carregar(){try{SHOWS=(await api('shows')).shows;ls('bzd_cache',JSON.stringify(SHOWS))}catch(e){SHOWS=JSON.parse(ls('bzd_cache')||'[]')}render()}
 function render(){const hoje=new Date(Date.now()-3*36e5).toISOString().slice(0,10);let h='',m='';
   for(const s of SHOWS){const d=new Date(s.data+'T12:00:00');const mm=MES[d.getMonth()]+' '+d.getFullYear();if(mm!==m){m=mm;h+=`<div class="mes">${mm}</div>`}
-    h+=`<div class="card ${s.data===hoje?'hoje aberto':''}" id="c-${esc(s.id)}" onclick="if(event.target.tagName!=='BUTTON'&&event.target.tagName!=='TEXTAREA')this.classList.toggle('aberto')">
-    <div class="row"><span class="dt">${DS[d.getDay()]} ${String(d.getDate()).padStart(2,'0')}</span><span class="tt">${esc(s.titulo)}</span><span class="chip ${esc(s.status)}">${esc(s.status)}</span></div>
+    h+=`<div class="card sh ${s.data===hoje?'hoje':''}" id="c-${esc(s.id)}" onclick="abrirShow('${esc(s.id)}')">
+    <div class="row"><span class="dt">${DS[d.getDay()]} ${String(d.getDate()).padStart(2,'0')}</span><span class="tt">${esc(s.titulo)}</span><span class="chip ${esc(s.status)}">${esc(s.status)}</span><span class="ar">›</span></div>
     <div class="sub">${s.inicio?esc(s.inicio)+(s.fim?'–'+esc(s.fim):'')+' · ':''}${esc(s.local)}</div>
-    <div class="info">${esc(s.info)||'<span class="sub">Sem informações ainda.</span>'}<br><button class="mini" onclick="editar('${esc(s.id)}')">✏️ Editar</button>${s.atualizado_por?`<span class="sub" style="margin-left:8px;font-size:12px">por ${esc(s.atualizado_por)}</span>`:''}</div></div>`}
+    </div>`}
   $('t-agenda').innerHTML=h||'<div class="sub">Nenhum show.</div>'}
-function editar(id){const s=SHOWS.find(x=>x.id===id),c=$('c-'+id);c.querySelector('.info').innerHTML=`<label>Início</label><input id="ei" value="${esc(s.inicio)}"><label>Fim</label><input id="ef" value="${esc(s.fim)}"><label>Status</label><input id="es" value="${esc(s.status)}"><label>Local</label><input id="el" value="${esc(s.local)}"><label>Informações</label><textarea id="ex" style="min-height:220px">${esc(s.info)}</textarea><button class="btn" onclick="salvar('${esc(id)}')">Salvar</button>`}
-async function salvar(id){const s={...SHOWS.find(x=>x.id===id)};s.inicio=$('ei').value;s.fim=$('ef').value;s.status=$('es').value;s.local=$('el').value;s.info=$('ex').value;try{await api('salvar_show',{show:s});await carregar()}catch(e){alert(e.message)}}
+function editar(id){const s=SHOWS.find(x=>x.id===id);$('shInfo').innerHTML=`<label>Início</label><input id="ei" value="${esc(s.inicio)}"><label>Fim</label><input id="ef" value="${esc(s.fim)}"><label>Status</label><input id="es" value="${esc(s.status)}"><label>Local</label><input id="el" value="${esc(s.local)}"><label>Informações</label><textarea id="ex" style="min-height:220px">${esc(s.info)}</textarea><button class="btn" onclick="salvar('${esc(id)}')">Salvar</button>`}
+async function salvar(id){const s={...SHOWS.find(x=>x.id===id)};s.inicio=$('ei').value;s.fim=$('ef').value;s.status=$('es').value;s.local=$('el').value;s.info=$('ex').value;try{await api('salvar_show',{show:s});await carregar();abrirShow(id)}catch(e){alert(e instanceof TypeError?'Sem internet agora. Tente salvar quando o sinal voltar.':e.message)}}
 
 async function colar(){try{const c=await navigator.clipboard.readText();if(!c.trim())return aviso('amsg','A área de transferência está vazia. No WhatsApp, segure a mensagem e toque em Copiar.','er');$('txt').value=c;analisar()}catch(e){$('txt').focus();aviso('amsg','Não consegui ler a cópia. Toque e segure na caixa e escolha Colar.','q')}}
 async function analisar(){const t=$('txt').value.trim();if(!t)return;$('bAn').innerHTML='<span class="spin"></span> Analisando…';aviso('amsg','');
@@ -134,7 +147,49 @@ async function analisar(){const t=$('txt').value.trim();if(!t)return;$('bAn').in
 async function aplicar(){const id=$('sShow').value;if(!id)return aviso('amsg','Escolha o show.','er');try{await api('aplicar',{show_id:id,registro:$('sReg').value,entrada_id:ULT&&ULT.entrada_id});limpar();aviso('amsg','Lançado! A equipe já vê na agenda.','ok');carregar()}catch(e){aviso('amsg',e.message,'er')}}
 function limpar(){$('txt').value='';$('sug').classList.add('hide');ULT=null}
 
-async function contatos(){try{const l=(await api('contatos',{q:$('busca').value})).contatos;$('lc').innerHTML=l.map(c=>{const n=(c.telefone||'').replace(/\D/g,'');return `<div class="card">${n?`<a class="wa" href="https://wa.me/${n}" target="_blank">WhatsApp ↗</a>`:''}<div class="tt">${esc(c.nome)}</div><div class="sub">${[c.funcao,c.empresa,c.cidade].filter(Boolean).map(esc).join(' · ')}</div>${c.telefone?`<div class="sub">${esc(c.telefone)}</div>`:''}${c.notas?`<div class="sub" style="margin-top:6px">${esc(c.notas)}</div>`:''}</div>`}).join('')||'<div class="sub">Nada encontrado.</div>'}catch(e){$('lc').innerHTML=`<div class="msg er">${esc(e.message)}</div>`}}
+let CONT=null,AREA='';
+const UFS='AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO'.split(' ');
+const UFN={AC:'Acre',AL:'Alagoas',AP:'Amapá',AM:'Amazonas',BA:'Bahia',CE:'Ceará',DF:'Distrito Federal',ES:'Espírito Santo',GO:'Goiás',MA:'Maranhão',MT:'Mato Grosso',MS:'Mato Grosso do Sul',MG:'Minas Gerais',PA:'Pará',PB:'Paraíba',PR:'Paraná',PE:'Pernambuco',PI:'Piauí',RJ:'Rio de Janeiro',RN:'Rio Grande do Norte',RS:'Rio Grande do Sul',RO:'Rondônia',RR:'Roraima',SC:'Santa Catarina',SP:'São Paulo',SE:'Sergipe',TO:'Tocantins'};
+const nrm=t=>String(t||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').trim();
+function ufDe(c){if(c.estado&&UFS.includes(String(c.estado).toUpperCase()))return String(c.estado).toUpperCase();const m=String(c.cidade||'').match(/[\/\-–,]\s*([A-Za-z]{2})\b\s*$/);if(m&&UFS.includes(m[1].toUpperCase()))return m[1].toUpperCase();return ''}
+function cidDe(c){return String(c.cidade||'').replace(/\s*[\/\-–,]\s*[A-Za-z]{2}\s*$/,'').trim()}
+function telBR(t){let n=String(t||'').replace(/\D/g,'');if(n.length===10||n.length===11)n='55'+n;return n.length>=12?n:''}
+function botoes(tel){const n=telBR(tel);return n?`<div class="acts"><a href="tel:+${n}" onclick="event.stopPropagation()">📞 Ligar</a><a class="wa2" href="https://wa.me/${n}" target="_blank" onclick="event.stopPropagation()">💬 WhatsApp</a></div>`:''}
+async function carregarContatos(){
+  try{let l=(await api('contatos',{q:'',limite:3000})).contatos||[];
+    if(l.length>=50){const qs=['a','e','i','o','u','r','s','n','l','m','t','c','d','b','p','g','v','j','f','h',...UFS.map(u=>'/'+u)];
+      const R=await Promise.all(qs.map(q=>api('contatos',{q,limite:3000}).then(j=>j.contatos||[]).catch(()=>[])));const M={};[l,...R].flat().forEach(x=>M[x.id]=x);l=Object.values(M)}
+    CONT=l;ls('bzd_cont',JSON.stringify(l))}catch(e){CONT=JSON.parse(ls('bzd_cont')||'[]')}
+  return CONT}
+const AREAS=[['','Todos'],['som','Som'],['luz','Luz'],['palco','Palco'],['backline','Backline'],['produ','Produção'],['roadie','Roadie'],['log','Logística'],['equip','Equipamento']];
+async function contatos(){$('chips').innerHTML=AREAS.map(([k,t])=>`<button data-a="${k}" class="${k===AREA?'on':''}">${t}</button>`).join('');
+  $('chips').querySelectorAll('button').forEach(b=>b.onclick=()=>{AREA=b.dataset.a;contatos()});
+  if(!CONT){CONT=JSON.parse(ls('bzd_cont')||'null');if(CONT)rMapa();else $('lc').innerHTML='<div class="sub">Carregando…</div>';await carregarContatos()}rMapa()}
+function rMapa(){if(!CONT)return;const q=nrm($('busca').value);
+  const l=CONT.filter(c=>{if(/sem nome salvo/i.test(c.nome)&&!c.telefone)return false;const blob=nrm([c.nome,c.funcao,c.area,c.empresa,c.cidade,c.notas,c.tipo].join(' '));if(AREA&&!nrm([c.area,c.funcao,c.tipo,c.notas].join(' ')).includes(AREA))return false;return !q||q.split(/\s+/).every(w=>blob.includes(w))});
+  const G={};l.forEach(c=>{const u=ufDe(c)||'ZZ',ci=cidDe(c)||'Sem cidade';(G[u]=G[u]||{})[ci]=(G[u][ci]||[]).concat(c)});
+  const ufs=Object.keys(G).sort((a,b)=>a==='ZZ'?1:b==='ZZ'?-1:Object.values(G[b]).flat().length-Object.values(G[a]).flat().length);
+  const abre=q||AREA||ufs.length<=2;
+  $('lc').innerHTML=`<div class="sub" style="margin:0 2px 10px">${l.length} contato${l.length===1?'':'s'} · toque no estado para abrir</div>`+ufs.map(u=>{const cs=G[u],n=Object.values(cs).flat().length;
+    return `<details class="uf" ${abre?'open':''}><summary>${u==='ZZ'?'Sem estado':esc(u)} <small class="sub" style="font:500 13px Inter">${u==='ZZ'?'':esc(UFN[u]||'')}</small><span class="n">${n}</span></summary>`+
+    Object.keys(cs).sort((a,b)=>cs[b].length-cs[a].length).map(ci=>`<div class="cid">${esc(ci)}</div>`+cs[ci].map(c=>`<div class="pc"><div class="nm">${esc(String(c.nome).replace(/\s*\(sem nome salvo\)/i,''))}</div><div class="sub">${[c.funcao,c.empresa].filter(Boolean).map(esc).join(' · ')}</div>${c.telefone?`<div class="sub">${esc(c.telefone)}</div>`:''}${c.notas?`<div class="sub" style="margin-top:4px">${esc(c.notas)}</div>`:''}${botoes(c.telefone)}</div>`).join('')).join('')+'</details>'}).join('')||'<div class="sub">Nada encontrado.</div>'}
+function fonesDe(t){const out=[],vis=new Set();const re=/(?:\+?55\s?)?\(?\b(\d{2})\)?\s?(9?\d{4})[-\s.]?(\d{4})\b/g;let m;
+  while((m=re.exec(t))){const num='55'+m[1]+m[2]+m[3];if(vis.has(num))continue;vis.add(num);
+    const linha=t.slice(t.lastIndexOf('\n',m.index)+1,m.index);let nome=linha.split(/[|;•,]|:\s/).pop().replace(/[\-–:(]+\s*$/,'').replace(/^\s*(contatos?|tel(efone)?|whats(app)?|fone)\s*:?\s*/i,'').trim();
+    if(nome.length>40)nome=nome.slice(-40);out.push({nome:nome||'Contato',num,txt:m[0].trim()})}return out}
+function abrirShow(id){const s=SHOWS.find(x=>x.id===id);if(!s)return;const d=new Date(s.data+'T12:00:00');
+  const dia=d.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
+  const loc=(s.local&&!/indefinid/i.test(s.local))?s.local:s.titulo;const qy=encodeURIComponent(loc);
+  const fs=fonesDe(s.info||'');const cid=nrm(String(loc).split(/[\/\-–,]/)[0]);
+  const cc=(CONT||JSON.parse(ls('bzd_cont')||'[]')).filter(c=>cid&&nrm(c.cidade).startsWith(cid)&&!fs.some(f=>f.num===telBR(c.telefone))).slice(0,12);
+  $('t-show').innerHTML=`<button class="bk" onclick="aba('agenda')">‹ Voltar à agenda</button>
+  <h2>${esc(s.titulo)}</h2><div class="kv"><span>Data</span><b>${esc(dia)}</b>${s.inicio?`<span>Horário</span><b>${esc(s.inicio)}${s.fim?' – '+esc(s.fim):''}</b>`:''}<span>Local</span><b>${esc(s.local||'—')}</b><span>Status</span><b><span class="chip ${esc(s.status)}" style="margin:0">${esc(s.status)}</span></b></div>
+  <div class="acts"><a class="mp" href="https://www.google.com/maps/search/?api=1&query=${qy}" target="_blank">📍 Maps</a><a class="wz" href="https://waze.com/ul?q=${qy}&navigate=yes" target="_blank">🚗 Waze</a></div>
+  ${fs.length?`<div class="sec">Contatos do show</div><div class="card" style="padding:0">${fs.map(f=>`<div class="pc"><div class="nm">${esc(f.nome)}</div><div class="sub">${esc(f.txt)}</div>${botoes(f.num)}</div>`).join('')}</div>`:''}
+  ${cc.length?`<div class="sec">Contatos na cidade</div><div class="card" style="padding:0">${cc.map(c=>`<div class="pc"><div class="nm">${esc(String(c.nome).replace(/\s*\(sem nome salvo\)/i,''))}</div><div class="sub">${[c.funcao,c.empresa].filter(Boolean).map(esc).join(' · ')}</div>${botoes(c.telefone)}</div>`).join('')}</div>`:''}
+  <div class="sec">Informações</div><div class="card" id="shInfo"><div class="txi">${esc(s.info)||'<span class="sub">Sem informações ainda.</span>'}</div><button class="mini" onclick="editar('${esc(s.id)}')">✏️ Editar</button>${s.atualizado_por?`<span class="sub" style="margin-left:8px;font-size:12px">por ${esc(s.atualizado_por)}</span>`:''}</div>`;
+  aba('show');window._shAb=id;if(!CONT)carregarContatos().then(()=>{if(window._shAb===id&&!$('t-show').classList.contains('hide'))abrirShow(id)})}
+function offl(){document.body.classList.toggle('offline',!navigator.onLine)}addEventListener('online',()=>{offl();carregar()});addEventListener('offline',offl);offl();
 async function equipe(novo){try{const l=(await api('equipe',novo?{novo}:{})).equipe;$('leq').innerHTML=l.map(p=>`${esc(p.nome)} — <b>${esc(p.codigo)}</b>${p.papel==='admin'?' (admin)':''}`).join('<br>')}catch(e){}}
 function addEq(){const nome=$('eNome').value.trim(),codigo=$('eCod').value.trim();if(nome&&codigo){equipe({nome,codigo});$('eNome').value=$('eCod').value=''}}
 async function novoShow(){const data=$('nData').value,titulo=$('nTit').value.trim();if(!data||!titulo)return aviso('nmsg','Preencha data e título.','er');
