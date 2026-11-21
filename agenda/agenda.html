@@ -205,9 +205,9 @@ function abrirShow(id){const s=SHOWS.find(x=>x.id===id);if(!s)return;const d=new
   <h2>${esc(s.titulo)}</h2><div class="kv"><span>Data</span><b>${esc(dia)}</b>${s.inicio?`<span>Horário</span><b>${esc(s.inicio)}${s.fim?' – '+esc(s.fim):''}</b>`:''}<span>Local</span><b>${esc(s.local||'—')}</b><span>Status</span><b><span class="chip ${esc(s.status)}" style="margin:0">${esc(s.status)}</span></b></div>
   <div class="acts"><a class="mp" href="https://www.google.com/maps/search/?api=1&query=${qy}" target="_blank">📍 Maps</a><a class="wz" href="https://waze.com/ul?q=${qy}&navigate=yes" target="_blank">🚗 Waze</a></div>
   ${fs.length?`<div class="sec">Contatos do show</div><div class="card" style="padding:0">${fs.map(f=>`<div class="pc"><div class="nm">${esc(f.nome)}</div><div class="sub">${esc(f.txt)}</div>${botoes(f.num)}</div>`).join('')}</div>`:''}
-  ${cc.length?`<div class="sec">Contatos na cidade</div><div class="card" style="padding:0">${cc.map(c=>`<div class="pc"><div class="nm">${esc(String(c.nome).replace(/\s*\(sem nome salvo\)/i,''))}</div><div class="sub">${[c.funcao,c.empresa].filter(Boolean).map(esc).join(' · ')}</div>${botoes(c.telefone)}</div>`).join('')}</div>`:''}
+  
   <div class="sec">Informações</div><div class="card" id="shInfo"><div class="txi">${esc(s.info)||'<span class="sub">Sem informações ainda.</span>'}</div><button class="mini" onclick="editar('${esc(s.id)}')">✏️ Editar</button>${s.atualizado_por?`<span class="sub" style="margin-left:8px;font-size:12px">por ${esc(s.atualizado_por)}</span>`:''}</div>`;
-  aba('show');window._shAb=id;if(!CONT)carregarContatos().then(()=>{if(window._shAb===id&&!$('t-show').classList.contains('hide'))abrirShow(id)})}
+  aba('show')}
 function offl(){document.body.classList.toggle('offline',!navigator.onLine)}addEventListener('online',()=>{offl();carregar()});addEventListener('offline',offl);offl();
 async function equipe(novo){try{const l=(await api('equipe',novo?{novo}:{})).equipe;$('leq').innerHTML=l.map(p=>`${esc(p.nome)} — <b>${esc(p.codigo)}</b>${p.papel==='admin'?' (admin)':''}`).join('<br>')}catch(e){}}
 function addEq(){const nome=$('eNome').value.trim(),codigo=$('eCod').value.trim();if(nome&&codigo){equipe({nome,codigo});$('eNome').value=$('eCod').value=''}}
