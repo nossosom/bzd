@@ -107,7 +107,8 @@ function aviso(el,t,c){$(el).innerHTML=t?`<div class="msg ${c}">${esc(t)}</div>`
 async function entrar(c){COD=c||$('cod').value.trim();try{EU=await api('login');ls('bzd_cod',COD);if(!c&&!location.search&&!location.hash){location.href='./';return}iniciar()}catch(e){ls('bzd_cod',null);$('login').classList.remove('hide');$('app').classList.add('hide');if(!c)aviso('lmsg',e.message,'er')}}
 function sair(){ls('bzd_cod',null);location.reload()}
 function iniciar(){$('login').classList.add('hide');$('app').classList.remove('hide');$('quem').textContent=EU.nome;if(EU.papel==='admin'){$('eq').classList.remove('hide');$('navMais').classList.remove('hide');equipe()}
-  carregar();const p=new URLSearchParams(location.search);const t=[p.get('title'),p.get('text'),p.get('url')].filter(Boolean).join('\n');
+  carregar();const p=new URLSearchParams(location.search);let t=[p.get('title'),p.get('text'),p.get('url')].filter(Boolean).join('\n');
+  if(p.get('shared')){(async()=>{let x='';try{const c=await caches.open('bzd-share');const r=await c.match('share.txt');if(r)x=await r.text();await c.delete('share.txt')}catch(e){}if(x.length>20000)x=x.slice(-20000);history.replaceState(null,'',location.pathname);aba('lancar');$('txt').value=x;if(x.trim())analisar();else alert('Não consegui ler o arquivo compartilhado.')})();return}
   if(t){history.replaceState(null,'',location.pathname);aba('lancar');$('txt').value=t;analisar()}else if(location.hash==='#mais'&&EU.papel==='admin')aba('mais');else if(location.hash==='#lancar')aba('lancar');}
 function aba(t){document.querySelectorAll('nav button[data-t]').forEach(b=>b.classList.toggle('on',b.dataset.t===t));['agenda','lancar','contatos','mais'].forEach(x=>$('t-'+x).classList.toggle('hide',x!==t));if(t==='contatos'&&!$('lc').innerHTML)contatos();scrollTo(0,0)}
 document.querySelectorAll('nav button[data-t]').forEach(b=>b.onclick=()=>aba(b.dataset.t));
