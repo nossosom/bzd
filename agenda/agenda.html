@@ -44,7 +44,8 @@ a{color:var(--ac)}.wa{float:right;text-decoration:none;font-size:13px}
 .card.sh{cursor:pointer}.card.sh .ar{color:var(--mut);margin-left:6px}
 .chips{display:flex;gap:6px;overflow-x:auto;margin:10px 0 4px;padding-bottom:4px}.chips button{flex:none;background:var(--card);color:var(--tx);border:1px solid var(--line);border-radius:99px;padding:7px 12px;font:600 13px Inter,system-ui}.chips button.on{background:var(--ac);color:#111;border-color:var(--ac)}
 details.uf{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:0 0 10px;overflow:hidden}details.uf summary{list-style:none;cursor:pointer;padding:12px 14px;display:flex;align-items:center;gap:10px;font-family:'Barlow Condensed';font-weight:800;font-size:22px;letter-spacing:.04em}details.uf summary::-webkit-details-marker{display:none}details.uf summary .n{margin-left:auto;font:700 12px Inter;background:var(--ac);color:#111;border-radius:99px;padding:2px 9px}details.uf[open] summary{border-bottom:1px solid var(--line)}
-.cid{color:var(--ac);font:700 12px Inter;text-transform:uppercase;letter-spacing:.06em;margin:12px 14px 6px}
+.fl{display:flex;gap:6px;margin-top:8px}.fl select{flex:1;padding:9px;font-size:14px}
+details.ci{border-top:1px solid var(--line)}details.ci summary{list-style:none;cursor:pointer;padding:11px 14px;display:flex;align-items:center;gap:8px;color:var(--ac);font:700 13px Inter;text-transform:uppercase;letter-spacing:.05em}details.ci summary::-webkit-details-marker{display:none}details.ci summary::before{content:"▸";color:var(--mut)}details.ci[open] summary::before{content:"▾"}details.ci summary .n{margin-left:auto;color:var(--mut);font-weight:600}details.uf summary::after{content:"▸";color:var(--mut);font-size:18px;margin-left:4px}details.uf[open] summary::after{content:"▾"}
 .pc{border-top:1px solid var(--line);padding:10px 14px}.pc:first-of-type{border-top:0}.pc .nm{font-weight:700}.pc .sub{font-size:13px}
 .acts{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}.acts a{flex:1;min-width:90px;text-align:center;text-decoration:none;border-radius:10px;padding:9px 8px;font:700 14px Inter,system-ui;border:1px solid var(--line);color:var(--tx);background:var(--card2)}.acts a.wz{background:#33ccff22;border-color:#33ccff66}.acts a.wa2{background:#25d36622;border-color:#25d36666}.acts a.mp{background:#fdbe0022;border-color:#fdbe0066}
 .shd h2{font-family:'Barlow Condensed';font-weight:800;font-size:30px;line-height:1.05;margin:4px 0 6px;text-transform:uppercase}.shd .bk{background:none;border:0;color:var(--ac);font:700 15px Inter;padding:4px 0;margin-bottom:6px;cursor:pointer}
@@ -84,6 +85,7 @@ details.uf{background:var(--card);border:1px solid var(--line);border-radius:14p
     <section id="t-show" class="hide shd"></section>
     <section id="t-contatos" class="hide">
       <input id="busca" placeholder="Buscar nome, cidade, empresa, função…" oninput="clearTimeout(window._b);window._b=setTimeout(rMapa,200)">
+      <div class="fl"><select id="fUf" onchange="rMapa()"></select><select id="fTipo" onchange="rMapa()"><option value="">Todos os tipos</option><option value="tec">Técnicos e fornecedores</option><option value="ag">Contatos de shows</option><option value="eq">Equipe</option></select></div>
       <div class="chips" id="chips"></div>
       <div id="lc" style="margin-top:12px"></div>
     </section>
@@ -169,14 +171,25 @@ const AREAS=[['','Todos'],['som','Som'],['luz','Luz'],['palco','Palco'],['backli
 async function contatos(){$('chips').innerHTML=AREAS.map(([k,t])=>`<button data-a="${k}" class="${k===AREA?'on':''}">${t}</button>`).join('');
   $('chips').querySelectorAll('button').forEach(b=>b.onclick=()=>{AREA=b.dataset.a;contatos()});
   if(!CONT){CONT=JSON.parse(ls('bzd_cont')||'null');if(CONT)rMapa();else $('lc').innerHTML='<div class="sub">Carregando…</div>';await carregarContatos()}rMapa()}
-function rMapa(){if(!CONT)return;const q=nrm($('busca').value);
-  const l=CONT.filter(c=>{if(!c.telefone&&(/sem nome salvo/i.test(c.nome)||/^sem cidade/i.test(c.cidade||'')))return false;const blob=nrm([c.nome,c.funcao,c.area,c.empresa,c.cidade,c.notas,c.tipo].join(' '));if(AREA&&!nrm([c.area,c.funcao,c.tipo,c.notas].join(' ')).includes(AREA))return false;return !q||q.split(/\s+/).every(w=>blob.includes(w))});
-  const G={};l.forEach(c=>{const u=ufDe(c)||'ZZ',ci=cidDe(c)||'Sem cidade';(G[u]=G[u]||{})[ci]=(G[u][ci]||[]).concat(c)});
+const ABERTOS=new Set();
+function tipoDe(c){const t=nrm(c.tipo);return t.startsWith('agenda')?'ag':t.startsWith('equipe')?'eq':'tec'}
+function rMapa(){if(!CONT)return;const q=nrm($('busca').value),fu=$('fUf').value,ft=$('fTipo').value;
+  const base=CONT.filter(c=>!(!c.telefone&&(/sem nome salvo/i.test(c.nome)||/^sem cidade/i.test(c.cidade||''))));
+  const cnt={};base.forEach(c=>{const u=ufDe(c)||'ZZ';cnt[u]=(cnt[u]||0)+1});
+  $('fUf').innerHTML='<option value="">Todos os estados</option>'+Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]).map(u=>`<option value="${u}" ${u===fu?'selected':''}>${u==='ZZ'?'Sem estado':u+' · '+(UFN[u]||'')} (${cnt[u]})</option>`).join('');
+  const l=base.filter(c=>{const u=ufDe(c)||'ZZ';if(fu&&u!==fu)return false;if(ft&&tipoDe(c)!==ft)return false;
+    if(AREA&&!nrm([c.area,c.funcao,c.tipo,c.notas].join(' ')).includes(AREA))return false;
+    const blob=nrm([c.nome,c.funcao,c.area,c.empresa,c.cidade,c.notas,c.tipo].join(' '));return !q||q.split(/\s+/).every(w=>blob.includes(w))});
+  const G={};l.forEach(c=>{const u=ufDe(c)||'ZZ',ci=cidDe(c)||'Cidade não informada';(G[u]=G[u]||{})[ci]=(G[u][ci]||[]).concat(c)});
   const ufs=Object.keys(G).sort((a,b)=>a==='ZZ'?1:b==='ZZ'?-1:Object.values(G[b]).flat().length-Object.values(G[a]).flat().length);
-  const abre=q||AREA||ufs.length<=2;
-  $('lc').innerHTML=`<div class="sub" style="margin:0 2px 10px">${l.length} contato${l.length===1?'':'s'} · toque no estado para abrir</div>`+ufs.map(u=>{const cs=G[u],n=Object.values(cs).flat().length;
-    return `<details class="uf" ${abre?'open':''}><summary>${u==='ZZ'?'Sem estado':esc(u)} <small class="sub" style="font:500 13px Inter">${u==='ZZ'?'':esc(UFN[u]||'')}</small><span class="n">${n}</span></summary>`+
-    Object.keys(cs).sort((a,b)=>cs[b].length-cs[a].length).map(ci=>`<div class="cid">${esc(ci)}</div>`+cs[ci].map(c=>`<div class="pc"><div class="nm">${esc(String(c.nome).replace(/\s*\(sem nome salvo\)/i,''))}</div><div class="sub">${[c.funcao,c.empresa].filter(Boolean).map(esc).join(' · ')}</div>${c.telefone?`<div class="sub">${esc(c.telefone)}</div>`:''}${c.notas?`<div class="sub" style="margin-top:4px">${esc(c.notas)}</div>`:''}${botoes(c.telefone)}</div>`).join('')).join('')+'</details>'}).join('')||'<div class="sub">Nada encontrado.</div>'}
+  const abreTudo=!!q&&l.length<=15;
+  const pc=c=>`<div class="pc"><div class="nm">${esc(String(c.nome).replace(/\s*\(sem nome salvo\)/i,''))}</div><div class="sub">${[c.funcao,c.empresa].filter(Boolean).map(esc).join(' · ')}</div>${c.telefone?`<div class="sub">${esc(c.telefone)}</div>`:''}${c.notas?`<div class="sub" style="margin-top:4px">${esc(c.notas)}</div>`:''}${botoes(c.telefone)}</div>`;
+  const filtros=!!(q||fu||ft||AREA);
+  $('lc').innerHTML=`<div class="sub" style="margin:0 2px 10px;display:flex;align-items:center;gap:8px">${l.length} contato${l.length===1?'':'s'}${filtros?(l.length===1?' encontrado':' encontrados'):' · toque no estado para abrir'}${filtros?'<button class="mini" style="margin:0 0 0 auto" onclick="limparMapa()">Limpar filtros</button>':''}</div>`+ufs.map(u=>{const cs=G[u],n=Object.values(cs).flat().length,ab=abreTudo||!!fu||ABERTOS.has(u);
+    return `<details class="uf" data-k="${u}" ${ab?'open':''}><summary>${u==='ZZ'?'Sem estado':esc(u)} <small class="sub" style="font:500 13px Inter">${u==='ZZ'?'':esc(UFN[u]||'')}</small><span class="n">${n}</span></summary>`+
+    Object.keys(cs).sort((a,b)=>cs[b].length-cs[a].length).map(ci=>{const k=u+'|'+ci,ac=abreTudo||Object.keys(cs).length===1||ABERTOS.has(k);return `<details class="ci" data-k="${esc(k)}" ${ac?'open':''}><summary>${esc(ci)}<span class="n">${cs[ci].length}</span></summary>${cs[ci].map(pc).join('')}</details>`}).join('')+'</details>'}).join('')||'<div class="sub">Nada encontrado.</div>';
+  $('lc').querySelectorAll('details').forEach(d=>d.querySelector('summary').addEventListener('click',()=>setTimeout(()=>{d.open?ABERTOS.add(d.dataset.k):ABERTOS.delete(d.dataset.k)},0)))}
+function limparMapa(){$('busca').value='';$('fUf').value='';$('fTipo').value='';AREA='';contatos()}
 function fonesDe(t){const out=[],vis=new Set();const re=/(?:\+?55\s?)?\(?\b(\d{2})\)?\s?(9?\d{4})[-\s.]?(\d{4})\b/g;let m;
   while((m=re.exec(t))){const num='55'+m[1]+m[2]+m[3];if(vis.has(num))continue;vis.add(num);
     const linha=t.slice(t.lastIndexOf('\n',m.index)+1,m.index);let nome=linha.split(/[|;•,]|:\s/).pop().replace(/[\-–:(]+\s*$/,'').replace(/^\s*(contatos?|tel(efone)?|whats(app)?|fone)\s*:?\s*/i,'').trim();
