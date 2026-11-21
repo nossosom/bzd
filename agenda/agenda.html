@@ -161,7 +161,7 @@ function telBR(t){let n=String(t||'').replace(/\D/g,'');if(n.length===10||n.leng
 function botoes(tel){const n=telBR(tel);return n?`<div class="acts"><a href="tel:+${n}" onclick="event.stopPropagation()">📞 Ligar</a><a class="wa2" href="https://wa.me/${n}" target="_blank" onclick="event.stopPropagation()">💬 WhatsApp</a></div>`:''}
 async function carregarContatos(){
   try{let l=(await api('contatos',{q:'',limite:3000})).contatos||[];
-    if(l.length>=50){const qs=['a','e','i','o','u','r','s','n','l','m','t','c','d','b','p','g','v','j','f','h',...UFS.map(u=>'/'+u)];
+    if(l.length===50){const qs=['a','e','i','o','u','r','s','n','l','m','t','c','d','b','p','g','v','j','f','h',...UFS.map(u=>'/'+u)];
       const R=await Promise.all(qs.map(q=>api('contatos',{q,limite:3000}).then(j=>j.contatos||[]).catch(()=>[])));const M={};[l,...R].flat().forEach(x=>M[x.id]=x);l=Object.values(M)}
     CONT=l;ls('bzd_cont',JSON.stringify(l))}catch(e){CONT=JSON.parse(ls('bzd_cont')||'[]')}
   return CONT}
