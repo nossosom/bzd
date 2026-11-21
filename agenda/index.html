@@ -1,145 +1,826 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
-<head>
+<head><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#14110f"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>BZD</title>
-<link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#14110f">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="BZD">
-<link rel="apple-touch-icon" href="icon-192.png">
-<link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#14110f;--card:#211c18;--line:#3a312a;--tx:#f3ece4;--mut:#a89a8c;--ac:#f2a93b;--ok:#5cc58a;--warn:#e8664d}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding-bottom:calc(70px + env(safe-area-inset-bottom))}
-header{position:sticky;top:0;z-index:5;background:var(--bg);padding:calc(10px + env(safe-area-inset-top)) 16px 10px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
-header b{font-size:20px;letter-spacing:1px;color:var(--ac)}header span{color:var(--mut);font-size:13px;margin-left:auto}
-main{padding:12px 14px;max-width:720px;margin:auto}
-nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:#0e0c0a;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:6}
-nav button{flex:1;background:none;border:0;color:var(--mut);padding:10px 0 8px;font-size:12px}nav button i{display:block;font-style:normal;font-size:20px}
-nav button.on{color:var(--ac)}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:0 0 10px}
-.mes{color:var(--ac);font-weight:700;margin:16px 2px 8px;text-transform:uppercase;font-size:13px;letter-spacing:1px}
-.row{display:flex;gap:10px;align-items:baseline}.dt{font-weight:700;min-width:58px}.tt{font-weight:600}
-.sub{color:var(--mut);font-size:14px}.chip{font-size:11px;padding:2px 8px;border-radius:99px;border:1px solid var(--line);color:var(--mut);margin-left:auto;white-space:nowrap}
-.chip.CONFIRMADO,.chip.ON{color:var(--ok);border-color:var(--ok)}.chip.NEGOCIANDO,.chip.RESERVADO{color:var(--ac);border-color:var(--ac)}
-.info{white-space:pre-wrap;font-size:14px;margin-top:10px;border-top:1px dashed var(--line);padding-top:10px;display:none}.card.aberto .info{display:block}
-.hoje{border-color:var(--ac)}
-textarea,input,select{width:100%;background:#0e0c0a;color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:11px;font:inherit}
-textarea{min-height:130px;resize:vertical}
-label{display:block;color:var(--mut);font-size:13px;margin:12px 0 4px}
-.btn{display:block;width:100%;margin-top:12px;background:var(--ac);color:#1a1208;border:0;border-radius:12px;padding:14px;font-weight:700;font-size:16px}
-.btn.sec{background:none;color:var(--tx);border:1px solid var(--line)}
-.mini{background:none;border:1px solid var(--line);color:var(--tx);border-radius:8px;padding:6px 10px;font-size:13px;margin-top:10px}
-.msg{padding:10px 12px;border-radius:10px;margin-top:10px;font-size:14px}.msg.ok{background:#173322;color:#9fe3bb}.msg.er{background:#3a1913;color:#f3a796}.msg.q{background:#33280f;color:#f5d28f}
-.login{max-width:340px;margin:18vh auto;text-align:center}.login h1{color:var(--ac);font-size:44px;margin:0 0 6px;letter-spacing:3px}
-.login input{text-align:center;font-size:28px;letter-spacing:10px}
-a{color:var(--ac)}.wa{float:right;text-decoration:none;font-size:13px}
-.spin{display:inline-block;width:16px;height:16px;border:2px solid #1a1208;border-right-color:transparent;border-radius:50%;animation:s .7s linear infinite;vertical-align:-3px}@keyframes s{to{transform:rotate(360deg)}}
-.hide{display:none!important}
+:root{
+  --bg:#0d0d0f; --panel:#17171b; --panel2:#1f1f25; --line:#2a2a31;
+    --text:#f2f0ea; --muted:#9a978f; --gold:#fdbe00; --gold2:#ffd54d;
+      --ok:#4cc38a; --warn:#f0a03c; --bad:#e5575a; --blue:#6ea8fe;
+      }
+      *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+      html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;font-size:15px}
+      body{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+      header{position:sticky;top:0;z-index:20;background:rgba(13,13,15,.94);backdrop-filter:blur(8px);
+        padding:calc(10px + env(safe-area-inset-top)) 16px 10px;border-bottom:1px solid var(--line)}
+        .brand{display:flex;align-items:center;justify-content:space-between;gap:10px}
+        .brand h1{font-family:"Barlow Condensed";font-weight:800;letter-spacing:.06em;font-size:22px;margin:0;text-transform:uppercase}
+        .brand h1 span{color:var(--gold)}
+        .showpick{margin-top:8px;display:flex;gap:8px;align-items:center}
+        .showpick select{flex:1;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:9px 10px;font:inherit;font-size:14px}
+        .pill{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 8px;border-radius:99px;background:var(--panel2);color:var(--muted)}
+        .pill.live{background:rgba(76,195,138,.15);color:var(--ok)}
+        .pill.off{background:rgba(240,160,60,.15);color:var(--warn)}
+        main{padding:14px 14px 20px;max-width:760px;margin:0 auto}
+        nav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:#111114;border-top:1px solid var(--line);
+          display:grid;grid-template-columns:repeat(6,1fr);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+          nav a{color:var(--muted);text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10.5px;font-weight:600;padding:4px 0}
+          nav a svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8}
+          nav a.on{color:var(--gold)}
+          .view{display:none}.view.on{display:block}
+          h2{font-family:"Barlow Condensed";font-weight:700;font-size:24px;letter-spacing:.03em;margin:4px 0 12px;text-transform:uppercase}
+          h3{font-family:"Barlow Condensed";font-weight:700;font-size:18px;letter-spacing:.04em;margin:18px 0 8px;text-transform:uppercase;color:var(--gold2)}
+          .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px}
+          .muted{color:var(--muted)}
+          .small{font-size:12.5px}
+          /* Agenda */
+          .month{font-family:"Barlow Condensed";font-weight:700;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;margin:16px 2px 6px;font-size:15px}
+          .show{display:flex;gap:12px;align-items:flex-start;cursor:pointer}
+          .date{min-width:52px;text-align:center;background:var(--panel2);border-radius:10px;padding:6px 4px}
+          .date b{display:block;font-family:"Barlow Condensed";font-size:24px;line-height:1}
+          .date i{font-style:normal;font-size:11px;color:var(--muted);text-transform:uppercase}
+          .show .t{font-weight:600}
+          .show.past{opacity:.45}
+          .show.today .date{background:var(--gold);color:#111}.show.today .date i{color:#111}
+          .show.sel{outline:2px solid var(--gold);outline-offset:-1px}
+          .itin{margin-top:10px;border-top:1px dashed var(--line);padding-top:10px}
+          .itin .d{font-weight:700;color:var(--gold2);margin:8px 0 4px;font-size:13px}
+          .itin .r{display:flex;gap:10px;font-size:13.5px;padding:3px 0}
+          .itin .r b{min-width:86px;color:var(--muted);font-weight:600}
+          /* Checklist */
+          .seg{display:flex;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:3px;margin-bottom:10px}
+          .seg button{flex:1;background:none;border:0;color:var(--muted);font:inherit;font-weight:600;padding:9px;border-radius:9px}
+          .seg button.on{background:var(--gold);color:#111}
+          .prog{height:8px;background:var(--panel2);border-radius:99px;overflow:hidden;margin:6px 0 2px}
+          .prog i{display:block;height:100%;background:var(--ok);transition:width .3s}
+          .tools{display:flex;gap:8px;margin:10px 0}
+          .btn{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:8px 12px;font:inherit;font-size:13px;font-weight:600}
+          .btn.on{border-color:var(--gold);color:var(--gold)}
+          .cat{margin-bottom:10px;background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+          .cat summary{list-style:none;display:flex;justify-content:space-between;align-items:center;padding:12px 14px;font-weight:700;cursor:pointer}
+          .cat summary::-webkit-details-marker{display:none}
+          .cat summary .c{font-size:12px;color:var(--muted);font-weight:600}
+          .cat summary .c.done{color:var(--ok)}
+          .item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-top:1px solid var(--line);cursor:pointer;user-select:none}
+          .box{width:26px;height:26px;border-radius:8px;border:2px solid #4a4a52;flex:none;display:grid;place-items:center}
+          .item.ck .box{background:var(--ok);border-color:var(--ok)}
+          .item.ck .box::after{content:"";width:7px;height:13px;border:solid #0d0d0f;border-width:0 3px 3px 0;transform:rotate(45deg) translate(-1px,-1px)}
+          .item .n{flex:1}
+          .item.ck .n{color:var(--muted)}
+          .item .who{font-size:11px;color:var(--muted);text-align:right;line-height:1.3}
+          .banner{font-size:12.5px;padding:9px 12px;border-radius:10px;margin-bottom:10px}
+          .banner.warn{background:rgba(240,160,60,.12);color:var(--warn)}
+          .banner.info{background:rgba(110,168,254,.1);color:var(--blue)}
+          /* Tables */
+          table{width:100%;border-collapse:collapse;font-size:13.5px}
+          th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:8px 6px;border-bottom:1px solid var(--line)}
+          td{padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+          td.ch{font-family:"Barlow Condensed";font-weight:700;font-size:18px;color:var(--gold);width:40px}
+          tr.wl td.mic{color:var(--blue)}
+          .tag{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 6px;border-radius:6px;background:var(--panel2);color:var(--muted)}
+          .tag.iem{background:rgba(110,168,254,.14);color:var(--blue)}
+          .tag.pp{background:rgba(232,182,76,.15);color:var(--gold)}
+          .flag{color:var(--warn);font-weight:700}
+          .legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:6px 0 10px}
+          /* Print mode */
+          #printSheet{display:none;position:fixed;inset:0;z-index:100;background:#fff;color:#000;overflow:auto;padding:calc(12px + env(safe-area-inset-top)) 12px 12px}
+          #printSheet.on{display:block}
+          #printSheet .ph{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:3px solid #000;padding-bottom:6px;margin-bottom:6px}
+          #printSheet .ph b{font-family:"Barlow Condensed";font-size:24px;letter-spacing:.05em}
+          #printSheet table{font-size:12px}
+          #printSheet th{color:#000;border-bottom:2px solid #000;padding:3px 4px}
+          #printSheet td{border-bottom:1px solid #ccc;padding:3px 4px}
+          #printSheet td.ch{color:#000;font-size:14px;width:28px}
+          #printSheet tr:nth-child(even) td{background:#f2f2f2}
+          #printSheet .close{position:fixed;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));background:#000;color:#fff;border:0;border-radius:99px;padding:10px 16px;font:inherit;font-weight:700}
+          #printSheet .cols{display:grid;grid-template-columns:1fr;gap:10px}
+          @media(min-width:700px){#printSheet .cols{grid-template-columns:1fr 1fr}}
+          .kv{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:14px}
+          .kv:last-child{border-bottom:0}
+          .kv a{color:var(--gold2);text-decoration:none;font-weight:600}
+          ul.l{margin:0;padding-left:18px}ul.l li{margin:5px 0;font-size:14px}
+          .seg4{display:grid;grid-template-columns:repeat(4,1fr);gap:2px}
+          .seg4 button{display:flex;flex-direction:column;align-items:center;padding:7px 2px;font-size:13.5px;line-height:1.15}
+          .seg4 small{font-size:10px;letter-spacing:.08em;opacity:.75;font-weight:700}
+          .seg4 i{font-style:normal;font-size:10.5px;opacity:.85;margin-top:2px;font-weight:600}
+          .who.prev{color:var(--warn)}
+          #nameDlg{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.7);align-items:center;justify-content:center;padding:20px}
+          #nameDlg.on{display:flex}
+          #nameDlg form{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;width:100%;max-width:360px}
+          #nameDlg input{width:100%;margin:10px 0 14px;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:11px;font:inherit;font-size:16px}
+          /* ===== Visual mobile (v2) ===== */
+html{-webkit-text-size-adjust:100%;touch-action:manipulation}
+body{overscroll-behavior-y:none;overflow-x:hidden}
+header{padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right))}
+.brand h1{font-size:20px;white-space:nowrap;line-height:1}
+.brand img{flex:none}
+.pill{white-space:nowrap;font-size:10px;padding:4px 8px;max-width:46vw;overflow:hidden;text-overflow:ellipsis}
+.showpick select{min-width:0;width:100%;min-height:44px;font-size:16px;border-radius:12px}
+main{padding:12px max(12px,env(safe-area-inset-right)) 20px max(12px,env(safe-area-inset-left))}
+h2{font-size:26px;margin:2px 0 12px}
+.btn{min-height:44px;padding:10px 14px;border-radius:12px;font-size:14px}
+.seg button{min-height:44px}
+.item{min-height:56px;padding:12px 14px}
+.box{width:30px;height:30px;border-radius:9px}
+.cat summary{min-height:52px;font-size:16px}
+.card{border-radius:16px}
+.show{min-height:64px;padding:14px}
+.show .t{font-size:16px}
+nav{display:flex;grid-template-columns:none;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:6px max(6px,env(safe-area-inset-left)) calc(8px + env(safe-area-inset-bottom)) max(6px,env(safe-area-inset-right));gap:2px}
+nav::-webkit-scrollbar{display:none}
+nav a{flex:0 0 22vw;min-width:84px;scroll-snap-align:center;font-size:12.5px;font-weight:700;gap:4px;padding:8px 2px;min-height:62px;justify-content:center;border-radius:14px;white-space:nowrap}
+nav a svg{width:28px;height:28px;stroke-width:1.9}
+nav a.on{background:rgba(253,190,0,.14);color:var(--gold)}
+body{padding-bottom:calc(92px + env(safe-area-inset-bottom))}
+@media(max-width:640px){
+  /* tabelas viram cartões */
+  #inputTbl,#inputTbl tbody{display:block;width:100%}
+  #inputTbl tr:first-child{display:none}
+  #inputTbl tr{display:grid;grid-template-columns:46px 1fr auto;grid-template-rows:auto auto;column-gap:10px;row-gap:2px;padding:11px 6px;border-bottom:1px solid var(--line)}
+  #inputTbl tr:last-child{border-bottom:0}
+  #inputTbl td{border:0;padding:0;min-width:0}
+  #inputTbl td:nth-child(1){grid-column:1;grid-row:1/3;align-self:center;font-size:22px;text-align:center;width:auto}
+  #inputTbl td:nth-child(2){grid-column:2;grid-row:1;font-weight:600;font-size:15px}
+  #inputTbl td:nth-child(3){grid-column:2;grid-row:2;font-size:13px}
+  #inputTbl td:nth-child(4){grid-column:3;grid-row:2;font-size:12px;text-align:right;align-self:end}
+  #inputTbl td:nth-child(5){grid-column:3;grid-row:1;font-size:10px;text-align:right;letter-spacing:.06em;text-transform:uppercase;align-self:start}
+  #outputTbl td,#outputTbl th{padding:11px 6px}
+  #outputTbl td.ch{width:46px;text-align:center;font-size:22px}
+  .legend{gap:8px 12px}
+  .kv{font-size:15px;padding:11px 0}
+  #printSheet{padding-left:8px;padding-right:8px}
+}
+@media(max-width:360px){.brand h1{font-size:17px}}
+</style>
+          <style>
+nav#nav{display:none!important}
+body{padding-bottom:calc(96px + env(safe-area-inset-bottom))!important}
+body.is-home{padding-bottom:calc(80px + env(safe-area-inset-bottom))!important}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+.tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:max(140px,calc((100svh - 220px)/3 - 10px));background:var(--panel);border:1px solid var(--line);border-radius:20px;color:var(--text);text-decoration:none;font-family:"Barlow Condensed";font-weight:700;font-size:24px;letter-spacing:.04em;text-transform:uppercase}
+.tile svg{width:52px;height:52px;stroke:var(--gold);fill:none;stroke-width:1.7}
+.tile:active{background:rgba(253,190,0,.14);border-color:var(--gold)}
+#backHome{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:40;display:block;text-align:center;padding:16px;border-radius:16px;background:var(--gold);color:#111;font-weight:800;font-size:17px;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.45)}
+body.is-home #backHome{display:none}
+#bzdMapaBtn{bottom:calc(84px + env(safe-area-inset-bottom))!important}
+body.is-home #bzdMapaBtn{bottom:calc(16px + env(safe-area-inset-bottom))!important;left:50%!important;right:auto!important;transform:translateX(-50%)!important}
+.showpick select{font-size:16px!important}
+
+/* ===== v5 legibilidade ===== */
+html,body{font-size:17px}
+main{padding:14px 12px 24px}
+h2{font-size:34px!important;margin:4px 0 14px!important;color:#fff}
+h3{font-size:23px!important;margin:24px 0 10px!important}
+.muted.small,.small{font-size:15px}
+.legend{font-size:15px}
+.tag{font-size:13px;padding:4px 9px;border-radius:8px}
+#backHome{left:0!important;right:0!important;bottom:0!important;border-radius:0!important;padding:20px 16px calc(20px + env(safe-area-inset-bottom))!important;font-family:"Barlow Condensed",sans-serif!important;font-size:28px!important;font-weight:800!important;letter-spacing:.05em;box-shadow:0 -6px 18px rgba(0,0,0,.55)!important}
+#backHome span{font-size:30px;margin-right:6px}
+body{padding-bottom:calc(120px + env(safe-area-inset-bottom))!important}
+body:not(.is-home) #bzdMapaBtn{display:none!important}
+/* Input / Output cards */
+.ig{margin-bottom:18px}
+.igh{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-radius:14px 14px 0 0;background:var(--c);color:#111;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:22px;letter-spacing:.05em}
+.igh em{font-style:normal;font-family:Inter,sans-serif;font-size:14px;font-weight:700;opacity:.75}
+.ic,.oc{display:flex;align-items:center;gap:14px;padding:14px;background:var(--panel);border:1px solid var(--line);border-top:0}
+.ig .ic:last-child{border-radius:0 0 14px 14px}
+.icn{flex:none;width:56px;height:56px;border-radius:14px;display:grid;place-items:center;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:30px;background:rgba(255,255,255,.06);color:var(--c,var(--gold));border:2px solid var(--c,var(--gold))}
+.icb{flex:1;min-width:0}
+.ici{font-size:20px;font-weight:700;line-height:1.2}
+.icm{font-size:17px;color:#d6d3cb;margin-top:5px;display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}
+.icp{font-size:14px;font-weight:600;color:var(--muted);background:var(--panel2);border-radius:8px;padding:3px 9px}
+.sf{font-size:14px;font-weight:800;letter-spacing:.06em;color:#0d0d0f;background:var(--blue);border-radius:8px;padding:3px 9px}
+.ic.wl{background:rgba(110,168,254,.07)}
+#outputTbl{border-radius:14px;overflow:hidden;border-top:1px solid var(--line)}
+.oc.iem{--c:var(--blue)}.oc.pp{--c:var(--gold)}
+.oc .tag{font-size:14px}
+/* Bandejas */
+.bj{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:18px}
+.bjh{background:var(--gold);color:#111;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:23px;letter-spacing:.04em;padding:12px 14px;text-transform:uppercase;line-height:1.15}
+.bj.fora .bjh{background:var(--panel2);color:var(--text)}
+.br{display:flex;align-items:center;gap:14px;padding:13px 14px;border-top:1px solid var(--line)}
+.brv{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--panel2);font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:24px;color:var(--gold)}
+.brn{flex:1;min-width:0;font-size:20px;font-weight:700}
+.brn .flag{font-size:14px;margin-top:3px}
+.brc{flex:none;min-width:64px;text-align:center;background:rgba(253,190,0,.12);border:1px solid rgba(253,190,0,.4);border-radius:12px;padding:5px 8px;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:26px;color:var(--gold);line-height:1}
+.brc small{display:block;font-family:Inter,sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--muted);margin-bottom:2px}
+.banner{font-size:15px!important;padding:12px 14px!important}
+/* Rider */
+#riderBody .card{padding:6px 16px}
+#riderBody .kv{flex-direction:column;align-items:flex-start;gap:3px;padding:13px 0;font-size:18px}
+#riderBody .kv>*{text-align:left!important}
+#riderBody .kv .muted{font-size:13px;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+#riderBody .kv a{font-size:20px}
+#riderBody .kv.q{flex-direction:row;align-items:center;justify-content:flex-start;gap:14px}
+#riderBody .kv.q span{flex:1}
+#riderBody .kv.q b{flex:none;min-width:48px;text-align:center;background:rgba(253,190,0,.13);color:var(--gold);border-radius:10px;padding:6px 4px;font-family:"Barlow Condensed",sans-serif;font-size:24px;line-height:1}
+#riderBody .small{font-size:16px;line-height:1.45;padding-top:8px}
+#riderBody ul.l li{font-size:17px;margin:9px 0}
+#riderBody p.muted.small{font-size:14px}
+/* Checklist */
+.seg4 button{font-size:16px!important;padding:10px 2px!important}
+.seg4 small{font-size:12px!important}.seg4 i{font-size:13px!important}
+#ckCount{font-size:22px}
+.tools{flex-wrap:wrap}
+.btn{font-size:16px!important;min-height:50px}
+.cat summary{font-size:20px!important;min-height:60px;padding:14px 16px!important}
+.cat summary .c{font-size:15px!important}
+.item{min-height:64px;font-size:18px;gap:14px}
+.item .who{font-size:13px!important}
+.box{width:34px!important;height:34px!important}
+/* Agenda */
+.show .t{font-size:19px!important}
+.show{font-size:16px}
+.date{min-width:62px}.date b{font-size:30px}.date i{font-size:13px}
+.month{font-size:19px!important}
+.itin .r{font-size:16px!important}.itin .d{font-size:15px!important}
+.showpick select{font-size:17px!important;min-height:50px}
+
+.view:not(#v-home){zoom:var(--z,0.86)}
+html,body,main,header{touch-action:pan-x pan-y}
+#zTip{position:fixed;left:0;right:0;margin:auto;width:max-content;top:90px;background:rgba(0,0,0,.8);color:var(--gold);font-weight:800;font-size:26px;padding:10px 18px;border-radius:14px;z-index:60;pointer-events:none;opacity:0;transition:opacity .3s}
+#zTip.on{opacity:1}
+
+main{padding:6px 4px 24px!important;max-width:none!important}
+header{padding-left:8px!important;padding-right:8px!important}
+.tiles{gap:6px!important;margin-top:4px!important}
+.card{padding:8px 10px!important;border-radius:12px!important}
+#riderBody .card{padding:2px 10px!important}
+.ic,.oc{padding:12px 8px!important;gap:10px!important}
+.igh{padding:9px 10px!important;border-radius:10px 10px 0 0!important}
+.ig .ic:last-child{border-radius:0 0 10px 10px!important}
+.bj{border-radius:12px!important;margin-bottom:10px!important}
+.bjh{padding:10px!important}
+.br{padding:11px 8px!important;gap:10px!important}
+.ig{margin-bottom:10px!important}
+h2{margin:2px 4px 10px!important}h3{margin:16px 4px 8px!important}
+.legend,.tools{margin-left:4px!important;margin-right:4px!important}
+.cat summary{padding:12px 10px!important}.item{padding:12px 10px!important}
+.show{padding:12px 10px!important}
+
+.icn{width:36px!important;height:36px!important;font-size:22px!important;border-radius:9px!important;border-width:2px!important}
+.ic,.oc{gap:8px!important;padding:10px 6px!important}
+.brv{width:30px!important;height:30px!important;font-size:18px!important}
+.brc{min-width:44px!important;font-size:20px!important;padding:3px 5px!important}
+.br{gap:7px!important;padding:9px 6px!important}
+#riderBody .kv.q b{min-width:34px!important;font-size:18px!important}
+
+#sync{display:none!important}
+header{padding-top:calc(16px + env(safe-area-inset-top))!important;padding-bottom:16px!important}
+.brand img{width:60px!important;height:60px!important;border-radius:14px!important}
+.brand h1{font-size:34px!important;letter-spacing:.05em!important}
+.brand>div{gap:14px!important}
+#backHome{padding:12px 16px calc(12px + env(safe-area-inset-bottom))!important;font-size:20px!important}
+#backHome span{font-size:22px!important}
+body{padding-bottom:calc(80px + env(safe-area-inset-bottom))!important}
+
+.rpan{display:none}.rpan.on{display:block}
+.rseg{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:4px;margin:0 0 12px}
+.rseg button{background:none;border:0;color:var(--muted);font:inherit;font-weight:700;font-size:15px;padding:11px 2px;border-radius:9px}
+.rseg button.on{background:var(--gold);color:#111}
+.tiles{grid-template-columns:1fr!important}
+.tile{flex-direction:row!important;gap:18px!important;font-size:30px!important}
+
+.vol{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:10px}
+.vol.ok{border-color:rgba(76,195,138,.6)} .vol.bad{border-color:var(--bad);background:rgba(229,87,90,.08)}
+.vrow{display:flex;gap:8px;justify-content:space-between;text-align:center}
+.vrow>div{flex:1}.vrow small{display:block;color:var(--muted);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.vrow b{font-family:"Barlow Condensed",sans-serif;font-size:30px;line-height:1.1}
+.vol.bad .vrow>div:last-child b{color:var(--bad)} .vol.ok .vrow>div:last-child b{color:var(--ok)}
+.vtit{margin:10px 0 6px;font-size:14px;color:var(--text);font-weight:600}
+.vfalta{display:flex;flex-wrap:wrap;gap:6px}
+.vf{background:rgba(229,87,90,.15);border:1px solid var(--bad);color:var(--text);border-radius:10px;padding:8px 10px;font:inherit;font-weight:700;font-size:15px}
+.kit{background:var(--panel);border:1px solid var(--gold);border-radius:12px;padding:10px 12px;margin-bottom:10px}
+.kit.ok{border-color:rgba(76,195,138,.6)}
+.khead{display:flex;align-items:center;justify-content:space-between;gap:10px}.khead b{font-size:18px}
+.kbtn{background:var(--gold)!important;color:#111!important;border:0!important;font-weight:800!important}
+.kok{color:var(--ok);font-weight:800}
+.pbtn{flex:none;background:none;border:0;color:var(--muted);border-radius:9px;width:34px;height:34px;font-size:20px;font-weight:800;line-height:1;margin-left:2px;opacity:.6}
+.ptag{display:inline-block;margin-left:8px;background:rgba(240,160,60,.15);color:var(--warn);border-radius:7px;padding:1px 7px;font-size:13px;font-weight:700}
+.pends summary span:first-child{color:var(--warn)}
+.pitem{display:flex;align-items:center;gap:10px;padding:10px 12px;border-top:1px solid var(--line)}.pinfo{flex:1;min-width:0}
+.pres{flex:none;font-size:14px!important;min-height:40px!important}
+.pdlg{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.7);align-items:center;justify-content:center;padding:18px}.pdlg.on{display:flex}
+.pbox{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;width:100%;max-width:420px;display:flex;flex-direction:column;gap:12px;font-size:17px}
+.pops{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.pops button{background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:12px 4px;font:inherit;font-size:15px;font-weight:700}
+.pops button.on{background:var(--warn);color:#111;border-color:var(--warn)}
+.pbox textarea{background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit;font-size:16px}
+.pact{display:flex;gap:8px;justify-content:flex-end}
+.cbtns{display:flex;align-items:center;gap:10px}
+.cb{width:46px;height:46px;border-radius:12px;border:1px solid var(--line);background:var(--panel2);color:var(--text);font-size:26px;font-weight:800;line-height:1}
+.cnum{font-family:"Barlow Condensed",sans-serif;font-size:32px;font-weight:800;min-width:54px;text-align:center}.cnum small{font-size:18px;color:var(--muted)}
+.crow{display:flex;align-items:center;gap:12px;margin-top:8px;flex-wrap:wrap}
+.cdet{flex:1;min-width:120px}.cdet summary{color:var(--muted);font-size:14px;cursor:pointer;text-align:right}
+.cdet[open]{flex-basis:100%}.cdet .item{padding-left:0}
 </style>
 </head>
-<body>
-<div id="login" class="login hide">
-  <h1>BZD</h1><div class="sub">Benzadeus · produção técnica</div>
-  <label>Seu código</label><input id="cod" inputmode="numeric" maxlength="6" autocomplete="one-time-code">
-  <button class="btn" onclick="entrar()">Entrar</button><div id="lmsg"></div>
-</div>
-<div id="app" class="hide">
-  <header><b>BZD</b><span id="quem"></span></header>
-  <main>
-    <section id="t-agenda"></section>
-    <section id="t-lancar" class="hide">
-      <div class="card">
-        <div class="tt">Lançar mensagem</div>
-        <div class="sub">Cole aqui uma mensagem do WhatsApp (ou use <b>Compartilhar → BZD</b> no Android). A IA descobre o show e prepara o registro.</div>
-        <textarea id="txt" placeholder="[21/11, 01:30] Jaja Som 21-11: Dm7 monitor&#10;Pá mix rack"></textarea>
-        <button class="btn" id="bAn" onclick="analisar()">Analisar</button>
-      </div>
-      <div id="sug" class="card hide">
-        <label>Show</label><select id="sShow"></select>
-        <div id="motivo" class="sub" style="margin-top:6px"></div>
-        <label>O que vai ser registrado</label><textarea id="sReg" style="min-height:90px"></textarea>
-        <div id="perg"></div>
-        <button class="btn" onclick="aplicar()">✅ Lançar no show</button>
-        <button class="btn sec" onclick="limpar()">Descartar</button>
-      </div>
-      <div id="amsg"></div>
-    </section>
-    <section id="t-contatos" class="hide">
-      <input id="busca" placeholder="Buscar nome, cidade, empresa, função…" oninput="clearTimeout(window._b);window._b=setTimeout(contatos,350)">
-      <div id="lc" style="margin-top:12px"></div>
-    </section>
-    <section id="t-mais" class="hide">
-      <div class="card"><div class="tt">Checklist, rider e mapa</div><div class="sub">Checklist por etapa, bandejas, rider e pendências.</div>
-        <a class="btn sec" style="text-align:center;text-decoration:none" href="checklist.html">Abrir checklist</a></div>
-      <div id="eq" class="card hide"><div class="tt">Equipe (códigos de acesso)</div><div id="leq" class="sub"></div>
-        <label>Nome</label><input id="eNome"><label>Código (4 dígitos)</label><input id="eCod" inputmode="numeric" maxlength="6">
-        <button class="btn" onclick="addEq()">Adicionar / atualizar</button></div>
-      <div class="card"><div class="tt">Novo show</div>
-        <label>Data</label><input id="nData" type="date"><label>Título</label><input id="nTit" placeholder="Ordinário – Brasília/DF">
-        <label>Local</label><input id="nLoc"><label>Status</label><select id="nSt"><option>CONFIRMADO</option><option>ON</option><option>NEGOCIANDO</option><option>RESERVADO</option><option>PARTICIPAÇÃO</option></select>
-        <button class="btn" onclick="novoShow()">Criar show</button><div id="nmsg"></div></div>
-      <button class="btn sec" onclick="sair()">Sair</button>
-    </section>
-  </main>
-  <nav>
-    <button data-t="agenda" class="on"><i>📅</i>Agenda</button>
-    <button data-t="lancar"><i>➕</i>Lançar</button>
-    <button onclick="location.href='checklist.html'"><i>✅</i>Checklist</button>
-    <button data-t="contatos"><i>👥</i>Contatos</button>
-    <button data-t="mais"><i>☰</i>Mais</button>
-  </nav>
-</div>
+          <body>
+          <header>
+            <div class="brand">
+                <div style="display:flex;align-items:center;gap:10px"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAJ6klEQVR4Xu1aW2ycRxX+zsz8u2vHqe34ums7je2kSQmkpVCaiiQERASkEpSoqQSIByhSJaSW8gJCSPCGQPShF+gbSEgIiV65qEVCKGlSEGpRr6qUJnEc3+31/b7+95+Zg87/byLHSuvdCORa8ve29uzMnHO+851zxiZ3irBpwQoG4E17f4Ha1LffMmDjQZubQsS8uQ3YyoENB2/yHABt8jpAm72Q8WY3YPOr0FYd2HiYG7sCA3xtG04AXTtZMF+nU1+9zK+3w/oguiEDWGntoa/d3yJy0KtaE20ga9aOG+QjxD8lEwC06tce1l7HER+MGzGAFC0sZ8ZnlCZmOZFB1Nzgt9UW/aKXH8TqMDmbnlvSV00gwIONoVxjUcECengsHUas4vVMrjqjWpoZLnQRrwnmB6BiA6xDqha//6t55MlC2rDzpJSwpaXBPHJf5qGTkQsj7xFsC37wC/rjqTAdyFesZ00UOb5zX/rMk1rBzi3pz3zPD02GRse3ZaTT6sjtmcceVh0tBVcsGbYuKjZAQHhvwBYj5zw555Mzeof9w4/rtsbUiWPWLbAvmLPv+OXQLYfJ70kp9p6baqHSHhHyM6p/PLLOh1EcQ2Ax5BfOLk3NZf7xRFphZd2rJ6jYAHGXNX2jRAQC1W4z7U3Be4NFrZy1/unTfOILSpMrRvzA8dT0fBAEPL+of/NiwbJlxq03ExRDY2hCWcdaE3va056eWeCpeUfKnn07OtcTHNgHW4Aqo9kvY8m10Ao+xECemYUb9xwM3v5D0JUzxYg9c1j0wnQgZVZ+9J3lX35/5Wc/jr5y2Ic2kSR9/G6FIsPg8miSygxSpx4Lfv6gcZ7FJ+DCiqRQmW8NlUWAWbRlao5GplySvXs6vNahswmRqL1RQbFn8XJxwXmHlEs/9ULEbJ3TB7rTn9rvohUfZFTviAfYeTRsp5Yd0VJMGee5Oq2adjDsWlG+PiqtxOIVg9FpNT3PiWLu66CFaTU65WMxoV05fVUZNSFThfExfeZNlkQHThxGUFO0nuGodzhRH+QaSdfg3V755D2a6rm5jhD7pxxURiEpXhpDeSGPJAFoT7sayKNQhJKywLuyHsKExJ1AFV56Vc0sOSIEWp04Qig6owlF6s+75H5drYSALo2UbtvWSDU11sn+5dz/hgzoGxXues9pQ91Z7hlikXiBurkZ4rz4bJFHa5457YQqDnfuM/t3O1tAYLCwaIYmhEIAutsVQgyOlz52thqkyJe0bX1UFoFEuHpib8XhproGnB+UbHAOtdWUbSjR1zN0hi5dTp19x0oxA534nKKqSMJiaGyWxme9FtqpPTu5OO9Hp5niqtyVA9SaJuP9QRWOlHKiVz2Sf+KitibyVbggEZCa3LwDjbUSAZCYh7T6y79oOYzAXJ1J3XsQWIlLrOahPEkNFu/pWzswMKHnl1ySVGIAu/LoEwd9/SCtglLwBRrMx/IHvbcdKsWXhuUjEXKNKl3lXcxtrcAr6rmX5YPzdPiA7u4MbRgzQ6NvTBKGWTzSmVU9I6UdANOZ9YkLykQFBsh5GnMLNDJV0uhb2lOD51Nv9vi4m6A7dmuknWOwh87g3Yv6tfNxyoJPHiUErsQMUknKWo+6Gso1UU9/iZPVKd3R7OHK7oUqktFEgkan1dScj1sD/PpP0R3fWplbtLGYVD14Lzi0SWuElH7+FR1Z75lra9SX7iIUJCziWY9ecXmsoQ0wNf7cgHxwHo11aK4FbEnHykElEZAIq8FxRNICCANGp6PJeWe0MP67JzJ79xWl/hO0hl0Inj9jJdW9OvbJdK69aEPpXIX3Rd2XL2nOrqyGQY+QUGxob0JNjehBmRoqfizHygRJBPqkBRBHaqXuO1LVnQ1iyeMnnl2azSsT956qiv5zzrx7OTJa3g3u/yxAkdyRxbbFRRodL+25uw2wNDAuMgBQZysh7cvWoMqTGKDeuAhYx/U19Myj+ptfVD4eCpYLvlgUVRM7jXrujLRGziO7Qx/7hEehVIyhkZ9FftYpUTTauxPRHI1NJRpKnW0KWpK7XFAlj7sSVodYcwRtjcqTHZmUBABTc4Ou387eIghQmAn+/E9JRGYcP2jqml1UlK/HtmF4XBWK0Er22duB4QmeWxZOAujM8tpBcz1UQCFRxlD155Mt6eZWUpovDpb41d5EQTVHFqpKv/K27hmJ4iuqk0cBX+psEhLGO7BnIqLuHPcMi8tj2aSurLpayMtEuQZc0VA1Mlk6bc9ORkj9UhPk7M4swXjJB2WePg0gco66c6kjt1suiM6WQCZOWfYOtdso26TiOihfzAS0s4kr0NCKciBu5jE+TZNX+tBbd6qlGYxOsYrJ0J0TJ6ZSmB3Xf3s1EsKAvnyIquqLUTyqJ6kPVj3DIqUMtDaooAYXJIaxhtZTUz2kkS7T+ZUZEKfm4DgVo1LnvLddX85zzGY5cXcWcKyrcOp1mRZE8onuO0Ii6lduJIkb0uWrQWslpPz5oZKktjWo7dukkJetoRXJqNBX9YypeOqAUqoz5y5K9J0wmKijlaW0wjx9OpEp+mhncOd++Lh+JSqsFS8tqpGJhHXqlnZCRANjSWNCu7IVa2gFz+vJmX0xfZ2j+hrVuAPn+oW+zuOmapXdEdfp4fTfX49ixtO9h8jUFItW6FJ65DLIz2B8JtFQ7sxRJMNdsreWmmAcKqjCsRvK5JuwwKF3tNSn727TqZbUOz0xq5laGnR9nUWgXnqNZhYsEdKB+cYxJthMBiYNHSQaSiOTqhAm0xx9+oAamlBzixwY2aerVZxzvee89wdzuTOx9A6h7h0TA4g4jPDoU/7FVyOjyTrc0aWqt4dcMM++bCkO0ce6TDrApQsBSHq76jQ11UfQ6I1VWBhDeOnf5o0LEUiqmFJ010cIxbJeIlajLAOEvhrzi2piRjofpfBWz8pbv5JHEedYkXn4fgX4+Xm81+90vODioL3t29IUaI1ihJNHM7/7iQe7gTFvNAcaBPfT387JA6ORBQ8cT+3fF9ml/5sBCDA0cUX1S9Osco5b6lKPPZS++/YCIoxOqT5RGIJj0c6SryVmTbUM4+HUG+fJOknxK7rK1pqvfz71+CPOhSK+FaK8x10RdY+qDP/wa0ZJQY4vRejK6XsOojW7Ei3CZFCV9rJApZJLxM8U0pyGFl89ZDmSafOeu7G7IxPEDQ8DN1Xrw7fRoY9bRGGFAloCuVPl2cxQhlB97WKWKTGSUiC8jheU3gnXIoRP2ulqBbM6UQmRd4WSR24AZeVA4k9n2c2uPUKrK0/qpQXX7ySViudpIFqU5nUVpMytfpSvFGUbEHPGrPmbwLVYd0EyK/8voSoZaD6EYPmfrU2OLQM2GlsR2GhsRWCjsRWBDcYmr8QVjJQfWmzlwEbjv+lXwyO1VqtEAAAAAElFTkSuQmCC" alt="" width="34" height="34" style="border-radius:9px"><h1>Produção</h1></div>
+                    <span id="sync" class="pill">…</span>
+                      </div>
+                        <div class="showpick"><select id="showSel" aria-label="Show"></select></div>
+                        </header>
+
+                        <main>
+                          <section class="view" id="v-home"><div class="tiles">
+                                                                                                                              <a class="tile" href="agenda.html"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Agenda</a>
+                                                                                                                                <a class="tile" href="#checklist" data-v="checklist"><svg viewBox="0 0 24 24"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg>Checklist</a>
+                                                                                                                                  <a class="tile" href="#input" data-v="input"><svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg>Input</a>
+                                                                                                                                    <a class="tile" href="#bandejas" data-v="bandejas"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><path d="M7 7h.01M11 7h.01M7 17h.01M11 17h.01"/></svg>Bandejas</a>
+                                                                                                                                      <a class="tile" href="#output" data-v="output"><svg viewBox="0 0 24 24"><path d="M3 14v-2a9 9 0 0 1 18 0v2"/><rect x="2" y="14" width="5" height="7" rx="2"/><rect x="17" y="14" width="5" height="7" rx="2"/></svg>Output</a>
+                                                                                                                                        <a class="tile" href="#rider" data-v="rider"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h6"/></svg>Rider</a><a class="tile" id="tileMais" href="agenda.html#mais" style="display:none"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>Mais</a>
+                                                                                                                                        </div></section>
+<section class="view" id="v-agenda"><h2>Agenda</h2><div id="agendaList"></div></section>
+
+                            <section class="view" id="v-checklist">
+                                <h2>Checklist BZD</h2><div id="ckFix">
+                                    <div id="ckBanner"></div>
+                                        <div class="seg seg4" id="etapaSeg"><button data-e="ida-origem" class="on"><small>IDA</small>Origem<i></i></button><button data-e="ida-destino"><small>IDA</small>Destino<i></i></button><button data-e="volta-origem"><small>VOLTA</small>Origem<i></i></button><button data-e="volta-destino"><small>VOLTA</small>Destino<i></i></button></div>
+                                            <div class="card">
+                                                  <div style="display:flex;justify-content:space-between;align-items:baseline"><b id="ckCount">0 / 0</b><span class="muted small" id="ckShow"></span></div>
+                                                        <div class="prog"><i id="ckBar" style="width:0"></i></div>
+                                                            </div>
+                                                                <div id="ckVol"></div><div class="tools"><button class="btn on" id="pendBtn">Só pendentes</button><button class="btn" id="whoBtn" style="margin-left:auto">👤</button></div></div>
+                                                                    <div id="ckList"></div>
+                                                                      </section>
+
+                                                                        <section class="view" id="v-input">
+                                                                            <h2>Input List</h2>
+                                                                                <div class="tools"><button class="btn on" id="printBtn">📸 Modo print</button></div>
+                                                                                    <div class="legend"><span><span class="tag" style="color:var(--blue)">azul</span> = sem fio</span><span>38 canais · Rider 2026 (16/11)</span></div>
+                                                                                        <div id="inputTbl"></div>
+                                                                                          </section>
+
+                                                                                            <section class="view" id="v-bandejas">
+                                                                                                <h2>Bandejas</h2>
+                                                                                                    <div id="bandejas"></div>
+                                                                                                      </section>
+
+                                                                                                        <section class="view" id="v-output">
+                                                                                                            <h2>Output List (13 vias)</h2>
+                                                                                                                <div class="banner info">Reservar um auxiliar na mesa de P.A. para o iluminador.</div>
+                                                                                                                    <div id="outputTbl"></div>
+                                                                                                                        <div class="legend"><span><span class="tag iem">IN EAR</span> 11 vias</span><span><span class="tag pp">POWER PLAY</span> 2 vias</span><span>Produção: 3 bodypacks</span></div>
+                                                                                                                          </section>
+
+                                                                                                                            <section class="view" id="v-rider"><h2>Rider</h2><div id="riderBody"></div></section>
+                                                                                                                            </main>
+
+                                                                                                                            <div id="printSheet"></div>
+
+                                                                                                                            <div id="nameDlg"><form id="nameForm"><b>Quem está conferindo?</b><div class="muted small">Seu nome aparece ao lado de cada item que você marcar.</div><input id="nameIn" maxlength="40" placeholder="Ex.: Artur" autocomplete="name"><div style="display:flex;gap:8px;justify-content:flex-end"><button type="button" class="btn" id="nameCancel">Cancelar</button><button type="submit" class="btn on">Salvar</button></div></form></div>
+                                                                                                                            <nav id="nav">
+                                                                                                                              <a href="agenda.html"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Agenda</a>
+                                                                                                                                <a href="#checklist" data-v="checklist"><svg viewBox="0 0 24 24"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg>Checklist</a>
+                                                                                                                                  <a href="#input" data-v="input"><svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg>Input</a>
+                                                                                                                                    <a href="#bandejas" data-v="bandejas"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><path d="M7 7h.01M11 7h.01M7 17h.01M11 17h.01"/></svg>Bandejas</a>
+                                                                                                                                      <a href="#output" data-v="output"><svg viewBox="0 0 24 24"><path d="M3 14v-2a9 9 0 0 1 18 0v2"/><rect x="2" y="14" width="5" height="7" rx="2"/><rect x="17" y="14" width="5" height="7" rx="2"/></svg>Output</a>
+                                                                                                                                        <a href="#rider" data-v="rider"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h6"/></svg>Rider</a>
+                                                                                                                                        </nav>
+<a id="backHome" href="#home"><span>&#8592;</span> VOLTAR AO INÍCIO</a>
+
+                                                                                                                                        <script>
+                                                                                                                                        /* Roteiro detalhado vindo do Google Agenda */
+                                                                                                                                        const ITIN = {
+                                                                                                                                         "2026-11-08-deu-benza":{
+                                                                                                                                            local:"Mais Hotel Lauro de Freitas · R. João Chagas Ortins de Freitas, 577 – Salvador",
+                                                                                                                                               dias:[
+                                                                                                                                                   ["DOM 8/11",[
+                                                                                                                                                         ["06:00","Aeroporto BSB (embarque 6:45–7:30)"],
+                                                                                                                                                               ["✈️","GOL 1726 · Localizador IFMQFR · Pouso SSA 9:25"],
+                                                                                                                                                                     ["09:25","Direto p/ passagem de som"],
+                                                                                                                                                                           ["Depois","Hotel (sem early check-in)"],
+                                                                                                                                                                                 ["15:00","Saída p/ show: artistas (imprensa)"],
+                                                                                                                                                                                       ["15:30","Saída p/ show: técnica e banda"],
+                                                                                                                                                                                             ["17:00–19:00","Show 1º bloco"],
+                                                                                                                                                                                                   ["20:00–21:30","Show 2º bloco"]]],
+                                                                                                                                                                                                       ["SEG 9/11",[
+                                                                                                                                                                                                             ["03:15","Técnica sai p/ aeroporto"],
+                                                                                                                                                                                                                   ["04:15","Banda e artistas saem p/ aeroporto"],
+                                                                                                                                                                                                                         ["07:45","Chegada em Brasília"]]]
+                                                                                                                                                                                                                            ]}
+                                                                                                                                                                                                                            };
+
+                                                                                                                                                                                                                            const INPUT = [
+[1, "BB (Bumbo)", "Sennheiser E602", "Direto", "BATERIA"],
+[2, "CX (Caixa)", "Sennheiser E904", "Clamp", "BATERIA"],
+[3, "HH (Hi-Hat)", "Sennheiser E904", "Clamp", "BATERIA"],
+[4, "T1 (Tom 1)", "Sennheiser E904", "Clamp", "BATERIA"],
+[5, "T2 (Tom 2)", "Sennheiser E904", "Clamp", "BATERIA"],
+[6, "T3 (Tom 3)", "Sennheiser E904", "Clamp", "BATERIA"],
+[7, "OH L (Overhead L)", "Sennheiser E614", "Pedestal Grande", "BATERIA"],
+[8, "OH R (Overhead R)", "Sennheiser E614", "Pedestal Grande", "BATERIA"],
+[9, "SURDO", "Sennheiser E614", "Clamp", "PERCUSSÃO"],
+[10, "TANTAN", "Sem Fio", "Pedestal Médio", "PERCUSSÃO"],
+[11, "PANDEIRO 1", "Sem Fio", "Clamp", "PERCUSSÃO"],
+[12, "RECO", "Sem Fio", "Clamp", "PERCUSSÃO"],
+[13, "CAIXA PERC", "Shure SM57", "Pedestal Médio", "PERCUSSÃO"],
+[14, "CONGA HI", "Shure SM57", "Pedestal Médio", "PERCUSSÃO"],
+[15, "CONGA LO", "Shure SM57", "Pedestal Médio", "PERCUSSÃO"],
+[16, "BACURINHA", "Shure SM57", "Pedestal Médio", "PERCUSSÃO"],
+[17, "BASS (Baixo)", "Sem Fio", "Linha", "HARMONIA"],
+[18, "CAVACO", "Sem Fio", "Linha", "HARMONIA"],
+[19, "VIOLÃO", "Sem Fio", "Linha", "HARMONIA"],
+[20, "BANJO", "Sem Fio", "Linha", "HARMONIA"],
+[21, "TECLADO VS L", "Linha / DI", "Linha", "TECLADO/VS"],
+[22, "TECLADO VS R", "Linha / DI", "Linha", "TECLADO/VS"],
+[23, "CORO", "Linha", "Linha", "TECLADO/VS"],
+[24, "VZ VINI – CANTOR", "Sem Fio", "Pedestal Grande", "VOZES"],
+[25, "VZ PEDRO – SURDO", "Sem Fio", "Pedestal Grande", "VOZES"],
+[26, "VZ NENEM – PANDEIRO", "Sem Fio", "Pedestal Grande", "VOZES"],
+[27, "VZ PEDIGREE – BANJO", "Sem Fio", "Pedestal Grande", "VOZES"],
+[28, "VZ MAGRÃO – PRINCIPAL", "Sem Fio", "Pedestal Grande", "VOZES"],
+[29, "OFF MAGRÃO", "Shure SM57", "Linha", "COMUNICAÇÃO"],
+[30, "OFF DIEGO", "Sem Fio", "Linha", "COMUNICAÇÃO"],
+[31, "OFF PRODUÇÃO", "Sem Fio", "Pedestal Grande", "COMUNICAÇÃO"],
+[32, "OFF DIREÇÃO", "Linha", "Pedestal Grande", "COMUNICAÇÃO"],
+[33, "CLICK", "Linha", "Linha", "CLICK/TIME"],
+[34, "REGÊNCIA", "Linha", "Linha", "CLICK/TIME"],
+[35, "OFF ROADIE 1", "Shure SM58", "Pedestal Grande", "COMUNICAÇÃO"],
+[36, "OFF TÉCNICA", "Shure SM58", "Linha", "COMUNICAÇÃO"],
+[37, "OFF ROADIE 2", "Shure SM58", "Pedestal Grande", "COMUNICAÇÃO"],
+[38, "TIME CODE", "Linha", "Linha", "CLICK/TIME"]
+];
+                                                                                                                                                                                                                            const OUTPUT = [
+[1, "SURDO – VOZ", "IN EAR"],
+[2, "RECO – VOZ", "IN EAR"],
+[3, "BANJO – VOZ", "IN EAR"],
+[4, "PANDEIRO – VOZ", "IN EAR"],
+[5, "CANTOR – VOZ", "IN EAR"],
+[6, "CAVACO", "IN EAR"],
+[7, "VIOLÃO", "IN EAR"],
+[8, "PERCUSSÃO", "IN EAR"],
+[9, "STD BY", "POWER PLAY"],
+[10, "BAIXO", "IN EAR"],
+[11, "BATERA", "POWER PLAY"],
+[12, "PRODUÇÃO", "IN EAR (3 bodypacks)"],
+[13, "ILUMINADOR", "IN EAR"]
+];
+                                                                                                                                                                                                                            const BANDEJAS = [
+ {nome:"Bandeja 1 · Bateria & Bass (10 vias)",ch:[["BB",1],["CX",2],["HH",3],["T1",4],["T2",5],["T3",6],["OH L",7],["OH R",8],["BASS",17],["OFF ROADIE 2",37]]},
+ {nome:"Bandeja 2 · Percussão & Roadie (6 vias)",ch:[["SURDO",9],["CAIXA PERC",13],["CONGA HI",14],["CONGA LO",15],["BACURINHA",16],["OFF ROADIE 1",35]]},
+ {nome:"Bandeja 3 · Harmonia, VS, Com. & TC (10 vias)",ch:[["CAVACO",18],["VIOLÃO",19],["BANJO",20],["TECLADO VS L",21],["TECLADO VS R",22],["CORO",23],["OFF DIREÇÃO",32],["CLICK",33],["REGÊNCIA",34],["TIME CODE",38]]}
+];
+
+                                                                                                                                                                                                                               /* ================= UTIL ================= */
+                                                                                                                                                                                                                               const $ = s=>document.querySelector(s);
+                                                                                                                                                                                                                               const esc = s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+                                                                                                                                                                                                                               const pad=n=>String(n).padStart(2,"0");
+                                                                                                                                                                                                                               const now=new Date(); const TODAY=`${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
+                                                                                                                                                                                                                               const MES=["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+                                                                                                                                                                                                                               const MESF=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+                                                                                                                                                                                                                               const DOW=["dom","seg","ter","qua","qui","sex","sáb"];
+                                                                                                                                                                                                                               const dParts=d=>{const [y,m,dd]=d.split("-").map(Number);const dt=new Date(y,m-1,dd);return {y,m,dd,dow:DOW[dt.getDay()]}};
+                                                                                                                                                                                                                               const ls={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+                                                                                                                                                                                                                               /* ================= INPUT ================= */
+                                                                                                                                                                                                                               function renderInput(){
+const COR={"BATERIA":"#fdbe00","PERCUSSÃO":"#ff8a3d","HARMONIA":"#4cc38a","TECLADO/VS":"#b78cff","VOZES":"#6ea8fe","COMUNICAÇÃO":"#ff6b8a","CLICK/TIME":"#b8b5ad"};
+let html="",g="";
+INPUT.forEach(([c,i,m,p,gr])=>{
+if(gr!==g){if(g)html+="</div>";g=gr;const n=INPUT.filter(r=>r[4]===gr).length;html+=`<div class="ig" style="--c:${COR[gr]||"#999"}"><div class="igh"><span>${esc(gr)}</span><em>${n} ${n>1?"canais":"canal"}</em></div>`;}
+const wl=/sem fio/i.test(m);
+html+=`<div class="ic${wl?" wl":""}"><div class="icn">${c}</div><div class="icb"><div class="ici">${esc(i)}</div><div class="icm">${wl?`<span class="sf">SEM FIO</span>`:esc(m)}<span class="icp">${esc(p)}</span></div></div></div>`;
+});
+if(g)html+="</div>";
+$("#inputTbl").innerHTML=html;
+}
+function openPrint(){
+                                                                                                                                                                                                                                      const half=Math.ceil(INPUT.length/2);
+                                                                                                                                                                                                                                        const tb=rows=>`<table><tr><th>CH</th><th>Instrumento</th><th>Mic / DI</th><th>Ped.</th></tr>${rows.map(([c,i,m,p])=>`<tr><td class="ch">${c}</td><td><b>${esc(i)}</b></td><td>${esc(m)}</td><td>${esc(p)}</td></tr>`).join("")}</table>`;
+                                                                                                                                                                                                                                          $("#printSheet").innerHTML=`<div class="ph"><b>BENZADEUS · INPUT LIST</b><span style="font-size:11px">Rider 2026 (16/11) · 38 CH</span></div>
+                                                                                                                                                                                                                                             <div class="cols">${tb(INPUT.slice(0,half))}${tb(INPUT.slice(half))}</div>
+                                                                                                                                                                                                                                                <div style="font-size:10px;margin-top:6px">Prod. técnica: Artur Senna (61) 9826-8888</div>
+                                                                                                                                                                                                                                                   <button class="close" id="closePrint">Fechar</button>`;
+                                                                                                                                                                                                                                                     $("#printSheet").classList.add("on");
+                                                                                                                                                                                                                                                       $("#closePrint").addEventListener("click",()=>$("#printSheet").classList.remove("on"));
+                                                                                                                                                                                                                                                       }
+                                                                                                                                                                                                                                                       $("#printBtn").addEventListener("click",openPrint);
+
+                                                                                                                                                                                                                                                       /* ================= BANDEJAS ================= */
+                                                                                                                                                                                                                                                       function renderBandejas(){
+const byCh=Object.fromEntries(INPUT.map(r=>[r[0],r]));
+const norm=s=>s.toUpperCase().replace(/\(.*\)/,"").replace(/\s+/g," ").trim();
+let flags=0;
+let html=BANDEJAS.map(b=>`<div class="bj"><div class="bjh">${esc(b.nome)}</div>${
+b.ch.map(([n,inp],i)=>{const r=byCh[inp];const ok=r&&norm(r[1]).startsWith(norm(n));if(!ok)flags++;
+return `<div class="br"><div class="brv">${i+1}</div><div class="brn">${esc(n)}${ok?"":`<div class="flag">⚠ no input list é ${esc(r?r[1]:"?")}</div>`}</div><div class="brc"><small>CH</small>${inp}</div></div>`}).join("")
+}</div>`).join("");
+const used=new Set(BANDEJAS.flatMap(b=>b.ch.map(c=>c[1])));
+const wl=INPUT.filter(r=>!used.has(r[0]));
+html+=`<div class="bj fora"><div class="bjh">Fora das bandejas</div><div class="muted" style="padding:10px 14px;font-size:15px">Canais sem bandeja (sem fio → racks / receptores):</div>${
+wl.map(r=>`<div class="br"><div class="brc"><small>CH</small>${r[0]}</div><div class="brn">${esc(r[1])}<div class="muted" style="font-size:15px;font-weight:500">${esc(r[2])}</div></div></div>`).join("")}</div>`;
+if(flags)html=`<div class="banner warn">⚠ ${flags} vias apontam para inputs com outro nome no input list. Confira antes de patchar.</div>`+html;
+$("#bandejas").innerHTML=html;
+}
+
+/* ================= OUTPUT ================= */
+                                                                                                                                                                                                                                                                                         function renderOutput(){
+$("#outputTbl").innerHTML=OUTPUT.map(([c,d,t])=>`<div class="oc ${/POWER/.test(t)?"pp":"iem"}"><div class="icn">${c}</div><div class="icb"><div class="ici">${esc(d)}</div><div class="icm"><span class="tag ${/POWER/.test(t)?"pp":"iem"}">${esc(t)}</span></div></div></div>`).join("");
+}
+
+/* ================= RIDER ================= */
+                                                                                                                                                                                                                                                                                              function renderRider(){
+  const tel=(n,num)=>`<div class="kv"><span>${n}</span><a href="tel:+55${num.replace(/\D/g,"")}">${num}</a></div>`;
+  const PDF_ID="1oYHtq4ZORSjYTJe7Kgf5M3X36-j63DNp";
+  const SL=String.fromCharCode(47);
+  const dl="https:"+SL+SL+"drive.google.com"+SL+"uc?export=download&id="+PDF_ID;
+  const view="https:"+SL+SL+"drive.google.com"+SL+"file"+SL+"d"+SL+PDF_ID+SL+"view";
+  const pasta="https:"+SL+SL+"drive.google.com"+SL+"drive"+SL+"folders"+SL+"1mH7SfJg_ihVb4MEslzz610QLDwoaBMBo";
+  $("#riderBody").innerHTML=`
+  <div class="card" style="text-align:center;padding:20px 16px;border:2px solid var(--gold)">
+    <div style="font-family:'Barlow Condensed';font-size:22px;margin-bottom:14px">Rider Técnico Benzadeus 2026</div>
+    
+    <a href="${dl}" target="_blank" rel="noopener" style="display:block;padding:15px;border-radius:12px;background:var(--gold);color:#111;font-weight:800;font-size:17px;text-decoration:none;margin-bottom:10px">⬇ BAIXAR RIDER (PDF)</a>
+    <a href="${view}" target="_blank" rel="noopener" style="display:block;padding:12px;border-radius:12px;border:1px solid var(--line);color:var(--text);font-weight:600;text-decoration:none">Ver o PDF no Google Drive</a>
+    
+  </div>
+  <h3>P.A. & Consoles</h3><div class="card">
+                                                                                                                                                                                                                                                                                                                                              <div class="small" style="margin-bottom:8px">Estéreo, alinhado, 3+ vias, 110 dB SPL contínuos na house mix. Front fill independente, delay se solicitado, intercom FOH–palco.</div>
+                                                                                                                                                                                                                                                                                                                                                  <div class="kv"><span class="muted">Homologados</span><span style="text-align:right">L-Acoustics K1/K2, d&amp;b, Meyer, Adamson, JBL VTX, EAW</span></div>
+                                                                                                                                                                                                                                                                                                                                                      <div class="kv"><span class="muted">Proibido</span><span>Mono, KF, caseiras</span></div>
+                                                                                                                                                                                                                                                                                                                                                          <div class="kv"><span class="muted">Monitor</span><span style="text-align:right">PM5D · M32 · DM7 · CL5</span></div>
+                                                                                                                                                                                                                                                                                                                                                              <div class="kv"><span class="muted">P.A.</span><span style="text-align:right">Avid Venue · DiGiCo · Vi3000 · DM7</span></div></div>
+  <h3>Palco · Energia · Efeitos</h3><div class="card">
+    <div class="kv"><span class="muted">Palco mín.</span><span>10 × 8 m · pé-direito 7 m</span></div>
+    <div class="kv"><span class="muted">Praticáveis</span><span style="text-align:right">4 à esquerda (bateria/baixo) · 5 à direita (violão/cavaco/percussão) · vão central c/ 120 V</span></div>
+    <div class="kv"><span class="muted">Área de montagem</span><span>4 × 3 m (periféricos)</span></div>
+    <div class="kv"><span class="muted">Energia</span><span>Gerador 260 ou 180 kVA exclusivo</span></div>
+    <div class="kv"><span class="muted">Carregadores</span><span>5 exclusivos</span></div>
+    <div class="kv"><span class="muted">Efeitos</span><span style="text-align:right">4 máq. CO2 + 4 cilindros</span></div></div>
+  <h3>Backline</h3><div class="card">${[["08", "Praticáveis 2×1 c/ rodinhas e saia"], ["01", "Tapete de bateria"], ["01", "Bateria (Pearl Decade/Vision/Export, Yamaha Stage Custom ou DW) · tons 10-12-14/16, bumbo 20/22 · peles novas"], ["06", "Estantes de prato"], ["01", "Máquina de hi-hat"], ["01", "Estante de caixa"], ["01", "Pedal de bumbo DW2000"], ["01", "Side fill L/R"], ["02", "Réguas AC 127 V aterradas"], ["16", "Pedestais grandes c/ cachimbo"], ["03", "Subsnakes 12 vias"], ["20", "Cabos XLR 10 m"], ["20", "Cabos XLR 5 m"]].map(([q,d])=>`<div class="kv q"><b>${q}</b><span>${d}</span></div>`).join("")}</div>
+  <h3>Luz</h3><div class="card">
+    <div class="small" style="margin-bottom:8px">Grid 10×8 m (pé-direito mín. 5 m) · 3 traves de teto de 11 m · painel LED central 6×4 m · <b style="color:var(--warn)">5 elipsoidais obrigatórios</b> · Light design: Pedro Fernandes</div>
+    ${[["32", "Beam 14R"], ["16", "Robin LEDWash 600"], ["19", "Par LED RGBW"], ["15", "Strobo RGB"], ["08", "Mini Brutt"], ["08", "COB LED"], ["05", "Elipsoidais (obrigatório)"], ["02", "Haze"], ["01", "Console MA2 Full"]].map(([q,d])=>`<div class="kv q"><b>${q}</b><span>${d}</span></div>`).join("")}</div>
+  <h3>Diretrizes</h3><div class="card"><ul class="l">
+                                                                                                                                                                                                                                                                                                                            <li>Modificações só com consulta prévia à produção</li><li>Todos os itens são responsabilidade da locadora</li>
+                                                                                                                                                                                                                                                                                                                                <li>Estruturas aterradas (4 pontos: piso, estrutura, P.A., FOH)</li><li>1 produtor local de apoio</li>
+                                                                                                                                                                                                                                                                                                                                    <li>Mín. 5 carregadores exclusivos (sem dupla função)</li><li>30 águas geladas no palco na passagem</li>
+                                                                                                                                                                                                                                                                                                                                        <li>Camarim pronto na abertura dos portões</li><li>Ninguém mexe em mic/instrumento após o som passado</li></ul></div>
+  <h3>Contatos</h3><div class="card">
+                                                                                                                                                                                                                                                                                                        ${tel("Vaz · Produtor Geral","(61) 9 9901-5654")}
+                                                                                                                                                                                                                                                                                                            ${tel("Artur Senna · Produtor Técnico","(61) 9826-8888")}
+                                                                                                                                                                                                                                                                                                                ${tel("Pedro · Técnico de Luz","(61) 98617-5737")}
+                                                                                                                                                                                                                                                                                                                    ${tel("Pedro Fernandes · Light Designer","(61) 9 9429-4251")}
+                                                                                                                                                                                                                                                                                                                      </div>
+  <p class="muted small">Fonte: Rider Técnico Benzadeus 2026 (PDF de 16/11/2026) · <a href="${pasta}" target="_blank" rel="noopener" style="color:inherit">pasta Rider no Google Drive</a></p>`;
+}
+
+const ETAPAS=["ida-origem","ida-destino","volta-origem","volta-destino"];
+                                                                                                                                                                                                                                                                                                                                                                                                const ETAPA_LBL={"ida-origem":"Ida · Origem","ida-destino":"Ida · Destino","volta-origem":"Volta · Origem","volta-destino":"Volta · Destino"};
+                                                                                                                                                                                                                                                                                                                                                                                                const normEtapa=e=>(!e||e==="ida")?"ida-origem":(e==="volta"?"volta-origem":e);
+                                                                                                                                                                                                                                                                                                                                                                                                /* ================= ESTADO ================= */
+                                                                                                                                                                                                                                                                                                                                                                                                let SHOWS=[], ITEMS=[], CATS=[], PENDS=[];
+                                                                                                                                                                                                                                                                                                                                                                                                let marks={};                 // "show__etapa__item" -> {checked, quem, quando}
+                                                                                                                                                                                                                                                                                                                                                                                                let curShow=ls.get("bzd.show",null), etapa="ida-origem", onlyPend=true;
+                                                                                                                                                                                                                                                                                                                                                                                                let USER={email:"",nome:"",canEdit:false};
+                                                                                                                                                                                                                                                                                                                                                                                                const pending=new Set();
+                                                                                                                                                                                                                                                                                                                                                                                                const BZD_COD=(()=>{try{return localStorage.getItem('bzd_cod')}catch(e){return null}})();try{var _v=localStorage.getItem('bzd.view')||'';if(/agenda/.test(_v))localStorage.removeItem('bzd.view')}catch(e){}if(!BZD_COD){location.replace('agenda.html');}const gs=(fn,...args)=>fetch('https://axbpgfktzmjtlntdhape.supabase.co/functions/v1/bzd',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({acao:'gs',fn,args,codigo:BZD_COD})}).then(r=>r.json()).then(j=>{if(j.erro){if(/Código inválido/.test(j.erro))location.replace('agenda.html');throw new Error(j.erro)}return j.r});
+
+                                                                                                                                                                                                                                                                                                                                                                                                /* ================= NAVEGAÇÃO ================= */
+                                                                                                                                                                                                                                                                                                                                                                                                var ZDEF=0.86, zc=0.86, zTimer=0;
+function setZ(z,show){var old=zc;zc=Math.max(0.8,Math.min(2.6,z));document.documentElement.style.setProperty("--z",zc);
+if(old!==zc&&curView!=="home"){window.scrollTo(0,window.scrollY*zc/old);}
+var t=document.getElementById("zTip");if(show&&t){t.textContent=Math.round(zc/ZDEF*100)+"%";t.classList.add("on");clearTimeout(zTimer);zTimer=setTimeout(function(){t.classList.remove("on")},700);}}
+(function(){var pd=0,pz=1,m=document.querySelector("main");
+function dist(t){return Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);}
+m.addEventListener("touchstart",function(e){if(e.touches.length===2&&curView!=="home"){pd=dist(e.touches);pz=zc;}},{passive:true});
+m.addEventListener("touchmove",function(e){if(e.touches.length===2&&pd){e.preventDefault();setZ(pz*dist(e.touches)/pd,true);}},{passive:false});
+m.addEventListener("touchend",function(e){if(e.touches.length<2)pd=0;},{passive:true});
+document.body.insertAdjacentHTML("beforeend","<div id=\"zTip\"></div>");})();
+const VIEWS=["home","agenda","checklist","input","bandejas","output","rider"];
+                                                                                                                                                                                                                                                                                                                                                                                                let curView="home";
+                                                                                                                                                                                                                                                                                                                                                                                                function go(v){
+                                                                                                                                                                                                                                                                                                                                                                                                  if(!VIEWS.includes(v))v="home"; setZ(ZDEF); document.body.classList.toggle("is-home",v==="home"); curView=v; ls.set("bzd.view",v);
+                                                                                                                                                                                                                                                                                                                                                                                                    VIEWS.forEach(x=>$("#v-"+x).classList.toggle("on",x===v));
+                                                                                                                                                                                                                                                                                                                                                                                                      document.querySelectorAll("nav a").forEach(a=>a.classList.toggle("on",a.dataset.v===v));
+                                                                                                                                                                                                                                                                                                                                                                                                        $(".showpick").style.display=(v==="agenda"||v==="checklist")?"flex":"none";
+                                                                                                                                                                                                                                                                                                                                                                                                          window.scrollTo(0,0);
+                                                                                                                                                                                                                                                                                                                                                                                                          }
+                                                                                                                                                                                                                                                                                                                                                                                                          document.querySelectorAll("nav a").forEach(a=>a.addEventListener("click",e=>{e.preventDefault();go(a.dataset.v);}));
+document.querySelectorAll(".tile").forEach(a=>a.addEventListener("click",e=>{e.preventDefault();go(a.dataset.v);}));
+$("#backHome").addEventListener("click",e=>{e.preventDefault();go("home");});
+
+                                                                                                                                                                                                                                                                                                                                                                                                          /* ================= SHOW ================= */
+                                                                                                                                                                                                                                                                                                                                                                                                          function pickDefaultShow(){
+                                                                                                                                                                                                                                                                                                                                                                                                            if(!SHOWS.find(s=>s.id===curShow)) curShow=(SHOWS.find(s=>s.date>=TODAY)||SHOWS[SHOWS.length-1]||{}).id;
+                                                                                                                                                                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                                                                                                                                                                            function renderShowSel(){
+                                                                                                                                                                                                                                                                                                                                                                                                              $("#showSel").innerHTML=SHOWS.map(s=>{const p=dParts(s.date);return `<option value="${esc(s.id)}" ${s.id===curShow?"selected":""}>${pad(p.dd)}/${pad(p.m)} ${p.dow} · ${esc(s.name)}</option>`}).join("");
+                                                                                                                                                                                                                                                                                                                                                                                                              }
+                                                                                                                                                                                                                                                                                                                                                                                                              $("#showSel").addEventListener("change",e=>setShow(e.target.value));
+                                                                                                                                                                                                                                                                                                                                                                                                              function setShow(id){curShow=id;ls.set("bzd.show",id);renderShowSel();renderAgenda();renderChecklist();}
+
+                                                                                                                                                                                                                                                                                                                                                                                                              /* ================= AGENDA ================= */
+                                                                                                                                                                                                                                                                                                                                                                                                              function renderAgenda(){
+                                                                                                                                                                                                                                                                                                                                                                                                                let html="",lastM=null;
+                                                                                                                                                                                                                                                                                                                                                                                                                  SHOWS.forEach(s=>{
+                                                                                                                                                                                                                                                                                                                                                                                                                      const p=dParts(s.date);
+                                                                                                                                                                                                                                                                                                                                                                                                                          if(p.m!==lastM){html+=`<div class="month">${MESF[p.m-1]||""} ${p.y}</div>`;lastM=p.m;}
+                                                                                                                                                                                                                                                                                                                                                                                                                              const cls=["card","show"]; if(s.date<TODAY)cls.push("past"); if(s.date===TODAY)cls.push("today"); if(s.id===curShow)cls.push("sel");
+                                                                                                                                                                                                                                                                                                                                                                                                                                  const [nm,city]=s.name.includes(" – ")?s.name.split(" – "):[s.name,""];
+                                                                                                                                                                                                                                                                                                                                                                                                                                      const it=ITIN[s.id]; const prog=progressFor(s.id,"ida-origem");
+                                                                                                                                                                                                                                                                                                                                                                                                                                          html+=`<div class="${cls.join(" ")}" data-id="${esc(s.id)}"><div class="date"><b>${pad(p.dd)}</b><i>${p.dow}</i></div><div style="flex:1;min-width:0">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                <div class="t">${esc(nm)}</div><div class="muted small">${esc(city)}${s.date===TODAY?' · <b style="color:var(--gold)">HOJE</b>':""}</div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      ${prog.done?`<div class="small" style="margin-top:4px;color:${prog.done===prog.total?"var(--ok)":"var(--muted)"}">Saída (ida/origem): ${prog.done}/${prog.total}</div>`:""}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                            ${it&&s.id===curShow?`<div class="itin"><div class="small muted">📍 ${esc(it.local)}</div>${it.dias.map(([d,rows])=>`<div class="d">${esc(d)}</div>${rows.map(([h,t])=>`<div class="r"><b>${esc(h)}</b><span>${esc(t)}</span></div>`).join("")}`).join("")}</div>`:(it?`<div class="small" style="color:var(--gold2);margin-top:4px">Roteiro disponível · toque</div>`:"")}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div></div>`;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                  });
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                    html+=`<p class="muted small" style="margin-top:14px">Para mudar a agenda, edite a aba <b>Shows</b> da planilha <i>Checklist BZD – dados</i>.</p>`;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                      $("#agendaList").innerHTML=html||`<div class="card muted">Carregando…</div>`;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                      }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                      $("#agendaList").addEventListener("click",e=>{const c=e.target.closest(".show");if(c)setShow(c.dataset.id);});
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                      /* ================= CHECKLIST ================= */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                      const keyOf=(show,et,item)=>`${show}__${et}__${item}`;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                      function progressFor(show,et){let done=0;ITEMS.forEach(i=>{const m=marks[keyOf(show,et,i.id)];if(m&&m.checked)done++});return {done,total:ITEMS.length}}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                      const openCats=new Set(ls.get("bzd.open",["Áudio"]));
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                      const CNT=c=>/^malas/i.test(c);
+function isCk(et,id){const m=marks[keyOf(curShow,et,id)];return !!(m&&m.checked);}
+function itemName(id){const i=ITEMS.find(x=>x.id===id);return i?i.name:id;}
+function showName(id){const s=SHOWS.find(x=>x.id===id);return s?s.name:"";}
+function openPendsOf(id){return PENDS.filter(p=>p.status!=="resolvida"&&p.item===id&&p.show===curShow);}
+function pendTag(id){const p=openPendsOf(id);return p.length?`<span class="ptag">⚠ ${esc(p[p.length-1].tipo)}</span>`:"";}
+function ckTopHTML(){
+let h="";
+const prevE=ETAPAS[ETAPAS.indexOf(etapa)-1];
+const here=ITEMS.filter(i=>isCk(etapa,i.id)).length;
+if(prevE){const prev=ITEMS.filter(i=>isCk(prevE,i.id));const falta=prev.filter(i=>!isCk(etapa,i.id));
+h+=`<div class="vol ${falta.length?"bad":(prev.length?"ok":"")}"><div class="vrow"><div><small>${ETAPA_LBL[prevE]}</small><b>${prev.length}</b></div><div><small>Aqui</small><b>${here}</b></div><div><small>${falta.length?"Faltam":"Situação"}</small><b>${falta.length?falta.length:(prev.length?"✓":"–")}</b></div></div>${falta.length?`<div class="vtit">Vieram na etapa anterior e ainda não foram conferidos aqui:</div><div class="vfalta">${falta.filter(i=>!CNT(i.cat)).map(i=>`<button class="vf" data-id="${esc(i.id)}">${esc(i.name)}</button>`).join("")}${[...new Set(falta.filter(i=>CNT(i.cat)).map(i=>i.cat))].map(c=>`<span class="vf">${esc(c)} ×${falta.filter(i=>i.cat===c).length}</span>`).join("")}</div>`:""}</div>`;}
+else h+=`<div class="vol"><div class="vrow"><div><small>Volumes conferidos na saída</small><b>${here} / ${ITEMS.length}</b></div></div></div>`;
+{const _v=document.getElementById("ckVol");if(_v)_v.innerHTML=h;}h="";const fx=ITEMS.filter(i=>i.fixo);
+if(fx.length){const d=fx.filter(i=>isCk(etapa,i.id)).length;const fal=fx.filter(i=>!isCk(etapa,i.id));
+h+=`<div class="kit ${d===fx.length?"ok":""}"><div class="khead"><div><b>Kit fixo</b> <span class="muted small">${d}/${fx.length} volumes</span></div>${d<fx.length?`<button class="btn kbtn" id="kitAll">✓ Kit completo</button>`:`<span class="kok">✓ completo</span>`}</div>${fal.length&&d>0?`<div class="muted small" style="margin-top:6px">Falta: ${fal.map(i=>esc(i.name)).join(", ")}</div>`:""}</div>`;}
+const pd=PENDS.filter(p=>p.status!=="resolvida");
+if(pd.length)h+=`<details class="cat pends" open><summary><span>⚠ Pendências</span><span class="c">${pd.length}</span></summary>${pd.map(p=>`<div class="pitem"><div class="pinfo"><b>${esc(p.tipo)}</b> · ${esc(itemName(p.item))}<div class="muted small">${p.obs?esc(p.obs)+" · ":""}${esc(p.quem||"")} ${esc(p.quando||"")}${showName(p.show)?" · "+esc(showName(p.show)):""}</div></div><button class="btn pres" data-row="${p.row}">Resolvido</button></div>`).join("")}</details>`;
+return h;
+}
+function ckCntHTML(){let h="";
+CATS.filter(CNT).forEach(cat=>{const its=ITEMS.filter(i=>i.cat===cat);const dn=its.filter(i=>isCk(etapa,i.id)).length;
+h+=`<div class="kit cnt ${dn===its.length?"ok":""}"><div class="khead"><b>${esc(cat)}</b><div class="cbtns"><button class="cb" data-c="${esc(cat)}" data-d="-1" aria-label="Menos">−</button><span class="cnum">${dn}<small>/${its.length}</small></span><button class="cb" data-c="${esc(cat)}" data-d="1" aria-label="Mais">+</button></div></div><div class="crow">${dn<its.length?`<button class="btn kbtn cAll" data-c="${esc(cat)}">✓ Todas (${its.length})</button>`:`<span class="kok">✓ todas</span>`}<details class="cdet"><summary>ver nomes</summary>${its.map(i=>`<div class="item ${isCk(etapa,i.id)?"ck":""}" data-id="${esc(i.id)}"><div class="box"></div><div class="n cn">${esc(i.name)}</div></div>`).join("")}</details></div></div>`;});
+return h;}
+function renderChecklist(){
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                        const s=SHOWS.find(x=>x.id===curShow);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                          $("#ckShow").textContent=s?s.name:"";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            const pr=progressFor(curShow,etapa);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                              $("#ckCount").textContent=`${pr.done} / ${pr.total} conferidos`;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                $("#ckBar").style.width=(pr.total?pr.done/pr.total*100:0)+"%";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  document.querySelectorAll("#etapaSeg button").forEach(b=>{const p=progressFor(curShow,b.dataset.e);b.querySelector("i").textContent=`${p.done}/${p.total}`;});
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    let html="";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      CATS.forEach(cat=>{if(CNT(cat))return;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          const its=ITEMS.filter(i=>i.cat===cat);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              const done=its.filter(i=>marks[keyOf(curShow,etapa,i.id)]?.checked).length;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  const prevE=ETAPAS[ETAPAS.indexOf(etapa)-1];
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      const shown=onlyPend?its.filter(i=>!marks[keyOf(curShow,etapa,i.id)]?.checked):its;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          if(onlyPend&&!shown.length)return;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              html+=`<details class="cat" data-cat="${esc(cat)}" ${openCats.has(cat)||onlyPend?"open":""}><summary><span>${esc(cat)}</span><span class="c ${done===its.length?"done":""}">${done}/${its.length}${done===its.length?" ✓":""}</span></summary>`;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  shown.forEach(i=>{const m=marks[keyOf(curShow,etapa,i.id)];const ck=m&&m.checked;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        html+=`<div class="item ${ck?"ck":""}" data-id="${esc(i.id)}"><div class="box"></div><div class="n">${esc(i.name)}${pendTag(i.id)}</div><button class="pbtn" data-id="${esc(i.id)}" aria-label="Registrar problema">⋯</button>${ck?`<div class="who">${esc(m.quem||"")}${m.quando?"<br>"+esc(m.quando):""}</div>`:(prevE&&marks[keyOf(curShow,prevE,i.id)]?.checked?`<div class="who prev">✓ em<br>${ETAPA_LBL[prevE]}</div>`:"")}</div>`;});
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            html+=`</details>`;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              });
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                if(!html)html=ITEMS.length?`<div class="card" style="text-align:center;color:var(--ok);font-weight:700">Tudo conferido ✓</div>`:`<div class="card muted">Carregando…</div>`;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  $("#ckList").innerHTML=ckTopHTML()+html+ckCntHTML();
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    $("#whoBtn").textContent=USER.canEdit?`👤 ${USER.nome||"…"}`:(USER.email?"👁 Só leitura":"👤 …");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    $("#ckList").addEventListener("toggle",e=>{const d=e.target.closest&&e.target.closest("details");if(!d||onlyPend)return;d.open?openCats.add(d.dataset.cat):openCats.delete(d.dataset.cat);ls.set("bzd.open",[...openCats]);},true);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    $("#ckList").addEventListener("click",e=>{
+const pb=e.target.closest(".pbtn");if(pb){e.stopPropagation();openPend(pb.dataset.id);return;}
+const vf=e.target.closest(".vf");if(vf){toggleItem(vf.dataset.id);return;}
+const pr=e.target.closest(".pres");if(pr){resolvePend(+pr.dataset.row);return;}
+if(e.target.closest("#kitAll")){kitAll();return;}
+const cb=e.target.closest(".cb");if(cb){cntStep(cb.dataset.c,+cb.dataset.d);return;}
+const ca=e.target.closest(".cAll");if(ca){markAll(ITEMS.filter(i=>i.cat===ca.dataset.c&&!isCk(etapa,i.id)).map(i=>i.id));return;}
+const it=e.target.closest(".item");if(it)toggleItem(it.dataset.id);});
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    document.querySelectorAll("#etapaSeg button").forEach(b=>b.addEventListener("click",()=>{etapa=b.dataset.e;document.querySelectorAll("#etapaSeg button").forEach(x=>x.classList.toggle("on",x===b));renderChecklist();}));
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    $("#pendBtn").addEventListener("click",()=>{onlyPend=!onlyPend;$("#pendBtn").classList.toggle("on",onlyPend);renderChecklist();});
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    /* Nome de quem confere */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    let afterName=null;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    function askName(then){afterName=then||null;$("#nameIn").value=myName;$("#nameDlg").classList.add("on");setTimeout(()=>$("#nameIn").focus(),50);}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    $("#whoBtn").addEventListener("click",()=>showBanner(USER.canEdit?"info":"warn",USER.email?`Conectado como ${USER.email}`+(USER.canEdit?"":" · acesso só de leitura (peça ao Artur acesso de editor na planilha)"):"Carregando…"));
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    $("#nameForm").addEventListener("submit",e=>{e.preventDefault();const v=$("#nameIn").value.trim();if(!v)return;myName=v;ls.set("bzd.name",v);$("#nameDlg").classList.remove("on");renderChecklist();if(afterName){const f=afterName;afterName=null;f();}});
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    $("#nameCancel").addEventListener("click",()=>{afterName=null;$("#nameDlg").classList.remove("on");});
+function kitAll(){markAll(ITEMS.filter(i=>i.fixo&&!isCk(etapa,i.id)).map(i=>i.id));}
+function cntStep(cat,d){const its=ITEMS.filter(i=>i.cat===cat);if(d>0){const n=its.find(i=>!isCk(etapa,i.id));if(n)toggleItem(n.id);}else{const c=its.filter(i=>isCk(etapa,i.id)).pop();if(c)toggleItem(c.id);}}
+async function markAll(ids){
+if(!USER.canEdit){showBanner("warn","Você tem acesso só de leitura. Peça ao Artur acesso de editor na planilha.");return;}
+const sh=curShow,et=etapa;if(!ids.length)return;
+const prevM={};ids.forEach(id=>{const k=keyOf(sh,et,id);prevM[k]=marks[k];marks[k]={checked:true,quem:USER.nome,quando:"agora"};pending.add(k);});
+renderChecklist();setSync("wait");
+try{const r=await gs("setMarksOn",sh,ids,et);Object.keys(r).forEach(id=>{marks[keyOf(sh,et,id)]=r[id];});setSync("live");}
+catch(err){Object.keys(prevM).forEach(k=>{if(prevM[k])marks[k]=prevM[k];else delete marks[k];});setSync("off");showBanner("warn",(err&&err.message)||"Não foi possível salvar na planilha.");}
+finally{Object.keys(prevM).forEach(k=>pending.delete(k));renderChecklist();}}
+document.body.insertAdjacentHTML("beforeend",`<div id="pendDlg" class="pdlg"><div class="pbox"><b id="pdTitle"></b><div class="pops"><button data-t="Danificado">Danificado</button><button data-t="Faltando">Faltando</button><button data-t="Manutenção">Manutenção</button></div><textarea id="pdObs" rows="3" placeholder="Observação (opcional)"></textarea><div class="pact"><button class="btn" id="pdCancel">Cancelar</button><button class="btn on" id="pdSave">Salvar pendência</button></div></div></div>`);
+let pdItem=null,pdTipo="Danificado";
+function openPend(id){if(!USER.canEdit){showBanner("warn","Você tem acesso só de leitura. Peça ao Artur acesso de editor na planilha.");return;}
+pdItem=id;pdTipo="Danificado";$("#pdTitle").textContent="Problema: "+itemName(id);$("#pdObs").value="";
+document.querySelectorAll("#pendDlg .pops button").forEach(b=>b.classList.toggle("on",b.dataset.t===pdTipo));$("#pendDlg").classList.add("on");}
+$("#pendDlg").addEventListener("click",e=>{const b=e.target.closest(".pops button");if(b){pdTipo=b.dataset.t;document.querySelectorAll("#pendDlg .pops button").forEach(x=>x.classList.toggle("on",x===b));}
+if(e.target.id==="pendDlg"||e.target.id==="pdCancel")$("#pendDlg").classList.remove("on");});
+$("#pdSave").addEventListener("click",async()=>{const obs=$("#pdObs").value.trim();$("#pendDlg").classList.remove("on");setSync("wait");
+try{PENDS=await gs("addPend",curShow,pdItem,etapa,pdTipo,obs);setSync("live");showBanner("info","Pendência registrada.");}
+catch(err){setSync("off");showBanner("warn",(err&&err.message)||"Não foi possível salvar a pendência.");}
+renderChecklist();});
+async function resolvePend(row){setSync("wait");try{PENDS=await gs("resolvePend",row);setSync("live");}catch(err){setSync("off");showBanner("warn",(err&&err.message)||"Não foi possível atualizar a pendência.");}renderChecklist();}
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    async function toggleItem(itemId){
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      if(!USER.canEdit){showBanner("warn","Você tem acesso só de leitura. Peça ao Artur acesso de editor na planilha Checklist BZD – dados.");return;}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        const k=keyOf(curShow,etapa,itemId);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          if(pending.has(k))return;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            const prev=marks[k]; const checked=!(prev&&prev.checked);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              marks[k]={checked,quem:checked?USER.nome:"",quando:checked?"agora":""};
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                renderChecklist(); pending.add(k); setSync("wait");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  try{ marks[k]=await gs("setMark",curShow,itemId,etapa); setSync("live"); }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    catch(err){ if(prev)marks[k]=prev;else delete marks[k]; setSync("off"); showBanner("warn",(err&&err.message)||"Não foi possível salvar na planilha. Verifique a internet e tente de novo."); }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      finally{ pending.delete(k); renderChecklist(); renderAgenda(); }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      function showBanner(kind,msg){$("#ckBanner").innerHTML=`<div class="banner ${kind}">${esc(msg)}</div>`;setTimeout(()=>{$("#ckBanner").innerHTML=""},6000);}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      function setSync(state){const el=$("#sync");el.className="pill "+(state==="live"?"live":state==="off"?"off":"");el.textContent=state==="live"?"● planilha":state==="off"?"sem conexão":"salvando…";}
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      /* Atualiza marcações da equipe a cada 20 s */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      async function refreshMarks(){
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        if(document.hidden||pending.size)return;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          try{const m=await gs("getMarks");pending.forEach(k=>{if(marks[k])m[k]=marks[k]});marks=m;setSync("live");renderChecklist();renderAgenda();}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            catch(e){setSync("off");}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            setInterval(refreshMarks,20000);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            document.addEventListener("visibilitychange",()=>{if(!document.hidden)refreshMarks();});
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            /* ================= BOOT ================= */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            renderInput(); renderBandejas(); renderOutput(); renderRider(); renderAgenda(); renderChecklist(); go(curView);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            setSync("wait"); $("#sync").textContent="carregando…";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            gs("getData").then(d=>{
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              USER=d.user||USER; ITEMS=d.items; SHOWS=d.shows.sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0); CATS=[...new Set(ITEMS.map(i=>i.cat))]; marks=d.marks||{}; PENDS=d.pends||[];
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                pickDefaultShow(); renderShowSel(); renderAgenda(); renderChecklist(); setSync("live");
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  if(!USER.canEdit) $("#ckBanner").innerHTML=`<div class="banner warn">Acesso só de leitura (${esc(USER.email)}). Para marcar, peça ao Artur acesso de editor na planilha.</div>`;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  }).catch(err=>{ setSync("off"); $("#ckList").innerHTML=`<div class="banner warn">Sem acesso à planilha do BZD. Peça ao Artur para compartilhar a planilha <b>Checklist BZD – dados</b> com o seu e-mail do Google.<div class="small" style="margin-top:6px;opacity:.8">${esc(err&&err.message||err)}</div></div>`; });
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  </script>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  <script>try{var _n=document.getElementById("nav"),_s=function(){setTimeout(function(){var a=document.querySelector("nav a.on");if(a&&a.scrollIntoView)a.scrollIntoView({inline:"center",block:"nearest",behavior:"smooth"})},60)};_n.addEventListener("click",_s);window.addEventListener("hashchange",_s);window.addEventListener("load",_s)}catch(e){}</script>
 <script>
-const API='https://axbpgfktzmjtlntdhape.supabase.co/functions/v1/bzd';
-let COD=null, EU=null, SHOWS=[], ULT=null;
-const $=id=>document.getElementById(id);
-const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){}}
-async function api(acao,dados={}){const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({acao,codigo:COD,...dados})});const j=await r.json().catch(()=>({erro:'Sem resposta do servidor'}));if(j.erro)throw new Error(j.erro);return j}
-function aviso(el,t,c){$(el).innerHTML=t?`<div class="msg ${c}">${esc(t)}</div>`:''}
-
-async function entrar(c){COD=c||$('cod').value.trim();try{EU=await api('login');ls('bzd_cod',COD);iniciar()}catch(e){ls('bzd_cod',null);$('login').classList.remove('hide');$('app').classList.add('hide');if(!c)aviso('lmsg',e.message,'er')}}
-function sair(){ls('bzd_cod',null);location.reload()}
-function iniciar(){$('login').classList.add('hide');$('app').classList.remove('hide');$('quem').textContent=EU.nome;if(EU.papel==='admin'){$('eq').classList.remove('hide');equipe()}
-  carregar();const p=new URLSearchParams(location.search);const t=[p.get('title'),p.get('text'),p.get('url')].filter(Boolean).join('\n');
-  if(t){history.replaceState(null,'',location.pathname);aba('lancar');$('txt').value=t;analisar()}}
-function aba(t){document.querySelectorAll('nav button[data-t]').forEach(b=>b.classList.toggle('on',b.dataset.t===t));['agenda','lancar','contatos','mais'].forEach(x=>$('t-'+x).classList.toggle('hide',x!==t));if(t==='contatos'&&!$('lc').innerHTML)contatos();scrollTo(0,0)}
-document.querySelectorAll('nav button[data-t]').forEach(b=>b.onclick=()=>aba(b.dataset.t));
-
-const MES=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'],DS=['dom','seg','ter','qua','qui','sex','sáb'];
-async function carregar(){try{SHOWS=(await api('shows')).shows;ls('bzd_cache',JSON.stringify(SHOWS))}catch(e){SHOWS=JSON.parse(ls('bzd_cache')||'[]')}render()}
-function render(){const hoje=new Date(Date.now()-3*36e5).toISOString().slice(0,10);let h='',m='';
-  for(const s of SHOWS){const d=new Date(s.data+'T12:00:00');const mm=MES[d.getMonth()]+' '+d.getFullYear();if(mm!==m){m=mm;h+=`<div class="mes">${mm}</div>`}
-    h+=`<div class="card ${s.data===hoje?'hoje aberto':''}" id="c-${esc(s.id)}" onclick="if(event.target.tagName!=='BUTTON'&&event.target.tagName!=='TEXTAREA')this.classList.toggle('aberto')">
-    <div class="row"><span class="dt">${DS[d.getDay()]} ${String(d.getDate()).padStart(2,'0')}</span><span class="tt">${esc(s.titulo)}</span><span class="chip ${esc(s.status)}">${esc(s.status)}</span></div>
-    <div class="sub">${s.inicio?esc(s.inicio)+(s.fim?'–'+esc(s.fim):'')+' · ':''}${esc(s.local)}</div>
-    <div class="info">${esc(s.info)||'<span class="sub">Sem informações ainda.</span>'}<br><button class="mini" onclick="editar('${esc(s.id)}')">✏️ Editar</button>${s.atualizado_por?`<span class="sub" style="margin-left:8px;font-size:12px">por ${esc(s.atualizado_por)}</span>`:''}</div></div>`}
-  $('t-agenda').innerHTML=h||'<div class="sub">Nenhum show.</div>'}
-function editar(id){const s=SHOWS.find(x=>x.id===id),c=$('c-'+id);c.querySelector('.info').innerHTML=`<label>Início</label><input id="ei" value="${esc(s.inicio)}"><label>Fim</label><input id="ef" value="${esc(s.fim)}"><label>Status</label><input id="es" value="${esc(s.status)}"><label>Local</label><input id="el" value="${esc(s.local)}"><label>Informações</label><textarea id="ex" style="min-height:220px">${esc(s.info)}</textarea><button class="btn" onclick="salvar('${esc(id)}')">Salvar</button>`}
-async function salvar(id){const s={...SHOWS.find(x=>x.id===id)};s.inicio=$('ei').value;s.fim=$('ef').value;s.status=$('es').value;s.local=$('el').value;s.info=$('ex').value;try{await api('salvar_show',{show:s});await carregar()}catch(e){alert(e.message)}}
-
-async function analisar(){const t=$('txt').value.trim();if(!t)return;$('bAn').innerHTML='<span class="spin"></span> Analisando…';aviso('amsg','');
-  try{ULT=await api('analisar',{texto:t});$('sShow').innerHTML='<option value="">— escolha o show —</option>'+ULT.opcoes.map(o=>`<option value="${esc(o.id)}">${o.data.split('-').reverse().slice(0,2).join('/')} · ${esc(o.titulo)}</option>`).join('');
-    $('sShow').value=ULT.show_id||'';$('sReg').value=ULT.registro||'';$('motivo').textContent=(ULT.confianca?'Confiança '+ULT.confianca+'. ':'')+(ULT.motivo||'');
-    $('perg').innerHTML=ULT.pergunta?`<div class="msg q">❓ ${esc(ULT.pergunta)}</div>`:'';$('sug').classList.remove('hide')}
-  catch(e){aviso('amsg',e.message,'er')}$('bAn').textContent='Analisar'}
-async function aplicar(){const id=$('sShow').value;if(!id)return aviso('amsg','Escolha o show.','er');try{await api('aplicar',{show_id:id,registro:$('sReg').value,entrada_id:ULT&&ULT.entrada_id});limpar();aviso('amsg','Lançado! A equipe já vê na agenda.','ok');carregar()}catch(e){aviso('amsg',e.message,'er')}}
-function limpar(){$('txt').value='';$('sug').classList.add('hide');ULT=null}
-
-async function contatos(){try{const l=(await api('contatos',{q:$('busca').value})).contatos;$('lc').innerHTML=l.map(c=>{const n=(c.telefone||'').replace(/\D/g,'');return `<div class="card">${n?`<a class="wa" href="https://wa.me/${n}" target="_blank">WhatsApp ↗</a>`:''}<div class="tt">${esc(c.nome)}</div><div class="sub">${[c.funcao,c.empresa,c.cidade].filter(Boolean).map(esc).join(' · ')}</div>${c.telefone?`<div class="sub">${esc(c.telefone)}</div>`:''}${c.notas?`<div class="sub" style="margin-top:6px">${esc(c.notas)}</div>`:''}</div>`}).join('')||'<div class="sub">Nada encontrado.</div>'}catch(e){$('lc').innerHTML=`<div class="msg er">${esc(e.message)}</div>`}}
-async function equipe(novo){try{const l=(await api('equipe',novo?{novo}:{})).equipe;$('leq').innerHTML=l.map(p=>`${esc(p.nome)} — <b>${esc(p.codigo)}</b>${p.papel==='admin'?' (admin)':''}`).join('<br>')}catch(e){}}
-function addEq(){const nome=$('eNome').value.trim(),codigo=$('eCod').value.trim();if(nome&&codigo){equipe({nome,codigo});$('eNome').value=$('eCod').value=''}}
-async function novoShow(){const data=$('nData').value,titulo=$('nTit').value.trim();if(!data||!titulo)return aviso('nmsg','Preencha data e título.','er');
-  const id=data+'-'+titulo.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,30);
-  try{await api('salvar_show',{show:{id,data,titulo,local:$('nLoc').value,status:$('nSt').value}});aviso('nmsg','Show criado.','ok');$('nTit').value=$('nLoc').value='';carregar()}catch(e){aviso('nmsg',e.message,'er')}}
-
-if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
-const c0=ls('bzd_cod');if(c0){COD=c0;EU={nome:'',papel:''};entrar(c0)}else $('login').classList.remove('hide');
+(function(){
+var r=document.getElementById("v-rider"),h=r.querySelector("h2");
+var tabs=[["resumo","Resumo"],["input","Input"],["output","Output"],["bandejas","Bandejas"]];
+var seg=document.createElement("div");seg.className="rseg";
+seg.innerHTML=tabs.map(function(t,i){return "<button data-p=\""+t[0]+"\""+(i?"":" class=\"on\"")+">"+t[1]+"</button>";}).join("");
+h.parentNode.insertBefore(seg,h.nextSibling);
+var pr=document.createElement("div");pr.className="rpan on";pr.setAttribute("data-p","resumo");pr.appendChild(document.getElementById("riderBody"));r.appendChild(pr);
+["input","output","bandejas"].forEach(function(k){var s=document.getElementById("v-"+k),p=document.createElement("div");p.className="rpan";p.setAttribute("data-p",k);Array.prototype.slice.call(s.children).forEach(function(c){if(c.tagName!=="H2")p.appendChild(c);});r.appendChild(p);var t=document.querySelector(".tile[data-v=\""+k+"\"]");if(t)t.parentNode.removeChild(t);});
+seg.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;var k=b.getAttribute("data-p");Array.prototype.forEach.call(seg.querySelectorAll("button"),function(x){x.classList.toggle("on",x===b);});Array.prototype.forEach.call(r.querySelectorAll(".rpan"),function(p){p.classList.toggle("on",p.getAttribute("data-p")===k);});window.scrollTo(0,0);});
+})();
 </script>
-</body>
-</html>
+<style>#ckFix{position:sticky;top:var(--hh,0px);z-index:15;background:#0d0d0f;margin:0 -4px;padding:4px 4px 6px;box-shadow:0 6px 10px -6px rgba(0,0,0,.8)}#ckFix .tools{margin-bottom:0}</style><script>(function(){var v=document.getElementById("v-checklist"),f=document.getElementById("ckFix"),h=document.querySelector("header");function s(){if(!v||!f||!h)return;var z=parseFloat(getComputedStyle(v).zoom)||1;f.style.top=(h.getBoundingClientRect().height/z)+"px";}window.addEventListener("scroll",s,{passive:true});window.addEventListener("resize",s);setInterval(s,1000);s();})();</script><style>#ckFix .seg4 button{font-size:12px!important;padding:4px 2px!important;min-height:0!important}#ckFix .seg4 small{font-size:9px!important}#ckFix .seg4 i{font-size:10px!important;margin-top:0}#ckFix .card{padding:5px 10px!important;margin:5px 0 0!important}#ckFix #ckCount{font-size:13px}#ckFix #ckShow{font-size:11px}#ckFix .prog{height:5px;margin:3px 0 0}#ckFix .tools{margin:5px 0 0!important}#ckFix .tools .btn{font-size:12px!important;padding:4px 10px!important;min-height:0!important}#ckVol .vol{padding:4px 8px;margin:5px 0 0}#ckVol .vrow small{font-size:9px}#ckVol .vrow b{font-size:17px}#ckVol .vtit{font-size:11px;margin:4px 0}#ckVol .vfalta{max-height:62px;overflow:auto;gap:4px}#ckVol .vf{font-size:11px;padding:3px 6px}body.ck header{padding-top:calc(6px + env(safe-area-inset-top))!important;padding-bottom:6px!important}body.ck .brand img{width:34px!important;height:34px!important;border-radius:8px!important}body.ck .brand h1{font-size:20px!important}body.ck .showpick{margin-top:5px}body.ck .showpick select{font-size:13px!important;min-height:32px!important;padding:4px 8px}#v-checklist>h2{display:none}</style><script>(function(){var v=document.getElementById("v-checklist"),cv=document.getElementById("ckVol");if(cv)cv.addEventListener("click",function(e){var b=e.target.closest(".vf");if(b&&b.dataset.id)toggleItem(b.dataset.id);});setInterval(function(){if(v)document.body.classList.toggle("ck",v.classList.contains("on"));},300);})();</script><style>
+.ag-st{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.05em;padding:2px 6px;border-radius:6px;margin-right:6px}
+.ag-ok{background:rgba(76,195,138,.15);color:var(--ok)}
+.ag-part{background:rgba(110,168,254,.14);color:var(--blue)}
+.ag-res{background:rgba(240,160,60,.15);color:var(--warn)}
+.ag-det{margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
+.ag-det summary{color:var(--gold2);font-size:12.5px;font-weight:600;cursor:pointer}
+.ag-det div{white-space:pre-line;font-size:13px;line-height:1.45;margin-top:6px}
+</style>
+<script>
+(function () {
+  var AG = null;
+  var base = renderAgenda;
+  function stCls(s) { return /CONFIRM|^ON/.test(s) ? 'ag-ok' : (/PARTIC/.test(s) ? 'ag-part' : 'ag-res'); }
+  window.renderAgenda = function () {
+    if (!AG || !AG.length) return base();
+    var html = '', lastM = null;
+    AG.forEach(function (a) {
+      var p = dParts(a.date);
+      if (p.m !== lastM) { html += '<div class="month">' + (MESF[p.m - 1] || '') + ' ' + p.y + '</div>'; lastM = p.m; }
+      var s = a.showId ? SHOWS.find(function (x) { return x.id === a.showId; }) : null;
+      var cls = ['card']; if (s) cls.push('show'); if (a.date < TODAY) cls.push('past'); if (a.date === TODAY) cls.push('today'); if (s && s.id === curShow) cls.push('sel');
+      var hora = a.ini ? (a.fim ? a.ini + '–' + a.fim : a.ini) : '';
+      var prog = s ? progressFor(s.id, 'ida-origem') : { done: 0, total: 0 };
+      var it = s ? ITIN[s.id] : null;
+      var sel = s && s.id === curShow;
+      html += '<div class="' + cls.join(' ') + '"' + (s ? ' data-id="' + esc(s.id) + '"' : '') + '><div class="date"><b>' + pad(p.dd) + '</b><i>' + p.dow + '</i></div><div style="flex:1;min-width:0">'
+        + '<div class="t">' + esc(a.title) + '</div>'
+        + '<div class="muted small" style="margin-top:3px"><span class="ag-st ' + stCls(a.status) + '">' + esc(a.status) + '</span>' + esc(hora) + (a.date === TODAY ? ' · <b style="color:var(--gold)">HOJE</b>' : '') + '</div>'
+        + (a.local ? '<div class="muted small">📍 ' + esc(a.local) + '</div>' : '')
+        + (prog.done ? '<div class="small" style="margin-top:4px;color:' + (prog.done === prog.total ? 'var(--ok)' : 'var(--muted)') + '">Saída (ida/origem): ' + prog.done + '/' + prog.total + '</div>' : '')
+        + (a.det ? '<details class="ag-det"' + (sel ? ' open' : '') + '><summary>Informações</summary><div>' + esc(a.det) + '</div></details>' : '')
+        + (it && sel ? '<div class="itin"><div class="small muted">🏨 ' + esc(it.local) + '</div>' + it.dias.map(function (d) { return '<div class="d">' + esc(d[0]) + '</div>' + d[1].map(function (r) { return '<div class="r"><b>' + esc(r[0]) + '</b><span>' + esc(r[1]) + '</span></div>'; }).join(''); }).join('') + '</div>' : '')
+        + '</div></div>';
+    });
+    html += '<p class="muted small" style="margin-top:14px">Informações do calendário <b>Benza Deus</b> (Google Agenda), na aba <b>Agenda</b> da planilha.</p>';
+    $('#agendaList').innerHTML = html;
+  };
+  gs('getAgenda').then(function (a) {
+    AG = (a || []).sort(function (x, y) { return x.date < y.date ? -1 : x.date > y.date ? 1 : 0; });
+    renderAgenda();
+  }).catch(function () {});
+})();
+</script>
+<a id="bzdMapaBtn" href="https://script.google.com/macros/s/AKfycbwwtzfAoAv9J_c8KUAwqucGCyAVNbF8JQCJLFjwXvnz5yRv9sJ84pAKz88DXamySmyp/exec?p=mapa" target="_blank" style="position:fixed;right:14px;bottom:86px;z-index:9999;background:#0f6b5a;color:#fff;text-decoration:none;font:600 14px system-ui,sans-serif;padding:10px 14px;border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,.3)">Mapa de contatos</a><script>fetch('https://axbpgfktzmjtlntdhape.supabase.co/functions/v1/bzd',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({acao:'login',codigo:BZD_COD})}).then(r=>r.json()).then(j=>{if(j.papel==='admin'){var m=document.getElementById('tileMais');if(m)m.style.display=''}}).catch(()=>{});</script></body>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  </html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  

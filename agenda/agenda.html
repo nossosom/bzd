@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>BZD</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#14110f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BZD">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png">
+<style>
+:root{--bg:#14110f;--card:#211c18;--line:#3a312a;--tx:#f3ece4;--mut:#a89a8c;--ac:#f2a93b;--ok:#5cc58a;--warn:#e8664d}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding-bottom:calc(70px + env(safe-area-inset-bottom))}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:calc(10px + env(safe-area-inset-top)) 16px 10px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+header b{font-size:20px;letter-spacing:1px;color:var(--ac)}header span{color:var(--mut);font-size:13px;margin-left:auto}
+main{padding:12px 14px;max-width:720px;margin:auto}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:#0e0c0a;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:6}
+nav button{flex:1;background:none;border:0;color:var(--mut);padding:10px 0 8px;font-size:12px}nav button i{display:block;font-style:normal;font-size:20px}
+nav button.on{color:var(--ac)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:0 0 10px}
+.mes{color:var(--ac);font-weight:700;margin:16px 2px 8px;text-transform:uppercase;font-size:13px;letter-spacing:1px}
+.row{display:flex;gap:10px;align-items:baseline}.dt{font-weight:700;min-width:58px}.tt{font-weight:600}
+.sub{color:var(--mut);font-size:14px}.chip{font-size:11px;padding:2px 8px;border-radius:99px;border:1px solid var(--line);color:var(--mut);margin-left:auto;white-space:nowrap}
+.chip.CONFIRMADO,.chip.ON{color:var(--ok);border-color:var(--ok)}.chip.NEGOCIANDO,.chip.RESERVADO{color:var(--ac);border-color:var(--ac)}
+.info{white-space:pre-wrap;font-size:14px;margin-top:10px;border-top:1px dashed var(--line);padding-top:10px;display:none}.card.aberto .info{display:block}
+.hoje{border-color:var(--ac)}
+textarea,input,select{width:100%;background:#0e0c0a;color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:11px;font:inherit}
+textarea{min-height:130px;resize:vertical}
+label{display:block;color:var(--mut);font-size:13px;margin:12px 0 4px}
+.btn{display:block;width:100%;margin-top:12px;background:var(--ac);color:#1a1208;border:0;border-radius:12px;padding:14px;font-weight:700;font-size:16px}
+.btn.sec{background:none;color:var(--tx);border:1px solid var(--line)}
+.mini{background:none;border:1px solid var(--line);color:var(--tx);border-radius:8px;padding:6px 10px;font-size:13px;margin-top:10px}
+.msg{padding:10px 12px;border-radius:10px;margin-top:10px;font-size:14px}.msg.ok{background:#173322;color:#9fe3bb}.msg.er{background:#3a1913;color:#f3a796}.msg.q{background:#33280f;color:#f5d28f}
+.login{max-width:340px;margin:18vh auto;text-align:center}.login h1{color:var(--ac);font-size:44px;margin:0 0 6px;letter-spacing:3px}
+.login input{text-align:center;font-size:28px;letter-spacing:10px}
+a{color:var(--ac)}.wa{float:right;text-decoration:none;font-size:13px}
+.spin{display:inline-block;width:16px;height:16px;border:2px solid #1a1208;border-right-color:transparent;border-radius:50%;animation:s .7s linear infinite;vertical-align:-3px}@keyframes s{to{transform:rotate(360deg)}}
+.hide{display:none!important}
+</style>
+</head>
+<body>
+<div id="login" class="login hide">
+  <h1>BZD</h1><div class="sub">Benzadeus · produção técnica</div>
+  <label>Seu código</label><input id="cod" inputmode="numeric" maxlength="6" autocomplete="one-time-code">
+  <button class="btn" onclick="entrar()">Entrar</button><div id="lmsg"></div>
+</div>
+<div id="app" class="hide">
+  <header><b>BZD</b><span id="quem"></span></header>
+  <main>
+    <section id="t-agenda"></section>
+    <section id="t-lancar" class="hide">
+      <div class="card">
+        <div class="tt">Lançar mensagem</div>
+        <div class="sub">Cole aqui uma mensagem do WhatsApp (ou use <b>Compartilhar → BZD</b> no Android). A IA descobre o show e prepara o registro.</div>
+        <textarea id="txt" placeholder="[21/11, 01:30] Jaja Som 21-11: Dm7 monitor&#10;Pá mix rack"></textarea>
+        <button class="btn" id="bAn" onclick="analisar()">Analisar</button>
+      </div>
+      <div id="sug" class="card hide">
+        <label>Show</label><select id="sShow"></select>
+        <div id="motivo" class="sub" style="margin-top:6px"></div>
+        <label>O que vai ser registrado</label><textarea id="sReg" style="min-height:90px"></textarea>
+        <div id="perg"></div>
+        <button class="btn" onclick="aplicar()">✅ Lançar no show</button>
+        <button class="btn sec" onclick="limpar()">Descartar</button>
+      </div>
+      <div id="amsg"></div>
+    </section>
+    <section id="t-contatos" class="hide">
+      <input id="busca" placeholder="Buscar nome, cidade, empresa, função…" oninput="clearTimeout(window._b);window._b=setTimeout(contatos,350)">
+      <div id="lc" style="margin-top:12px"></div>
+    </section>
+    <section id="t-mais" class="hide">
+      <div class="card"><div class="tt">Checklist, rider e mapa</div><div class="sub">Checklist por etapa, bandejas, rider e pendências.</div>
+        <a class="btn sec" style="text-align:center;text-decoration:none" href="./">Abrir checklist</a></div>
+      <div id="eq" class="card hide"><div class="tt">Equipe (códigos de acesso)</div><div id="leq" class="sub"></div>
+        <label>Nome</label><input id="eNome"><label>Código (4 dígitos)</label><input id="eCod" inputmode="numeric" maxlength="6">
+        <button class="btn" onclick="addEq()">Adicionar / atualizar</button></div>
+      <div class="card"><div class="tt">Novo show</div>
+        <label>Data</label><input id="nData" type="date"><label>Título</label><input id="nTit" placeholder="Ordinário – Brasília/DF">
+        <label>Local</label><input id="nLoc"><label>Status</label><select id="nSt"><option>CONFIRMADO</option><option>ON</option><option>NEGOCIANDO</option><option>RESERVADO</option><option>PARTICIPAÇÃO</option></select>
+        <button class="btn" onclick="novoShow()">Criar show</button><div id="nmsg"></div></div>
+      <button class="btn sec" onclick="sair()">Sair</button>
+    </section>
+  </main>
+  <nav>
+    <button data-t="agenda" class="on"><i>📅</i>Agenda</button>
+    <button data-t="lancar"><i>➕</i>Lançar</button>
+    <button onclick="location.href='./'"><i>🏠</i>Início</button>
+    <button data-t="contatos"><i>👥</i>Contatos</button>
+    <button data-t="mais" id="navMais" class="hide"><i>☰</i>Mais</button>
+  </nav>
+</div>
+<script>
+const API='https://axbpgfktzmjtlntdhape.supabase.co/functions/v1/bzd';
+let COD=null, EU=null, SHOWS=[], ULT=null;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){}}
+async function api(acao,dados={}){const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({acao,codigo:COD,...dados})});const j=await r.json().catch(()=>({erro:'Sem resposta do servidor'}));if(j.erro)throw new Error(j.erro);return j}
+function aviso(el,t,c){$(el).innerHTML=t?`<div class="msg ${c}">${esc(t)}</div>`:''}
+
+async function entrar(c){COD=c||$('cod').value.trim();try{EU=await api('login');ls('bzd_cod',COD);if(!c&&!location.search&&!location.hash){location.href='./';return}iniciar()}catch(e){ls('bzd_cod',null);$('login').classList.remove('hide');$('app').classList.add('hide');if(!c)aviso('lmsg',e.message,'er')}}
+function sair(){ls('bzd_cod',null);location.reload()}
+function iniciar(){$('login').classList.add('hide');$('app').classList.remove('hide');$('quem').textContent=EU.nome;if(EU.papel==='admin'){$('eq').classList.remove('hide');$('navMais').classList.remove('hide');equipe()}
+  carregar();const p=new URLSearchParams(location.search);const t=[p.get('title'),p.get('text'),p.get('url')].filter(Boolean).join('\n');
+  if(t){history.replaceState(null,'',location.pathname);aba('lancar');$('txt').value=t;analisar()}else if(location.hash==='#mais'&&EU.papel==='admin')aba('mais');else if(location.hash==='#lancar')aba('lancar');}
+function aba(t){document.querySelectorAll('nav button[data-t]').forEach(b=>b.classList.toggle('on',b.dataset.t===t));['agenda','lancar','contatos','mais'].forEach(x=>$('t-'+x).classList.toggle('hide',x!==t));if(t==='contatos'&&!$('lc').innerHTML)contatos();scrollTo(0,0)}
+document.querySelectorAll('nav button[data-t]').forEach(b=>b.onclick=()=>aba(b.dataset.t));
+
+const MES=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'],DS=['dom','seg','ter','qua','qui','sex','sáb'];
+async function carregar(){try{SHOWS=(await api('shows')).shows;ls('bzd_cache',JSON.stringify(SHOWS))}catch(e){SHOWS=JSON.parse(ls('bzd_cache')||'[]')}render()}
+function render(){const hoje=new Date(Date.now()-3*36e5).toISOString().slice(0,10);let h='',m='';
+  for(const s of SHOWS){const d=new Date(s.data+'T12:00:00');const mm=MES[d.getMonth()]+' '+d.getFullYear();if(mm!==m){m=mm;h+=`<div class="mes">${mm}</div>`}
+    h+=`<div class="card ${s.data===hoje?'hoje aberto':''}" id="c-${esc(s.id)}" onclick="if(event.target.tagName!=='BUTTON'&&event.target.tagName!=='TEXTAREA')this.classList.toggle('aberto')">
+    <div class="row"><span class="dt">${DS[d.getDay()]} ${String(d.getDate()).padStart(2,'0')}</span><span class="tt">${esc(s.titulo)}</span><span class="chip ${esc(s.status)}">${esc(s.status)}</span></div>
+    <div class="sub">${s.inicio?esc(s.inicio)+(s.fim?'–'+esc(s.fim):'')+' · ':''}${esc(s.local)}</div>
+    <div class="info">${esc(s.info)||'<span class="sub">Sem informações ainda.</span>'}<br><button class="mini" onclick="editar('${esc(s.id)}')">✏️ Editar</button>${s.atualizado_por?`<span class="sub" style="margin-left:8px;font-size:12px">por ${esc(s.atualizado_por)}</span>`:''}</div></div>`}
+  $('t-agenda').innerHTML=h||'<div class="sub">Nenhum show.</div>'}
+function editar(id){const s=SHOWS.find(x=>x.id===id),c=$('c-'+id);c.querySelector('.info').innerHTML=`<label>Início</label><input id="ei" value="${esc(s.inicio)}"><label>Fim</label><input id="ef" value="${esc(s.fim)}"><label>Status</label><input id="es" value="${esc(s.status)}"><label>Local</label><input id="el" value="${esc(s.local)}"><label>Informações</label><textarea id="ex" style="min-height:220px">${esc(s.info)}</textarea><button class="btn" onclick="salvar('${esc(id)}')">Salvar</button>`}
+async function salvar(id){const s={...SHOWS.find(x=>x.id===id)};s.inicio=$('ei').value;s.fim=$('ef').value;s.status=$('es').value;s.local=$('el').value;s.info=$('ex').value;try{await api('salvar_show',{show:s});await carregar()}catch(e){alert(e.message)}}
+
+async function analisar(){const t=$('txt').value.trim();if(!t)return;$('bAn').innerHTML='<span class="spin"></span> Analisando…';aviso('amsg','');
+  try{ULT=await api('analisar',{texto:t});$('sShow').innerHTML='<option value="">— escolha o show —</option>'+ULT.opcoes.map(o=>`<option value="${esc(o.id)}">${o.data.split('-').reverse().slice(0,2).join('/')} · ${esc(o.titulo)}</option>`).join('');
+    $('sShow').value=ULT.show_id||'';$('sReg').value=ULT.registro||'';$('motivo').textContent=(ULT.confianca?'Confiança '+ULT.confianca+'. ':'')+(ULT.motivo||'');
+    $('perg').innerHTML=ULT.pergunta?`<div class="msg q">❓ ${esc(ULT.pergunta)}</div>`:'';$('sug').classList.remove('hide')}
+  catch(e){aviso('amsg',e.message,'er')}$('bAn').textContent='Analisar'}
+async function aplicar(){const id=$('sShow').value;if(!id)return aviso('amsg','Escolha o show.','er');try{await api('aplicar',{show_id:id,registro:$('sReg').value,entrada_id:ULT&&ULT.entrada_id});limpar();aviso('amsg','Lançado! A equipe já vê na agenda.','ok');carregar()}catch(e){aviso('amsg',e.message,'er')}}
+function limpar(){$('txt').value='';$('sug').classList.add('hide');ULT=null}
+
+async function contatos(){try{const l=(await api('contatos',{q:$('busca').value})).contatos;$('lc').innerHTML=l.map(c=>{const n=(c.telefone||'').replace(/\D/g,'');return `<div class="card">${n?`<a class="wa" href="https://wa.me/${n}" target="_blank">WhatsApp ↗</a>`:''}<div class="tt">${esc(c.nome)}</div><div class="sub">${[c.funcao,c.empresa,c.cidade].filter(Boolean).map(esc).join(' · ')}</div>${c.telefone?`<div class="sub">${esc(c.telefone)}</div>`:''}${c.notas?`<div class="sub" style="margin-top:6px">${esc(c.notas)}</div>`:''}</div>`}).join('')||'<div class="sub">Nada encontrado.</div>'}catch(e){$('lc').innerHTML=`<div class="msg er">${esc(e.message)}</div>`}}
+async function equipe(novo){try{const l=(await api('equipe',novo?{novo}:{})).equipe;$('leq').innerHTML=l.map(p=>`${esc(p.nome)} — <b>${esc(p.codigo)}</b>${p.papel==='admin'?' (admin)':''}`).join('<br>')}catch(e){}}
+function addEq(){const nome=$('eNome').value.trim(),codigo=$('eCod').value.trim();if(nome&&codigo){equipe({nome,codigo});$('eNome').value=$('eCod').value=''}}
+async function novoShow(){const data=$('nData').value,titulo=$('nTit').value.trim();if(!data||!titulo)return aviso('nmsg','Preencha data e título.','er');
+  const id=data+'-'+titulo.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,30);
+  try{await api('salvar_show',{show:{id,data,titulo,local:$('nLoc').value,status:$('nSt').value}});aviso('nmsg','Show criado.','ok');$('nTit').value=$('nLoc').value='';carregar()}catch(e){aviso('nmsg',e.message,'er')}}
+
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
+const c0=ls('bzd_cod');if(c0){COD=c0;EU={nome:'',papel:''};entrar(c0)}else $('login').classList.remove('hide');
+</script>
+</body>
+</html>
