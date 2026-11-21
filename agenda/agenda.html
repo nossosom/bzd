@@ -43,9 +43,9 @@ a{color:var(--ac)}.wa{float:right;text-decoration:none;font-size:13px}
 .hide{display:none!important}
 .card.sh{cursor:pointer}.card.sh .ar{color:var(--mut);margin-left:6px}
 .chips{display:flex;gap:6px;overflow-x:auto;margin:10px 0 4px;padding-bottom:4px}.chips button{flex:none;background:var(--card);color:var(--tx);border:1px solid var(--line);border-radius:99px;padding:7px 12px;font:600 13px Inter,system-ui}.chips button.on{background:var(--ac);color:#111;border-color:var(--ac)}
-details.uf{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:0 0 10px;overflow:hidden}details.uf summary{list-style:none;cursor:pointer;padding:12px 14px;display:flex;align-items:center;gap:10px;font-family:'Barlow Condensed';font-weight:800;font-size:22px;letter-spacing:.04em}details.uf summary::-webkit-details-marker{display:none}details.uf summary .n{margin-left:auto;font:700 12px Inter;background:var(--ac);color:#111;border-radius:99px;padding:2px 9px}details.uf[open] summary{border-bottom:1px solid var(--line)}
+details.uf{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:0 0 10px;overflow:hidden}details.uf>summary{list-style:none;cursor:pointer;padding:12px 14px;display:flex;align-items:center;gap:10px;font-family:'Barlow Condensed';font-weight:800;font-size:22px;letter-spacing:.04em}details.uf>summary::-webkit-details-marker{display:none}details.uf>summary .n{margin-left:auto;font:700 12px Inter;background:var(--ac);color:#111;border-radius:99px;padding:2px 9px}details.uf[open]>summary{border-bottom:1px solid var(--line)}
 .fl{display:flex;gap:6px;margin-top:8px}.fl select{flex:1;padding:9px;font-size:14px}
-details.ci{border-top:1px solid var(--line)}details.ci summary{list-style:none;cursor:pointer;padding:11px 14px;display:flex;align-items:center;gap:8px;color:var(--ac);font:700 13px Inter;text-transform:uppercase;letter-spacing:.05em}details.ci summary::-webkit-details-marker{display:none}details.ci summary::before{content:"▸";color:var(--mut)}details.ci[open] summary::before{content:"▾"}details.ci summary .n{margin-left:auto;color:var(--mut);font-weight:600}details.uf summary::after{content:"▸";color:var(--mut);font-size:18px;margin-left:4px}details.uf[open] summary::after{content:"▾"}
+details.ci{border-top:1px solid var(--line)}details.ci summary{list-style:none;cursor:pointer;padding:11px 14px;display:flex;align-items:center;gap:8px;color:var(--ac);font:700 13px Inter;text-transform:uppercase;letter-spacing:.05em}details.ci summary::-webkit-details-marker{display:none}details.ci summary::before{content:"▸";color:var(--mut)}details.ci[open] summary::before{content:"▾"}details.ci summary .n{margin-left:auto;color:var(--mut);font-weight:600}details.uf>summary::after{content:"▸";color:var(--mut);font-size:18px;margin-left:4px}details.uf[open]>summary::after{content:"▾"}
 .pc{border-top:1px solid var(--line);padding:10px 14px}.pc:first-of-type{border-top:0}.pc .nm{font-weight:700}.pc .sub{font-size:13px}
 .acts{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}.acts a{flex:1;min-width:90px;text-align:center;text-decoration:none;border-radius:10px;padding:9px 8px;font:700 14px Inter,system-ui;border:1px solid var(--line);color:var(--tx);background:var(--card2)}.acts a.wz{background:#33ccff22;border-color:#33ccff66}.acts a.wa2{background:#25d36622;border-color:#25d36666}.acts a.mp{background:#fdbe0022;border-color:#fdbe0066}
 .shd h2{font-family:'Barlow Condensed';font-weight:800;font-size:30px;line-height:1.05;margin:4px 0 6px;text-transform:uppercase}.shd .bk{background:none;border:0;color:var(--ac);font:700 15px Inter;padding:4px 0;margin-bottom:6px;cursor:pointer}
@@ -84,6 +84,8 @@ details.ci{border-top:1px solid var(--line)}details.ci summary{list-style:none;c
     </section>
     <section id="t-show" class="hide shd"></section>
     <section id="t-contatos" class="hide">
+      <button class="btn" style="margin:0 0 10px" onclick="formCt()">➕ Novo contato</button>
+      <div id="ctForm" class="card hide"></div>
       <input id="busca" placeholder="Buscar nome, cidade, empresa, função…" oninput="clearTimeout(window._b);window._b=setTimeout(rMapa,200)">
       <div class="fl"><select id="fUf" onchange="rMapa()"></select><select id="fTipo" onchange="rMapa()"><option value="">Todos os tipos</option><option value="tec">Técnicos e fornecedores</option><option value="ag">Contatos de shows</option><option value="eq">Equipe</option></select></div>
       <div class="chips" id="chips"></div>
@@ -185,12 +187,28 @@ function rMapa(){if(!CONT)return;const q=nrm($('busca').value),fu=$('fUf').value
   const G={};l.forEach(c=>{const u=ufDe(c)||'ZZ',ci=cidDe(c)||'Cidade não informada';(G[u]=G[u]||{})[ci]=(G[u][ci]||[]).concat(c)});
   const ufs=Object.keys(G).sort((a,b)=>a==='ZZ'?1:b==='ZZ'?-1:Object.values(G[b]).flat().length-Object.values(G[a]).flat().length);
   const abreTudo=!!q&&l.length<=15;
-  const pc=c=>`<div class="pc"><div class="nm">${esc(String(c.nome).replace(/\s*\(sem nome salvo\)/i,''))}</div><div class="sub">${[c.funcao,c.empresa].filter(Boolean).map(esc).join(' · ')}</div>${c.telefone?`<div class="sub">${esc(c.telefone)}</div>`:''}${c.notas?`<div class="sub" style="margin-top:4px">${esc(c.notas)}</div>`:''}${botoes(c.telefone)}</div>`;
+  const pc=c=>`<div class="pc"><button class="mini" style="float:right;margin:0 0 4px 8px;padding:4px 9px" onclick="formCt(${Number(c.id)})">✏️</button><div class="nm">${esc(String(c.nome).replace(/\s*\(sem nome salvo\)/i,''))}</div><div class="sub">${[c.funcao,c.empresa].filter(Boolean).map(esc).join(' · ')}</div>${c.telefone?`<div class="sub">${esc(c.telefone)}</div>`:''}${c.notas?`<div class="sub" style="margin-top:4px">${esc(c.notas)}</div>`:''}${botoes(c.telefone)}</div>`;
   const filtros=!!(q||fu||ft||AREA);
   $('lc').innerHTML=`<div class="sub" style="margin:0 2px 10px;display:flex;align-items:center;gap:8px">${l.length} contato${l.length===1?'':'s'}${filtros?(l.length===1?' encontrado':' encontrados'):' · toque no estado para abrir'}${filtros?'<button class="mini" style="margin:0 0 0 auto" onclick="limparMapa()">Limpar filtros</button>':''}</div>`+ufs.map(u=>{const cs=G[u],n=Object.values(cs).flat().length,ab=abreTudo||!!fu||ABERTOS.has(u);
     return `<details class="uf" data-k="${u}" ${ab?'open':''}><summary>${u==='ZZ'?'Sem estado':esc(u)} <small class="sub" style="font:500 13px Inter">${u==='ZZ'?'':esc(UFN[u]||'')}</small><span class="n">${n}</span></summary>`+
     Object.keys(cs).sort((a,b)=>cs[b].length-cs[a].length).map(ci=>{const k=u+'|'+ci,ac=abreTudo||Object.keys(cs).length===1||ABERTOS.has(k);return `<details class="ci" data-k="${esc(k)}" ${ac?'open':''}><summary>${esc(ci)}<span class="n">${cs[ci].length}</span></summary>${cs[ci].map(pc).join('')}</details>`}).join('')+'</details>'}).join('')||'<div class="sub">Nada encontrado.</div>';
   $('lc').querySelectorAll('details').forEach(d=>d.querySelector('summary').addEventListener('click',()=>setTimeout(()=>{d.open?ABERTOS.add(d.dataset.k):ABERTOS.delete(d.dataset.k)},0)))}
+function formCt(id){const c=id?CONT.find(x=>x.id===id)||{}:{};const f=$('ctForm');const A=['Som','Luz','Palco','Backline','Produção','Roadie','Logística','Equipamento','Outros'];
+  f.innerHTML=`<div class="tt">${id?'Editar contato':'Novo contato'}</div>
+  <label>Nome *</label><input id="cfN" value="${esc(String(c.nome||'').replace(/\s*\(sem nome salvo\)/i,''))}">
+  <label>Telefone</label><input id="cfT" inputmode="tel" placeholder="(61) 99999-9999" value="${esc(c.telefone||'')}">
+  <label>Função</label><input id="cfF" placeholder="Técnico de PA, iluminador, produtor…" value="${esc(c.funcao||'')}">
+  <label>Área</label><select id="cfA"><option value="">—</option>${A.map(a=>`<option ${nrm(c.area)===nrm(a)?'selected':''}>${a}</option>`).join('')}${c.area&&!A.some(a=>nrm(a)===nrm(c.area))?`<option selected>${esc(c.area)}</option>`:''}</select>
+  <label>Empresa / casa / evento</label><input id="cfE" value="${esc(c.empresa||'')}">
+  <label>Cidade/UF</label><input id="cfC" placeholder="Brasília/DF" value="${esc(c.cidade||'')}">
+  <label>Notas</label><textarea id="cfO" style="min-height:80px">${esc(c.notas||'')}</textarea>
+  <button class="btn" id="cfS" onclick="salvarCt(${id||0})">Salvar</button><button class="btn sec" onclick="$('ctForm').classList.add('hide')">Cancelar</button><div id="cfM"></div>`;
+  f.classList.remove('hide');scrollTo(0,0);$('cfN').focus()}
+async function salvarCt(id){const ant=id?CONT.find(x=>x.id===id)||{}:{};const c={...ant,id:id||undefined,nome:$('cfN').value.trim(),telefone:$('cfT').value.trim(),funcao:$('cfF').value.trim(),area:$('cfA').value,empresa:$('cfE').value.trim(),cidade:$('cfC').value.trim(),notas:$('cfO').value.trim()};
+  if(!c.nome)return aviso('cfM','Informe o nome.','er');$('cfS').innerHTML='<span class="spin"></span> Salvando…';
+  try{const r=await api('salvar_contato',{contato:c});const i=CONT.findIndex(x=>x.id===r.contato.id);if(i>=0)CONT[i]=r.contato;else CONT.push(r.contato);ls('bzd_cont',JSON.stringify(CONT));
+    $('ctForm').classList.add('hide');$('busca').value=r.contato.nome;rMapa();}
+  catch(e){$('cfS').textContent='Salvar';aviso('cfM',e instanceof TypeError?'Sem internet agora. Tente de novo quando o sinal voltar.':e.message,'er')}}
 function limparMapa(){$('busca').value='';$('fUf').value='';$('fTipo').value='';AREA='';contatos()}
 function fonesDe(t){const out=[],vis=new Set();const re=/(?:\+?55\s?)?\(?\b(\d{2})\)?\s?(9?\d{4})[-\s.]?(\d{4})\b/g;let m;
   while((m=re.exec(t))){const num='55'+m[1]+m[2]+m[3];if(vis.has(num))continue;vis.add(num);
