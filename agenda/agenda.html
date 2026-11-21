@@ -151,8 +151,12 @@ let CONT=null,AREA='';
 const UFS='AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO'.split(' ');
 const UFN={AC:'Acre',AL:'Alagoas',AP:'Amapá',AM:'Amazonas',BA:'Bahia',CE:'Ceará',DF:'Distrito Federal',ES:'Espírito Santo',GO:'Goiás',MA:'Maranhão',MT:'Mato Grosso',MS:'Mato Grosso do Sul',MG:'Minas Gerais',PA:'Pará',PB:'Paraíba',PR:'Paraná',PE:'Pernambuco',PI:'Piauí',RJ:'Rio de Janeiro',RN:'Rio Grande do Norte',RS:'Rio Grande do Sul',RO:'Rondônia',RR:'Roraima',SC:'Santa Catarina',SP:'São Paulo',SE:'Sergipe',TO:'Tocantins'};
 const nrm=t=>String(t||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').trim();
-function ufDe(c){if(c.estado&&UFS.includes(String(c.estado).toUpperCase()))return String(c.estado).toUpperCase();const m=String(c.cidade||'').match(/[\/\-–,]\s*([A-Za-z]{2})\b\s*$/);if(m&&UFS.includes(m[1].toUpperCase()))return m[1].toUpperCase();return ''}
-function cidDe(c){return String(c.cidade||'').replace(/\s*[\/\-–,]\s*[A-Za-z]{2}\s*$/,'').trim()}
+const DDD={11:'SP',12:'SP',13:'SP',14:'SP',15:'SP',16:'SP',17:'SP',18:'SP',19:'SP',21:'RJ',22:'RJ',24:'RJ',27:'ES',28:'ES',31:'MG',32:'MG',33:'MG',34:'MG',35:'MG',37:'MG',38:'MG',41:'PR',42:'PR',43:'PR',44:'PR',45:'PR',46:'PR',47:'SC',48:'SC',49:'SC',51:'RS',53:'RS',54:'RS',55:'RS',61:'DF',62:'GO',64:'GO',63:'TO',65:'MT',66:'MT',67:'MS',68:'AC',69:'RO',71:'BA',73:'BA',74:'BA',75:'BA',77:'BA',79:'SE',81:'PE',87:'PE',82:'AL',83:'PB',84:'RN',85:'CE',88:'CE',86:'PI',89:'PI',91:'PA',93:'PA',94:'PA',92:'AM',97:'AM',95:'RR',96:'AP',98:'MA',99:'MA'};
+function ufDe(c){const e=String(c.estado||'').toUpperCase();if(UFS.includes(e))return e;const ci=String(c.cidade||'').trim();
+  const m=ci.match(/[\/\-–,(]\s*([A-Za-z]{2})\)?\s*$/)||ci.match(/^([A-Za-z]{2})$/);if(m&&UFS.includes(m[1].toUpperCase()))return m[1].toUpperCase();
+  const nm=nrm(ci);for(const u of UFS)if(nrm(UFN[u])===nm)return u;
+  const n=telBR(c.telefone);if(n&&DDD[n.slice(2,4)])return DDD[n.slice(2,4)];return ''}
+function cidDe(c){const ci=String(c.cidade||'').trim();if(!ci||/^sem cidade/i.test(ci)||/^[A-Za-z]{2}$/.test(ci)||UFS.some(u=>nrm(UFN[u])===nrm(ci)))return 'Cidade não informada';return ci.replace(/\s*[\/\-–,]\s*[A-Za-z]{2}\s*$/,'').trim()}
 function telBR(t){let n=String(t||'').replace(/\D/g,'');if(n.length===10||n.length===11)n='55'+n;return n.length>=12?n:''}
 function botoes(tel){const n=telBR(tel);return n?`<div class="acts"><a href="tel:+${n}" onclick="event.stopPropagation()">📞 Ligar</a><a class="wa2" href="https://wa.me/${n}" target="_blank" onclick="event.stopPropagation()">💬 WhatsApp</a></div>`:''}
 async function carregarContatos(){
@@ -166,7 +170,7 @@ async function contatos(){$('chips').innerHTML=AREAS.map(([k,t])=>`<button data-
   $('chips').querySelectorAll('button').forEach(b=>b.onclick=()=>{AREA=b.dataset.a;contatos()});
   if(!CONT){CONT=JSON.parse(ls('bzd_cont')||'null');if(CONT)rMapa();else $('lc').innerHTML='<div class="sub">Carregando…</div>';await carregarContatos()}rMapa()}
 function rMapa(){if(!CONT)return;const q=nrm($('busca').value);
-  const l=CONT.filter(c=>{if(/sem nome salvo/i.test(c.nome)&&!c.telefone)return false;const blob=nrm([c.nome,c.funcao,c.area,c.empresa,c.cidade,c.notas,c.tipo].join(' '));if(AREA&&!nrm([c.area,c.funcao,c.tipo,c.notas].join(' ')).includes(AREA))return false;return !q||q.split(/\s+/).every(w=>blob.includes(w))});
+  const l=CONT.filter(c=>{if(!c.telefone&&(/sem nome salvo/i.test(c.nome)||/^sem cidade/i.test(c.cidade||'')))return false;const blob=nrm([c.nome,c.funcao,c.area,c.empresa,c.cidade,c.notas,c.tipo].join(' '));if(AREA&&!nrm([c.area,c.funcao,c.tipo,c.notas].join(' ')).includes(AREA))return false;return !q||q.split(/\s+/).every(w=>blob.includes(w))});
   const G={};l.forEach(c=>{const u=ufDe(c)||'ZZ',ci=cidDe(c)||'Sem cidade';(G[u]=G[u]||{})[ci]=(G[u][ci]||[]).concat(c)});
   const ufs=Object.keys(G).sort((a,b)=>a==='ZZ'?1:b==='ZZ'?-1:Object.values(G[b]).flat().length-Object.values(G[a]).flat().length);
   const abre=q||AREA||ufs.length<=2;
