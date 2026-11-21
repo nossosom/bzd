@@ -52,6 +52,8 @@ details.ci{border-top:1px solid var(--line)}details.ci summary{list-style:none;c
 .kv{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:15px}.kv span{color:var(--mut);font-size:13px;padding-top:1px}
 .sec{color:var(--ac);font-family:'Barlow Condensed';font-weight:800;font-size:18px;letter-spacing:.06em;text-transform:uppercase;margin:16px 2px 8px}
 .txi{white-space:pre-wrap;font-size:14px}
+#mapa{height:340px;border-radius:14px;border:1px solid var(--line);margin:8px 0 12px;background:#17171b}.leaflet-container{font:13px Inter,system-ui}.pin{background:var(--ac);color:#111;border-radius:50%;width:24px;height:24px;line-height:24px;text-align:center;font:800 12px Inter;border:2px solid #111}.pin.b{background:#6ea8fe}
+.leg{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-top:1px solid var(--line)}.leg:first-child{border-top:0}.leg .nn{flex:none;width:24px;height:24px;border-radius:50%;background:var(--ac);color:#111;font:800 12px/24px Inter;text-align:center}.leg .km{color:var(--mut);font-size:13px;margin-top:2px}
 </style>
 </head>
 <body>
@@ -83,6 +85,7 @@ details.ci{border-top:1px solid var(--line)}details.ci summary{list-style:none;c
       <div id="amsg"></div>
     </section>
     <section id="t-show" class="hide shd"></section>
+    <section id="t-rota" class="hide shd"></section>
     <section id="t-contatos" class="hide">
       <button class="btn hide" id="bNovoCt" style="margin:0 0 10px" onclick="formCt()">➕ Novo contato</button>
       <div id="ctForm" class="card hide"></div>
@@ -127,7 +130,7 @@ function iniciar(){$('login').classList.add('hide');$('app').classList.remove('h
   carregar();const p=new URLSearchParams(location.search);let t=[p.get('title'),p.get('text'),p.get('url')].filter(Boolean).join('\n');
   if(p.get('shared')){(async()=>{let x='';try{const c=await caches.open('bzd-share');const r=await c.match('share.txt');if(r)x=await r.text();await c.delete('share.txt')}catch(e){}if(x.length>30000)x=x.slice(0,2000)+'\n[...]\n'+x.slice(-28000);history.replaceState(null,'',location.pathname);aba('lancar');$('txt').value=x;if(x.trim())analisar();else alert('Não consegui ler o arquivo compartilhado.')})();return}
   if(t){history.replaceState(null,'',location.pathname);aba('lancar');$('txt').value=t;analisar()}else if(location.hash==='#mais'&&EU.papel==='admin')aba('mais');else if(location.hash==='#mapa')aba('contatos');else if(location.hash==='#lancar')aba('lancar');}
-function aba(t){document.querySelectorAll('nav button[data-t]').forEach(b=>b.classList.toggle('on',b.dataset.t===t));['agenda','lancar','contatos','mais','show'].forEach(x=>$('t-'+x).classList.toggle('hide',x!==t));$('hTit').textContent={agenda:'Agenda',lancar:'Lançar',contatos:'Contatos',mais:'Mais',show:'Show'}[t];if(t==='contatos')contatos();scrollTo(0,0)}
+function aba(t){document.querySelectorAll('nav button[data-t]').forEach(b=>b.classList.toggle('on',b.dataset.t===t));['agenda','lancar','contatos','mais','show','rota'].forEach(x=>$('t-'+x).classList.toggle('hide',x!==t));$('hTit').textContent={agenda:'Agenda',lancar:'Lançar',contatos:'Contatos',mais:'Mais',show:'Show',rota:'Mapa'}[t];if(t==='contatos')contatos();if(t==='rota')mapaRota();scrollTo(0,0)}
 document.querySelectorAll('nav button[data-t]').forEach(b=>b.onclick=()=>aba(b.dataset.t));
 
 const MES=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'],DS=['dom','seg','ter','qua','qui','sex','sáb'];
@@ -140,9 +143,9 @@ function render(){const hoje=new Date(Date.now()-3*36e5).toISOString().slice(0,1
     <div class="row"><span class="dt">${DS[d.getDay()]} ${String(d.getDate()).padStart(2,'0')}</span><span class="tt">${esc(s.titulo)}</span><span class="chip ${esc(s.status)}">${esc(s.status)}</span><span class="ar">›</span></div>
     <div class="sub">${s.inicio?esc(s.inicio)+(s.fim?'–'+esc(s.fim):'')+' · ':''}${esc(s.local)}</div>
     </div>`}
-  $('t-agenda').innerHTML=(PAS.length?`<details class="uf" style="margin-top:6px"><summary>Shows passados<span class="n">${PAS.length}</span></summary><div style="padding:4px 10px 10px">${hp}</div></details>`:'')+(h||'<div class="sub">Nenhum show futuro.</div>')}
-function editar(id){const s=SHOWS.find(x=>x.id===id);$('shInfo').innerHTML=`<label>Início</label><input id="ei" value="${esc(s.inicio)}"><label>Fim</label><input id="ef" value="${esc(s.fim)}"><label>Status</label><input id="es" value="${esc(s.status)}"><label>Local</label><input id="el" value="${esc(s.local)}"><label>Informações</label><textarea id="ex" style="min-height:220px">${esc(s.info)}</textarea><button class="btn" onclick="salvar('${esc(id)}')">Salvar</button>`}
-async function salvar(id){const s={...SHOWS.find(x=>x.id===id)};s.inicio=$('ei').value;s.fim=$('ef').value;s.status=$('es').value;s.local=$('el').value;s.info=$('ex').value;try{await api('salvar_show',{show:s});await carregar();abrirShow(id)}catch(e){alert(e instanceof TypeError?'Sem internet agora. Tente salvar quando o sinal voltar.':e.message)}}
+  $('t-agenda').innerHTML=`<button class="btn sec" style="margin:6px 0 4px" onclick="aba('rota')">🗺️ Mapa e distâncias da agenda</button>`+(PAS.length?`<details class="uf" style="margin-top:6px"><summary>Shows passados<span class="n">${PAS.length}</span></summary><div style="padding:4px 10px 10px">${hp}</div></details>`:'')+(h||'<div class="sub">Nenhum show futuro.</div>')}
+function editar(id){const s=SHOWS.find(x=>x.id===id);$('shInfo').innerHTML=`<label>Início</label><input id="ei" value="${esc(s.inicio)}"><label>Fim</label><input id="ef" value="${esc(s.fim)}"><label>Status</label><input id="es" value="${esc(s.status)}"><label>Local</label><input id="el" value="${esc(s.local)}"><label>Hotel</label><input id="eh" placeholder="Nome e endereço do hotel" value="${esc(s.hotel||'')}"><label>Transporte</label><input id="et" placeholder="Van, voo, motorista, horário de saída…" value="${esc(s.transporte||'')}"><label>Informações</label><textarea id="ex" style="min-height:220px">${esc(s.info)}</textarea><button class="btn" onclick="salvar('${esc(id)}')">Salvar</button>`}
+async function salvar(id){const s={...SHOWS.find(x=>x.id===id)};s.inicio=$('ei').value;s.fim=$('ef').value;s.status=$('es').value;s.local=$('el').value;s.hotel=$('eh').value;s.transporte=$('et').value;s.info=$('ex').value;try{await api('salvar_show',{show:s});await carregar();abrirShow(id)}catch(e){alert(e instanceof TypeError?'Sem internet agora. Tente salvar quando o sinal voltar.':e.message)}}
 
 async function colar(){try{const c=await navigator.clipboard.readText();if(!c.trim())return aviso('amsg','A área de transferência está vazia. No WhatsApp, segure a mensagem e toque em Copiar.','er');$('txt').value=c;analisar()}catch(e){$('txt').focus();aviso('amsg','Não consegui ler a cópia. Toque e segure na caixa e escolha Colar.','q')}}
 async function analisar(){const t=$('txt').value.trim();if(!t)return;$('bAn').innerHTML='<span class="spin"></span> Analisando…';aviso('amsg','');
@@ -228,12 +231,43 @@ function abrirShow(id){const s=SHOWS.find(x=>x.id===id);if(!s)return;const d=new
   const fs=fonesDe(s.info||'');const cid=nrm(String(loc).split(/[\/\-–,]/)[0]);
   const cc=(CONT||JSON.parse(ls('bzd_cont')||'[]')).filter(c=>cid&&nrm(c.cidade).startsWith(cid)&&!fs.some(f=>f.num===telBR(c.telefone))).slice(0,12);
   $('t-show').innerHTML=`<button class="bk" onclick="aba('agenda')">‹ Voltar à agenda</button>
-  <h2>${esc(s.titulo)}</h2><div class="kv"><span>Data</span><b>${esc(dia)}</b>${s.inicio?`<span>Horário</span><b>${esc(s.inicio)}${s.fim?' – '+esc(s.fim):''}</b>`:''}<span>Local</span><b>${esc(s.local||'—')}</b><span>Status</span><b><span class="chip ${esc(s.status)}" style="margin:0">${esc(s.status)}</span></b></div>
+  <h2>${esc(s.titulo)}</h2><div class="kv"><span>Data</span><b>${esc(dia)}</b>${s.inicio?`<span>Horário</span><b>${esc(s.inicio)}${s.fim?' – '+esc(s.fim):''}</b>`:''}<span>Local</span><b>${esc(s.local||'—')}</b><span>Status</span><b><span class="chip ${esc(s.status)}" style="margin:0">${esc(s.status)}</span></b>${s.hotel?`<span>Hotel</span><b>${esc(s.hotel)}</b>`:''}${s.transporte?`<span>Transporte</span><b>${esc(s.transporte)}</b>`:''}</div>
   <div class="acts"><a class="mp" href="https://www.google.com/maps/search/?api=1&query=${qy}" target="_blank">📍 Maps</a><a class="wz" href="https://waze.com/ul?q=${qy}&navigate=yes" target="_blank">🚗 Waze</a></div>
+  <div class="sec">Deslocamento</div><div class="card" id="shLeg"><span class="sub">Calculando distância…</span></div>
   ${fs.length?`<div class="sec">Contatos do show</div><div class="card" style="padding:0">${fs.map(f=>`<div class="pc"><div class="nm">${esc(f.nome)}</div><div class="sub">${esc(f.txt)}</div>${botoes(f.num)}</div>`).join('')}</div>`:''}
   
   <div class="sec">Informações</div><div class="card" id="shInfo"><div class="txi">${esc(s.info)||'<span class="sub">Sem informações ainda.</span>'}</div><button class="mini" onclick="editar('${esc(s.id)}')">✏️ Editar</button>${s.atualizado_por?`<span class="sub" style="margin-left:8px;font-size:12px">por ${esc(s.atualizado_por)}</span>`:''}</div>`;
-  aba('show')}
+  aba('show');legShow(s)}
+function cidadeShow(s){const t=[s.titulo,s.local].join(' | ');const m=[...t.matchAll(/([A-Za-zÀ-ÿ'. \-]{2,40})\/\s?([A-Z]{2})\b/g)];if(!m.length)return '';const x=m[0];return x[1].split(/[-|,]/).pop().trim()+'/'+x[2]}
+const GEO=JSON.parse(ls('bzd_geo')||'{}'),ROT=JSON.parse(ls('bzd_rot')||'{}');let _gq=Promise.resolve();
+function geo(c){if(!c)return Promise.resolve(null);if(GEO[c]!==undefined)return Promise.resolve(GEO[c]);
+  _gq=_gq.then(async()=>{if(GEO[c]!==undefined)return;try{const[ci,uf]=c.split('/');const u='https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=br&city='+encodeURIComponent(ci)+'&state='+encodeURIComponent(UFN[uf]||uf);
+    const j=await (await fetch(u)).json();GEO[c]=j&&j[0]?[+j[0].lat,+j[0].lon]:null;ls('bzd_geo',JSON.stringify(GEO))}catch(e){}await new Promise(r=>setTimeout(r,1100))});
+  return _gq.then(()=>GEO[c]===undefined?null:GEO[c])}
+function hav(A,B){const t=x=>x*Math.PI/180;const d=Math.sin(t(B[0]-A[0])/2)**2+Math.cos(t(A[0]))*Math.cos(t(B[0]))*Math.sin(t(B[1]-A[1])/2)**2;return 2*6371*Math.asin(Math.sqrt(d))}
+async function rota(a,b){if(!a||!b)return null;if(nrm(a)===nrm(b))return {km:0,h:0,mesma:true};const k=a+'>'+b;if(ROT[k])return ROT[k];const A=await geo(a),B=await geo(b);if(!A||!B)return null;
+  let r={km:Math.round(hav(A,B)*1.25),h:null,est:true};
+  try{const j=await (await fetch('https://router.project-osrm.org/route/v1/driving/'+A[1]+','+A[0]+';'+B[1]+','+B[0]+'?overview=false')).json();if(j.routes&&j.routes[0])r={km:Math.round(j.routes[0].distance/1000),h:j.routes[0].duration/3600,est:false}}catch(e){}
+  if(!r.est){ROT[k]=r;ls('bzd_rot',JSON.stringify(ROT))}return r}
+function fmtR(r){if(!r)return 'distância indisponível agora';if(r.mesma)return 'mesma cidade';const h=r.h?Math.floor(r.h)+'h'+String(Math.round(r.h%1*60)).padStart(2,'0'):'';return r.km.toLocaleString('pt-BR')+' km'+(h?' · '+h+' de carro':'')+(r.est?' (aprox.)':'')+(r.km>700?' · ✈️ provável voo':'')}
+function origemDe(s){const ant=SHOWS.filter(x=>x.data<s.data&&cidadeShow(x)).sort((a,b)=>a.data<b.data?-1:1).pop();if(ant&&(new Date(s.data)-new Date(ant.data))/864e5<=2)return {c:cidadeShow(ant),s:ant};return {c:'Brasília/DF',s:null}}
+function dirUrl(a,b){return 'https://www.google.com/maps/dir/?api=1&travelmode=driving&origin='+encodeURIComponent(a)+'&destination='+encodeURIComponent(b)}
+async function legShow(s){const el=$('shLeg');const c=cidadeShow(s);if(!c){el.innerHTML='<span class="sub">Cidade do show não identificada.</span>';return}const o=origemDe(s);const r=await rota(o.c,c);if(!$('shLeg'))return;
+  $('shLeg').innerHTML=`<div class="sub">Saindo de <b style="color:var(--tx)">${esc(o.c)}</b>${o.s?' (show de '+o.s.data.split('-').reverse().slice(0,2).join('/')+')':' (base)'}</div><div style="font-size:18px;font-weight:700;margin-top:4px">${esc(fmtR(r))}</div>${r&&!r.mesma?`<div class="acts"><a class="mp" href="${dirUrl(o.c,c)}" target="_blank">🧭 Rota no Maps</a></div>`:''}`}
+let _map=null;
+function leaflet(){return window.L?Promise.resolve():new Promise((ok,er)=>{const l=document.createElement('link');l.rel='stylesheet';l.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';document.head.appendChild(l);const sc=document.createElement('script');sc.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';sc.onload=ok;sc.onerror=er;document.head.appendChild(sc)})}
+async function mapaRota(){const hoje=new Date(Date.now()-3*36e5).toISOString().slice(0,10);const L0=SHOWS.filter(x=>x.data>=hoje&&cidadeShow(x)).slice(0,25);
+  $('t-rota').innerHTML=`<button class="bk" onclick="aba('agenda')">‹ Voltar à agenda</button><h2>Próximos shows</h2><div class="sub">Distâncias de carro entre um show e outro. Quando passam mais de 2 dias sem show, a saída é de Brasília.</div><div id="mapa"></div><div class="card" style="padding:0" id="legs"><div class="leg"><span class="sub">Calculando…</span></div></div>`;
+  try{await leaflet();if(_map){_map.remove();_map=null}_map=L.map('mapa',{zoomControl:true}).setView([-14.5,-47.9],4);L.tileLayer('https://{s}.basemap.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO',maxZoom:18}).addTo(_map)}catch(e){$('mapa').innerHTML='<div class="sub" style="padding:14px">Mapa indisponível sem internet.</div>'}
+  const pts=[],legs=[];let tot=0;
+  for(let i=0;i<L0.length;i++){const s=L0[i],c=cidadeShow(s),o=origemDe(s);const r=await rota(o.c,c);const g=await geo(c);if(r&&!r.mesma)tot+=r.km;
+    legs.push(`<div class="leg" onclick="abrirShow('${esc(s.id)}')" style="cursor:pointer"><span class="nn">${i+1}</span><div><b>${s.data.split('-').reverse().slice(0,2).join('/')} · ${esc(c)}</b><div class="sub" style="font-size:13px">${esc(s.titulo)}</div><div class="km">${o.s?'de '+esc(o.c):'de Brasília (base)'} → ${esc(fmtR(r))}</div></div></div>`);
+    if($('legs'))$('legs').innerHTML=legs.join('')+(i<L0.length-1?'<div class="leg"><span class="sub">Calculando os próximos…</span></div>':'')+(i===L0.length-1?`<div class="leg"><span class="sub">Total na estrada: <b style="color:var(--tx)">${tot.toLocaleString('pt-BR')} km</b> (sem contar voos prováveis)</span></div>`:'');
+    if(window.L&&_map&&g){const o0=await geo(o.c);if(o0&&!o.s){L.marker(o0,{icon:L.divIcon({className:'',html:'<div class="pin b">B</div>',iconSize:[24,24]})}).addTo(_map)}
+      if(o0)L.polyline([o0,g],{color:o.s?'#fdbe00':'#6ea8fe',weight:2,opacity:.7,dashArray:o.s?null:'4 6'}).addTo(_map);
+      L.marker(g,{icon:L.divIcon({className:'',html:'<div class="pin">'+(i+1)+'</div>',iconSize:[24,24]})}).addTo(_map).bindPopup('<b>'+esc(s.titulo)+'</b><br>'+s.data.split('-').reverse().join('/'));pts.push(g);if(o0)pts.push(o0);
+      try{_map.fitBounds(pts,{padding:[24,24],maxZoom:9})}catch(e){}}}
+  if(!L0.length)$('legs').innerHTML='<div class="leg"><span class="sub">Nenhum show futuro com cidade.</span></div>'}
 function offl(){document.body.classList.toggle('offline',!navigator.onLine)}addEventListener('online',()=>{offl();carregar()});addEventListener('offline',offl);offl();
 async function equipe(novo){try{const l=(await api('equipe',novo?{novo}:{})).equipe;$('leq').innerHTML=l.map(p=>`${esc(p.nome)} — <b>${esc(p.codigo)}</b>${p.papel==='admin'?' (admin)':''}`).join('<br>')}catch(e){}}
 function addEq(){const nome=$('eNome').value.trim(),codigo=$('eCod').value.trim();if(nome&&codigo){equipe({nome,codigo});$('eNome').value=$('eCod').value=''}}
