@@ -74,8 +74,8 @@ a{color:var(--ac)}.wa{float:right;text-decoration:none;font-size:13px}
       <div id="lc" style="margin-top:12px"></div>
     </section>
     <section id="t-mais" class="hide">
-      <div class="card"><div class="tt">Checklist e mapas</div><div class="sub">O checklist antigo continua no app do Google.</div>
-        <a class="btn sec" style="text-align:center;text-decoration:none" href="https://tinyurl.com/appbzd" target="_blank">Abrir checklist (Google)</a></div>
+      <div class="card"><div class="tt">Checklist, rider e mapa</div><div class="sub">Checklist por etapa, bandejas, rider e pendências.</div>
+        <a class="btn sec" style="text-align:center;text-decoration:none" href="checklist.html">Abrir checklist</a></div>
       <div id="eq" class="card hide"><div class="tt">Equipe (códigos de acesso)</div><div id="leq" class="sub"></div>
         <label>Nome</label><input id="eNome"><label>Código (4 dígitos)</label><input id="eCod" inputmode="numeric" maxlength="6">
         <button class="btn" onclick="addEq()">Adicionar / atualizar</button></div>
@@ -89,6 +89,7 @@ a{color:var(--ac)}.wa{float:right;text-decoration:none;font-size:13px}
   <nav>
     <button data-t="agenda" class="on"><i>📅</i>Agenda</button>
     <button data-t="lancar"><i>➕</i>Lançar</button>
+    <button onclick="location.href='checklist.html'"><i>✅</i>Checklist</button>
     <button data-t="contatos"><i>👥</i>Contatos</button>
     <button data-t="mais"><i>☰</i>Mais</button>
   </nav>
@@ -107,8 +108,8 @@ function sair(){ls('bzd_cod',null);location.reload()}
 function iniciar(){$('login').classList.add('hide');$('app').classList.remove('hide');$('quem').textContent=EU.nome;if(EU.papel==='admin'){$('eq').classList.remove('hide');equipe()}
   carregar();const p=new URLSearchParams(location.search);const t=[p.get('title'),p.get('text'),p.get('url')].filter(Boolean).join('\n');
   if(t){history.replaceState(null,'',location.pathname);aba('lancar');$('txt').value=t;analisar()}}
-function aba(t){document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));['agenda','lancar','contatos','mais'].forEach(x=>$('t-'+x).classList.toggle('hide',x!==t));if(t==='contatos'&&!$('lc').innerHTML)contatos();scrollTo(0,0)}
-document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>aba(b.dataset.t));
+function aba(t){document.querySelectorAll('nav button[data-t]').forEach(b=>b.classList.toggle('on',b.dataset.t===t));['agenda','lancar','contatos','mais'].forEach(x=>$('t-'+x).classList.toggle('hide',x!==t));if(t==='contatos'&&!$('lc').innerHTML)contatos();scrollTo(0,0)}
+document.querySelectorAll('nav button[data-t]').forEach(b=>b.onclick=()=>aba(b.dataset.t));
 
 const MES=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'],DS=['dom','seg','ter','qua','qui','sex','sáb'];
 async function carregar(){try{SHOWS=(await api('shows')).shows;ls('bzd_cache',JSON.stringify(SHOWS))}catch(e){SHOWS=JSON.parse(ls('bzd_cache')||'[]')}render()}
