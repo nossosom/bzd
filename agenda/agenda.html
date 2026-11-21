@@ -55,9 +55,10 @@ a{color:var(--ac)}.wa{float:right;text-decoration:none;font-size:13px}
     <section id="t-lancar" class="hide">
       <div class="card">
         <div class="tt">Lançar mensagem</div>
-        <div class="sub">Cole aqui uma mensagem do WhatsApp (ou use <b>Compartilhar → BZD</b> no Android). A IA descobre o show e prepara o registro.</div>
+        <div class="sub">No WhatsApp, segure a mensagem (ou várias) e toque em <b>Copiar</b>. Depois toque no botão abaixo: a IA descobre o show e prepara o registro.</div>
         <textarea id="txt" placeholder="[21/11, 01:30] Jaja Som 21-11: Dm7 monitor&#10;Pá mix rack"></textarea>
-        <button class="btn" id="bAn" onclick="analisar()">Analisar</button>
+        <button class="btn" onclick="colar()">📋 Colar do WhatsApp e analisar</button>
+        <button class="btn sec" id="bAn" onclick="analisar()">Analisar</button>
       </div>
       <div id="sug" class="card hide">
         <label>Show</label><select id="sShow"></select>
@@ -123,6 +124,7 @@ function render(){const hoje=new Date(Date.now()-3*36e5).toISOString().slice(0,1
 function editar(id){const s=SHOWS.find(x=>x.id===id),c=$('c-'+id);c.querySelector('.info').innerHTML=`<label>Início</label><input id="ei" value="${esc(s.inicio)}"><label>Fim</label><input id="ef" value="${esc(s.fim)}"><label>Status</label><input id="es" value="${esc(s.status)}"><label>Local</label><input id="el" value="${esc(s.local)}"><label>Informações</label><textarea id="ex" style="min-height:220px">${esc(s.info)}</textarea><button class="btn" onclick="salvar('${esc(id)}')">Salvar</button>`}
 async function salvar(id){const s={...SHOWS.find(x=>x.id===id)};s.inicio=$('ei').value;s.fim=$('ef').value;s.status=$('es').value;s.local=$('el').value;s.info=$('ex').value;try{await api('salvar_show',{show:s});await carregar()}catch(e){alert(e.message)}}
 
+async function colar(){try{const c=await navigator.clipboard.readText();if(!c.trim())return aviso('amsg','A área de transferência está vazia. No WhatsApp, segure a mensagem e toque em Copiar.','er');$('txt').value=c;analisar()}catch(e){$('txt').focus();aviso('amsg','Não consegui ler a cópia. Toque e segure na caixa e escolha Colar.','q')}}
 async function analisar(){const t=$('txt').value.trim();if(!t)return;$('bAn').innerHTML='<span class="spin"></span> Analisando…';aviso('amsg','');
   try{ULT=await api('analisar',{texto:t});$('sShow').innerHTML='<option value="">— escolha o show —</option>'+ULT.opcoes.map(o=>`<option value="${esc(o.id)}">${o.data.split('-').reverse().slice(0,2).join('/')} · ${esc(o.titulo)}</option>`).join('');
     $('sShow').value=ULT.show_id||'';$('sReg').value=ULT.registro||'';$('motivo').textContent=(ULT.confianca?'Confiança '+ULT.confianca+'. ':'')+(ULT.motivo||'');
