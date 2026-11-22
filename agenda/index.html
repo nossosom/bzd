@@ -279,8 +279,8 @@ header{padding-top:calc(16px + env(safe-area-inset-top))!important;padding-botto
 body{padding-bottom:calc(80px + env(safe-area-inset-bottom))!important}
 
 .rpan{display:none}.rpan.on{display:block}
-.rseg{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:4px;margin:0 0 12px}
-.rseg button{background:none;border:0;color:var(--muted);font:inherit;font-weight:700;font-size:15px;padding:11px 2px;border-radius:9px}
+.rseg{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:4px;margin:0 0 12px}
+.rseg button{background:none;border:0;color:var(--muted);font:inherit;font-weight:700;font-size:13px;padding:11px 1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border-radius:9px}
 .rseg button.on{background:var(--gold);color:#111}
 .tiles{grid-template-columns:1fr!important}
 .tile{flex-direction:row!important;gap:18px!important;font-size:30px!important}
@@ -781,12 +781,25 @@ async function resolvePend(row){setSync("wait");try{PENDS=await gs("resolvePend"
 <script>
 (function(){
 var r=document.getElementById("v-rider"),h=r.querySelector("h2");
-var tabs=[["resumo","Resumo"],["input","Input"],["output","Output"],["bandejas","Bandejas"]];
+var tabs=[["resumo","Resumo"],["contratante","Contratante"],["input","Input"],["output","Output"],["bandejas","Bandejas"]];
 var seg=document.createElement("div");seg.className="rseg";
 seg.innerHTML=tabs.map(function(t,i){return "<button data-p=\""+t[0]+"\""+(i?"":" class=\"on\"")+">"+t[1]+"</button>";}).join("");
 h.parentNode.insertBefore(seg,h.nextSibling);
 var pr=document.createElement("div");pr.className="rpan on";pr.setAttribute("data-p","resumo");pr.appendChild(document.getElementById("riderBody"));r.appendChild(pr);
 ["input","output","bandejas"].forEach(function(k){var s=document.getElementById("v-"+k),p=document.createElement("div");p.className="rpan";p.setAttribute("data-p",k);Array.prototype.slice.call(s.children).forEach(function(c){if(c.tagName!=="H2")p.appendChild(c);});r.appendChild(p);var t=document.querySelector(".tile[data-v=\""+k+"\"]");if(t)t.parentNode.removeChild(t);});
+(function(){
+var D=[["Bateria",[["01","01","Corpo de bateria (Pearl Decade, Vision Carpete, Export, Yamaha Stage Custom ou DW) · tons 10, 12, 14 ou 16 · bumbo 20 ou 22 · PELES NOVAS OBRIGATÓRIAS"],["06","06","Estantes de pratos"],["01","01","Máquina de hi-hat"],["01","01","Estante de caixa"],["01","01","Pedal de bumbo DW 2000"],["01","01","Tapete para bateria"]]],
+["Percussão",[["01 par","01 par","Congas"],["01","01","Malacacheta de 12 polegadas"],["01 par","01 par","Bacurinhas de 6 e 8 polegadas"],["01","01","Tantan 12 polegadas × 55 cm, pele de couro"],["01","01","Surdo de 20 polegadas, pele de couro"],["Jogo","Jogo","Suportes para tocar os instrumentos de percussão em pé"]]],
+["Áudio",[["01","01","Mesa de P.A.: Midas M32, Avid Venue, DiGiCo, Soundcraft Vi3000 ou Yamaha DM7"],["01","01","Mesa de monitor: Midas M32, Yamaha DM7, Yamaha CL5 ou Yamaha PM5D"],["01","01","Multicabo splitado de no mínimo 32 vias"],["03","03","Subsnakes de 12 vias"],["16","16","Pedestais grandes com cachimbo"],["20","20","Cabos XLR de 10 m"],["20","20","Cabos XLR de 5 m"],["02","02","Réguas de AC 127 V aterradas"]]],
+["Luz",[["04","04","COB"],["08","08","Beam 9R"],["08","08","P-5 ou strobo com fita"],["01","01","Console MA"],["01","01","Máquina de fumaça"],["01","01","Controladora de LED ao lado da mesa de luz"]]],
+["Estrutura e outros",[["08","","Praticáveis 2×1 com rodinhas e saia de acabamento"],["","10","Cadeiras reforçadas, sem braço"],["","05","Mesas"],["05","05","Carregadores para mover o equipamento"]]]];
+var pc=document.createElement("div");pc.className="rpan";pc.setAttribute("data-p","contratante");
+pc.innerHTML='<div class="small muted" style="margin-bottom:10px">Equipamentos básicos que o contratante (ou a locadora) providencia. Escolha o tipo de show:</div><div class="rseg ctp" style="grid-template-columns:1fr 1fr"><button data-t="0" class="on">Palco tradicional</button><button data-t="1">Roda de samba</button></div><div id="ctBody"></div><style>#ctBody .card{padding:2px 10px}#ctBody .kv.q{display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:12px;padding:11px 0;font-size:16px}#ctBody .kv.q span{flex:1;text-align:left}#ctBody .kv.q b{flex:none;min-width:40px;text-align:center;background:rgba(253,190,0,.13);color:var(--gold);border-radius:10px;padding:6px 6px;font-family:"Barlow Condensed",sans-serif;font-size:19px;line-height:1;white-space:nowrap}</style>';
+r.appendChild(pc);
+function rd(t){document.getElementById("ctBody").innerHTML=D.map(function(g){var it=g[1].filter(function(x){return x[t]});return it.length?"<h3>"+g[0]+"</h3><div class=\"card\">"+it.map(function(x){return "<div class=\"kv q\"><b>"+x[t]+"</b><span>"+x[2]+"</span></div>";}).join("")+"</div>":"";}).join("")+"<p class=\"muted small\">Microfones, pedestais por canal e direct boxes seguem a Input List.</p>";}
+rd(0);
+pc.querySelector(".ctp").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;Array.prototype.forEach.call(this.querySelectorAll("button"),function(x){x.classList.toggle("on",x===b);});rd(+b.getAttribute("data-t"));});
+})();
 seg.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;var k=b.getAttribute("data-p");Array.prototype.forEach.call(seg.querySelectorAll("button"),function(x){x.classList.toggle("on",x===b);});Array.prototype.forEach.call(r.querySelectorAll(".rpan"),function(p){p.classList.toggle("on",p.getAttribute("data-p")===k);});window.scrollTo(0,0);});
 })();
 </script>
