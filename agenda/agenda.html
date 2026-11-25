@@ -250,7 +250,8 @@ async function zapShow(id){const s=SHOWS.find(x=>x.id===id);if(!s)return;const d
   let t='*BENZADEUS · '+String(s.titulo).toUpperCase()+'*\n📅 '+dia+(s.inicio?' · '+s.inicio+(s.fim?' – '+s.fim:''):'');
   t+='\n📍 '+(loc||c||'Local a confirmar')+'\nhttps://www.google.com/maps/search/?api=1&query='+q;
   if(dist)t+='\n🚗 '+dist;if(s.hotel)t+='\n🏨 '+s.hotel;if(s.transporte)t+='\n🚐 '+s.transporte;if(s.status)t+='\n✅ '+s.status;
-  if(s.info&&String(s.info).trim())t+='\n\n*Informações*\n'+String(s.info).trim();
+  const tec=String(s.info||'').split('\n').map(l=>l.replace(/^\s*\[[^\]]*\]\s*/,'').trimEnd()).filter(l=>!/^\s*(status|cidade|local|contato|contatos|obs|observa|telefone|fone|whats|produ[cç][aã]o|produtor|produtora|contratante|respons|hotel|transporte|data|hor[aá]rio|cach[eê]|pagamento|valor)\b[^:]*:/i.test(l)&&!/https?:\/\/|wa\.me|\+?\d{2}\s?\(?\d{2}\)?\s?9?\d{4}[-\s.]?\d{4}|@/i.test(l)).join('\n').replace(/\n{3,}/g,'\n\n').trim();
+  if(tec)t+='\n\n*Informações técnicas*\n'+tec;
   location.href='https://wa.me/?text='+encodeURIComponent(t)}
 function cidadeShow(s){const t=[s.titulo,s.local].join(' | ');const m=[...t.matchAll(/([A-Za-zÀ-ÿ'. \-]{2,40})\/\s?([A-Z]{2})\b/g)];if(!m.length)return '';const x=m[0];return x[1].split(/[-|,]/).pop().trim()+'/'+x[2]}
 const GEO=JSON.parse(ls('bzd_geo')||'{}'),ROT=JSON.parse(ls('bzd_rot')||'{}');let _gq=Promise.resolve();
