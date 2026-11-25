@@ -54,6 +54,7 @@ details.ci{border-top:1px solid var(--line)}details.ci summary{list-style:none;c
 .txi{white-space:pre-wrap;font-size:14px}
 #mapa{height:340px;border-radius:14px;border:1px solid var(--line);margin:8px 0 12px;background:#17171b}.leaflet-container{font:13px Inter,system-ui}#mapa .leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) brightness(.85) contrast(.9)}.pin{background:var(--ac);color:#111;border-radius:50%;width:24px;height:24px;line-height:24px;text-align:center;font:800 12px Inter;border:2px solid #111}.pin.b{background:#6ea8fe}
 .leg{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-top:1px solid var(--line)}.leg:first-child{border-top:0}.leg .nn{flex:none;width:24px;height:24px;border-radius:50%;background:var(--ac);color:#111;font:800 12px/24px Inter;text-align:center}.leg .km{color:var(--mut);font-size:13px;margin-top:2px}
+.shd .shTop{position:sticky;top:var(--hh,64px);z-index:4;background:var(--bg);margin:-12px -14px 12px;padding:8px 14px 10px;border-bottom:1px solid var(--line);box-shadow:0 8px 12px -8px rgba(0,0,0,.8)}.shd .shTop h2{margin:0 0 2px}.shd .shTop .bk{margin-bottom:2px}.shDt{color:var(--ac);font-family:'Barlow Condensed';font-weight:700;font-size:18px;letter-spacing:.03em;text-transform:uppercase}
 </style>
 </head>
 <body>
@@ -230,8 +231,8 @@ function abrirShow(id){const s=SHOWS.find(x=>x.id===id);if(!s)return;const d=new
   const loc=(s.local&&!/indefinid/i.test(s.local))?s.local:s.titulo;const qy=encodeURIComponent(loc);
   const fs=fonesDe(s.info||'');const cid=nrm(String(loc).split(/[\/\-–,]/)[0]);
   const cc=(CONT||JSON.parse(ls('bzd_cont')||'[]')).filter(c=>cid&&nrm(c.cidade).startsWith(cid)&&!fs.some(f=>f.num===telBR(c.telefone))).slice(0,12);
-  $('t-show').innerHTML=`<button class="bk" onclick="aba('agenda')">‹ Voltar à agenda</button>
-  <h2>${esc(s.titulo)}</h2><div class="kv"><span>Data</span><b>${esc(dia)}</b>${s.inicio?`<span>Horário</span><b>${esc(s.inicio)}${s.fim?' – '+esc(s.fim):''}</b>`:''}<span>Local</span><b>${esc(s.local||'—')}</b><span>Status</span><b><span class="chip ${esc(s.status)}" style="margin:0">${esc(s.status)}</span></b>${s.hotel?`<span>Hotel</span><b>${esc(s.hotel)}</b>`:''}${s.transporte?`<span>Transporte</span><b>${esc(s.transporte)}</b>`:''}</div>
+  $('t-show').innerHTML=`<div class="shTop"><button class="bk" onclick="aba('agenda')">‹ Voltar à agenda</button>
+  <h2>${esc(s.titulo)}</h2><div class="shDt">${esc(dia)}${s.inicio?` · ${esc(s.inicio)}${s.fim?' – '+esc(s.fim):''}`:''}</div></div><div class="kv"><span>Local</span><b>${esc(s.local||'—')}</b><span>Status</span><b><span class="chip ${esc(s.status)}" style="margin:0">${esc(s.status)}</span></b>${s.hotel?`<span>Hotel</span><b>${esc(s.hotel)}</b>`:''}${s.transporte?`<span>Transporte</span><b>${esc(s.transporte)}</b>`:''}</div>
   <div class="acts"><a class="mp" href="https://www.google.com/maps/search/?api=1&query=${qy}" target="_blank">📍 Maps</a><a class="wz" href="https://waze.com/ul?q=${qy}&navigate=yes" target="_blank">🚗 Waze</a></div>
   <div class="sec">Deslocamento</div><div class="card" id="shLeg"><span class="sub">Calculando distância…</span></div>
   <div class="sec">Trajetos</div><div class="card" id="shTraj"><div class="chips" style="flex-wrap:wrap;margin-top:0">${trajChips(s)}</div>
@@ -305,5 +306,6 @@ async function novoShow(){const data=$('nData').value,titulo=$('nTit').value.tri
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');
 const c0=ls('bzd_cod');if(c0){COD=c0;EU={nome:'',papel:''};entrar(c0)}else $('login').classList.remove('hide');
 </script>
+<script>(function(){function f(){var h=document.querySelector('header');if(h)document.documentElement.style.setProperty('--hh',h.getBoundingClientRect().height+'px')}addEventListener('resize',f);addEventListener('load',f);setInterval(f,1500);f()})();</script>
 </body>
 </html>
