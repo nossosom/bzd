@@ -138,8 +138,12 @@ document.querySelectorAll('nav button[data-t]').forEach(b=>b.onclick=()=>aba(b.d
 
 const MES=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'],DS=['dom','seg','ter','qua','qui','sex','sáb'];
 async function carregar(){try{SHOWS=(await api('shows',{todos:true})).shows;ls('bzd_cache',JSON.stringify(SHOWS))}catch(e){SHOWS=JSON.parse(ls('bzd_cache')||'[]')}render()}
+const HRX='\\d{1,2}(?:[:hH]\\d{0,2})';
+function horasDoTitulo(t){const m=String(t||'').match(new RegExp('('+HRX+')(?:\\s*(?:[–—-]|às|a)\\s*('+HRX+'|\\d{1,2}))?(?![\\d/])'));return m?{ini:m[1],fim:m[2]||''}:null}
+function limpaTitulo(t0){const o=String(t0||'');let t=o;t=t.replace(new RegExp('\\s*\\([^)]*'+HRX+'[^)]*\\)','g'),'');t=t.replace(new RegExp('\\s*[,·|–—-]?\\s*'+HRX+'(?:\\s*(?:[–—-]|às|a)\\s*(?:'+HRX+'|\\d{1,2}))?(?![\\d/])','g'),'');return t.replace(/\s{2,}/g,' ').replace(/[\s,·|–—-]+$/,'').trim()||o}
+function normTit(s){const h=horasDoTitulo(s.titulo);if(!h)return false;if(!s.inicio){s.inicio=h.ini;if(!s.fim)s.fim=h.fim}s.titulo=limpaTitulo(s.titulo);return true}
 function ordKey(s){const m=String(s.inicio||'').match(/(\d{1,2})[:hH](\d{2})?/);return (s.data||'')+' '+(m?String(+m[1]<6?+m[1]+24:+m[1]).padStart(2,'0')+':'+(m[2]||'00'):'99:99')+' '+(s.titulo||'')}
-function render(){SHOWS.sort((a,b)=>ordKey(a).localeCompare(ordKey(b)));const hoje=new Date(Date.now()-3*36e5).toISOString().slice(0,10);let h='',m='',hp='',mp='';const PAS=SHOWS.filter(s=>s.data<hoje);
+function render(){SHOWS.forEach(normTit);SHOWS.sort((a,b)=>ordKey(a).localeCompare(ordKey(b)));const hoje=new Date(Date.now()-3*36e5).toISOString().slice(0,10);let h='',m='',hp='',mp='';const PAS=SHOWS.filter(s=>s.data<hoje);
   for(const s of PAS){const d=new Date(s.data+'T12:00:00');const mm=MES[d.getMonth()]+' '+d.getFullYear();if(mm!==mp){mp=mm;hp+=`<div class="mes" style="font-size:15px">${mm}</div>`}
     hp+=`<div class="card sh" style="opacity:.75" onclick="abrirShow('${esc(s.id)}')"><div class="row"><span class="dt" style="color:var(--mut)">${DS[d.getDay()]} ${String(d.getDate()).padStart(2,'0')}</span><span class="tt">${esc(s.titulo)}</span><span class="ar" style="margin-left:auto">›</span></div><div class="sub">${esc(s.local)}</div></div>`}
   for(const s of SHOWS.filter(s=>s.data>=hoje)){const d=new Date(s.data+'T12:00:00');const mm=MES[d.getMonth()]+' '+d.getFullYear();if(mm!==m){m=mm;h+=`<div class="mes">${mm}</div>`}
@@ -155,7 +159,7 @@ function editar(id){const s=SHOWS.find(x=>x.id===id);$('shInfo').innerHTML=`<lab
 function horaNoTitulo(t,ini,fim){t=String(t||'');const H='\\d{1,2}(?:[:hH]\\d{0,2})';const nova=ini?(ini+(fim?'–'+fim:'')):'';
   const rf=new RegExp('('+H+')\\s*[–—-]\\s*('+H+'|\\d{1,2})(?![\\d/])');if(rf.test(t))return nova?t.replace(rf,nova):t.replace(new RegExp('\\s*[,·]?\\s*'+rf.source),'').replace(/\(\s*,\s*/,'(').replace(/\(\s*\)/,'').trim();
   const r1=new RegExp('(^|[\\s(])(\\d{1,2}[hH]\\d{0,2}|\\d{1,2}:\\d{2})(?![\\d/])');if(r1.test(t))return nova?t.replace(r1,(m,p)=>p+nova):t;return t}
-async function salvar(id){const s={...SHOWS.find(x=>x.id===id)};s.inicio=$('ei').value;s.fim=$('ef').value;s.status=(EU&&EU.papel==='admin'&&$('es'))?$('es').value:(SHOWS.find(x=>x.id===id)||{}).status;s.local=$('el').value;s.hotel=$('eh').value;s.transporte=$('et').value;s.info=$('ex').value;const o0=SHOWS.find(x=>x.id===id)||{};if((s.inicio||'')!==(o0.inicio||'')||(s.fim||'')!==(o0.fim||''))s.titulo=horaNoTitulo(s.titulo,s.inicio,s.fim);try{await api('salvar_show',{show:s});await carregar();abrirShow(id)}catch(e){alert(e instanceof TypeError?'Sem internet agora. Tente salvar quando o sinal voltar.':e.message)}}
+async function salvar(id){const s={...SHOWS.find(x=>x.id===id)};s.inicio=$('ei').value;s.fim=$('ef').value;s.status=(EU&&EU.papel==='admin'&&$('es'))?$('es').value:(SHOWS.find(x=>x.id===id)||{}).status;s.local=$('el').value;s.hotel=$('eh').value;s.transporte=$('et').value;s.info=$('ex').value;normTit(s);const o0=SHOWS.find(x=>x.id===id)||{};if((s.inicio||'')!==(o0.inicio||'')||(s.fim||'')!==(o0.fim||''))s.titulo=s.titulo;try{await api('salvar_show',{show:s});await carregar();abrirShow(id)}catch(e){alert(e instanceof TypeError?'Sem internet agora. Tente salvar quando o sinal voltar.':e.message)}}
 
 async function colar(){try{const c=await navigator.clipboard.readText();if(!c.trim())return aviso('amsg','A área de transferência está vazia. No WhatsApp, segure a mensagem e toque em Copiar.','er');$('txt').value=c;analisar()}catch(e){$('txt').focus();aviso('amsg','Não consegui ler a cópia. Toque e segure na caixa e escolha Colar.','q')}}
 async function analisar(){const t=$('txt').value.trim();if(!t)return;$('bAn').innerHTML='<span class="spin"></span> Analisando…';aviso('amsg','');
@@ -319,7 +323,7 @@ async function mapaRota(){const hoje=new Date(Date.now()-3*36e5).toISOString().s
 function offl(){document.body.classList.toggle('offline',!navigator.onLine)}addEventListener('online',()=>{offl();carregar()});addEventListener('offline',offl);offl();
 async function equipe(novo){try{const l=(await api('equipe',novo?{novo}:{})).equipe;$('leq').innerHTML=l.map(p=>`${esc(p.nome)} — <b>${esc(p.codigo)}</b>${p.papel==='admin'?' (admin)':''}`).join('<br>')}catch(e){}}
 function addEq(){const nome=$('eNome').value.trim(),codigo=$('eCod').value.trim();if(nome&&codigo){equipe({nome,codigo});$('eNome').value=$('eCod').value=''}}
-async function novoShow(){const data=$('nData').value,titulo=$('nTit').value.trim();if(!data||!titulo)return aviso('nmsg','Preencha data e título.','er');
+async function novoShow(){const data=$('nData').value,titulo=limpaTitulo($('nTit').value.trim());if(!data||!titulo)return aviso('nmsg','Preencha data e título.','er');
   const id=data+'-'+titulo.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,30);
   try{await api('salvar_show',{show:{id,data,titulo,local:$('nLoc').value,status:$('nSt').value}});aviso('nmsg','Show criado.','ok');$('nTit').value=$('nLoc').value='';carregar()}catch(e){aviso('nmsg',e.message,'er')}}
 
