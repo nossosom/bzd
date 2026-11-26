@@ -138,7 +138,8 @@ document.querySelectorAll('nav button[data-t]').forEach(b=>b.onclick=()=>aba(b.d
 
 const MES=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'],DS=['dom','seg','ter','qua','qui','sex','sáb'];
 async function carregar(){try{SHOWS=(await api('shows',{todos:true})).shows;ls('bzd_cache',JSON.stringify(SHOWS))}catch(e){SHOWS=JSON.parse(ls('bzd_cache')||'[]')}render()}
-function render(){const hoje=new Date(Date.now()-3*36e5).toISOString().slice(0,10);let h='',m='',hp='',mp='';const PAS=SHOWS.filter(s=>s.data<hoje).reverse();
+function ordKey(s){const m=String(s.inicio||'').match(/(\d{1,2})[:hH](\d{2})?/);return (s.data||'')+' '+(m?m[1].padStart(2,'0')+':'+(m[2]||'00'):'99:99')+' '+(s.titulo||'')}
+function render(){SHOWS.sort((a,b)=>ordKey(a).localeCompare(ordKey(b)));const hoje=new Date(Date.now()-3*36e5).toISOString().slice(0,10);let h='',m='',hp='',mp='';const PAS=SHOWS.filter(s=>s.data<hoje).reverse();
   for(const s of PAS){const d=new Date(s.data+'T12:00:00');const mm=MES[d.getMonth()]+' '+d.getFullYear();if(mm!==mp){mp=mm;hp+=`<div class="mes" style="font-size:15px">${mm}</div>`}
     hp+=`<div class="card sh" style="opacity:.75" onclick="abrirShow('${esc(s.id)}')"><div class="row"><span class="dt" style="color:var(--mut)">${DS[d.getDay()]} ${String(d.getDate()).padStart(2,'0')}</span><span class="tt">${esc(s.titulo)}</span><span class="ar" style="margin-left:auto">›</span></div><div class="sub">${esc(s.local)}</div></div>`}
   for(const s of SHOWS.filter(s=>s.data>=hoje)){const d=new Date(s.data+'T12:00:00');const mm=MES[d.getMonth()]+' '+d.getFullYear();if(mm!==m){m=mm;h+=`<div class="mes">${mm}</div>`}
